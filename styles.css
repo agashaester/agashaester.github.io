@@ -230,7 +230,7 @@ footer {
 .hero-image {
     width: 90%; /* Make the image slightly smaller */
     height: 90%; /* Adjust the height relative to its container */
-    background-image: url('./images/banner.jpg'); /* Replace with your image */
+    background-image: url('./images/banner2.jpg'); /* Replace with your image */
     background-size: cover; /* Ensures the image scales without distortion */
     background-position: center;
     border-radius: 10px; /* Optional rounded corners */

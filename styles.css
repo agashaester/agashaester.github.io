@@ -52,13 +52,13 @@ header nav ul li a:hover {
 /* Hero Section */
 .hero {
     background: url('hero-bg.jpg') no-repeat center center/cover;
-    height: 75vh;
+    height: 70vh;
     position: relative;
 }
 
 .hero-overlay {
     background: rgba(0, 0, 0, 0.5);
-    height: 75%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -217,47 +217,45 @@ footer {
 /* Hero Section */
 .hero {
     position: relative;
-    height: 60vh; /* Balanced height for a professional look */
-    width: 100%; /* Full width of the viewport */
-    overflow: hidden; /* Prevent content overflow */
+    height: 70vh; /* Adjust height as needed */
+    width: 100%;
+    overflow: hidden;
     display: flex;
-    align-items: center; /* Vertically center content */
-    justify-content: center; /* Horizontally center content */
-    background: url('./images/New_web_pic.jpg') no-repeat center center/cover; /* Ensure image scales proportionally */
-    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%); /* Adds angled corners at the bottom */
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4; /* Optional background color */
 }
 
-/* Hero Overlay */
-.hero-overlay {
-    background: rgba(0, 0, 0, 0.4); /* Semi-transparent overlay for better text visibility */
-    height: 100%; /* Full height of the hero section */
-    width: 100%; /* Full width */
-    position: absolute; /* Ensure it sits over the hero background */
-    top: 0;
-    left: 0;
-    z-index: 1; /* Ensure the overlay is above the background */
+/* Single Image Styling */
+.hero-image {
+    width: 90%; /* Make the image slightly smaller */
+    height: 90%; /* Adjust the height relative to its container */
+    background-image: url('./images/banner.jpg'); /* Replace with your image */
+    background-size: cover; /* Ensures the image scales without distortion */
+    background-position: center;
+    border-radius: 10px; /* Optional rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Optional shadow for a polished look */
+}
+.about-text {
+    background-color: #f9f9f9; /* Light background for contrast */
+    padding: 40px 20px;
 }
 
-/* Hero Text */
-.hero-text {
-    position: relative;
-    z-index: 2; /* Ensure text appears above the overlay */
+.about-text h2 {
     text-align: center;
-    color: white; /* White text for high contrast */
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
 }
 
-.hero-text h1 {
-    font-size: 3rem; /* Balanced font size for large headers */
-    margin-bottom: 15px;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8); /* Text shadow for readability over the background */
+.about-text p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-align: justify; /* Ensures the text is evenly aligned */
 }
 
-.hero-text p {
-    font-size: 1.4rem; /* Slightly larger font for subtitles */
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8); /* Ensure text is visible */
-    max-width: 800px; /* Limit text width for better alignment */
-    margin: 0 auto; /* Center the text block */
-}
 .container {
     max-width: 800px;
     margin: 0 auto;

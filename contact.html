@@ -1,112 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <   <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASRA - Research with Impact</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SENLA Research Hub — Contact</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Icons (Font Awesome) -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
-<body>
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <img src="images/logo_2.jpg" alt="Senla Logo">
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="th.html">About Us</a></li>
-                    <li><a href="projects.html">Projects</a></li>
-   
-                    <li><a href="contact.html">Contacts</a></li>
-                </ul>
-            </nav>
+
+<body class="contact-page">
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <a href="index.html" aria-label="SENLA Research Hub — Home">
+          <img src="images/logo_2.jpg" alt="SENLA Research Hub logo" />
+        </a>
+      </div>
+
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="th.html">About Us</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a class="active" href="contact.html" aria-current="page">Contacts</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main role="main" class="wrap" id="main">
+    <section aria-labelledby="contact-heading" style="width:100%;">
+      <div class="contact-container" role="region" aria-label="Contact section">
+        <!-- Contact Info -->
+        <div class="contact-info">
+          <h2 id="contact-heading">Get in Touch</h2>
+          <p>
+            We’d love to hear from you. Use the form to reach our team or connect on social media.
+          </p>
+
+          <h4>Contact &amp; Address</h4>
+          <p>
+            <a href="tel:+256787083553" aria-label="Call us at plus two five six seven eight seven zero eight three five five three">
+              +256 787 083553
+            </a>
+          </p>
+          <p>
+            <a href="mailto:info@senlaresearchhub.com">info@senlaresearchhub.org</a>
+          </p>
+
+          <address style="font-style: normal;">
+            Rwebishuri, Mbarara, Uganda
+          </address>
+
+          <div class="social-media" aria-label="Social media">
+            <a href="#" aria-label="Facebook">
+              <i class="fab fa-facebook"></i>
+            </a>
+            <a href="#" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" aria-label="LinkedIn">
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </div>
         </div>
-    </header>
-    <!-- Main Section -->
-    <body class="contact-page">
-   
-    <main>
-        <div class="contact-container">
-            <div class="contact-info">
-                <h2>Get in Touch</h2>
-                <p>Feel free to reach out to us via the form below or through any of our social media channels.</p>
-                <ul>
-                    <h4>Contact & Address</h4>
-            <p>+256 787 083553</p>
-            <p><a href="mailto: info@senlaresearchhub.com"></a></p>
-            <p>Address: Rwebishuri, Mbarara, Uganda</p>
-                </ul>
-                <div class="social-media">
-                    <a href="#">Facebook</a>
-                    <a href="#">Twitter</a>
-                    <a href="#">LinkedIn</a>
-                </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form">
+          <form action="contact.php" method="post" class="php-email-form" novalidate aria-describedby="form-help">
+            <!-- Anti-bot honeypot (hidden) -->
+            <div style="position:absolute;left:-9999px" aria-hidden="true">
+              <label for="company">Company</label>
+              <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
             </div>
-            <div class="contact-form">
-                <form action="contact.php" method="post" class="php-email-form">
-                    <div class="form-group">
-                        <label for="name">Your Name</label>
-                        <input type="text" name="name" id="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Your Email</label>
-                        <input type="email" name="email" id="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" name="subject" id="subject" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea name="message" id="message" rows="5" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit">Send Message</button>
-                    </div>
-                </form>
+
+            <div class="form-group">
+              <label for="name">Your Name<span aria-hidden="true"> *</span></label>
+              <input type="text" id="name" name="name" required aria-required="true" autocomplete="name" />
             </div>
+
+            <div class="form-group">
+              <label for="email">Your Email<span aria-hidden="true"> *</span></label>
+              <input type="email" id="email" name="email" required aria-required="true" autocomplete="email" />
+            </div>
+
+            <div class="form-group">
+              <label for="subject">Subject<span aria-hidden="true"> *</span></label>
+              <input type="text" id="subject" name="subject" required aria-required="true" />
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message<span aria-hidden="true"> *</span></label>
+              <textarea id="message" name="message" rows="6" required aria-required="true"></textarea>
+            </div>
+
+            <p id="form-help" style="margin-top:-4px;color:var(--muted);font-size:.9rem;">
+              Fields marked with * are required.
+            </p>
+
+            <div class="form-group">
+              <button type="submit" aria-label="Send message to SENLA Research Hub">Send Message</button>
+            </div>
+          </form>
         </div>
-    </main>
-     
-        
-         <!-- Footer -->
-      <footer>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (kept) -->
+  <footer>
     <div class="footer-content">
-        <div class="footer-column">
-            <h4>Main Links</h4>
-            <ul>
-               <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
-            </ul>
+      <div class="footer-column">
+        <h4>Main Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a class="active" href="th.html">About Us</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Research</a></li>
+          <li><a href="#">Consultancy</a></li>
+          <li><a href="#">Community Engagement</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Contact & Address</h4>
+        <p>+256 787 083553</p>
+        <p><a href="mailto:info@senlaresearchhub.com">info@senlaresearchhub.com</a></p>
+        <p>Rwebishuri, Mbarara, Uganda</p>
+      </div>
+      <div class="footer-column logo-social">
+        <img src="images/logo_2.jpg" alt="SENLA Logo">
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-x-twitter"></i></a>
         </div>
-        <div class="footer-column">
-            <h4>Services</h4>
-            <ul>
-                <li><a href="#">Research</a></li>
-                <li><a href="#">Consultancy</a></li>
-                <li><a href="#">Community Engagement</a></li>
-            </ul>
-        </div>
-        <div class="footer-column">
-            <h4>Contact & Address</h4>
-            <p>+256 787 083553</p>
-            <p><a href="mailto: info@senlaresearchhub.com"></a></p>
-            <p>Address: Rwebishuri, Mbarara, Uganda</p>
-        </div>
-        <div class="footer-column logo-social">
-            <img src="images/logo_2.jpg" alt="ASRA Logo">
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-            </div>
-        </div>
+      </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; 2021 - SENLA Research Hub</p>
+      <p>&copy; <span id="y"></span> - SENLA Research Hub</p>
     </div>
-</footer>
+  </footer>
+  <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</body>
+</html>

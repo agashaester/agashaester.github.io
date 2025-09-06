@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project • SENLA</title>
+  <link rel="stylesheet" href="styles.css?v=5"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <meta name="description" content="SENLA project details">
+</head>
+<body class="proj-detail">
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="logo"><a href="index.html"><img src="images/logo_2.jpg" alt="SENLA logo"/></a></div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="th.html">About Us</a></li>
+          <li><a class="active" href="projects.html">Projects</a></li>
+          <li><a href="contact.html">Contacts</a></li>
+        </ul>
+      </nav>
+      <a class="btn-top" href="contact.html">Get in Touch</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="proj-hero hero-narrow">
+    <div class="wrap">
+      <span class="kicker" id="kicker">Project</span>
+      <h1 id="title">Loading…</h1>
+      <p class="lede" id="lede"></p>
+      <div class="meta-row">
+        <span><i class="fa-regular fa-calendar"></i> <span id="year"></span></span>
+        <span><i class="fa-regular fa-user"></i> <span id="leaders"></span></span>
+      </div>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="projects.html">Projects</a> <span aria-hidden="true">/</span>
+        <span id="crumb-cat"></span> <span aria-hidden="true">/</span>
+        <span id="crumb-title"></span>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Cover image -->
+  <figure class="article-cover" id="cover" hidden>
+    <img id="cover-img" src="" alt="">
+    <figcaption id="cover-cap"></figcaption>
+  </figure>
+
+  <!-- Article layout -->
+  <main class="wrap article-grid">
+    <!-- sticky table of contents / meta -->
+    <aside class="article-aside" id="aside" aria-label="On this page">
+      <div class="aside-card">
+        <h4>Summary</h4>
+        <ul class="bullets" id="highlights"></ul>
+      </div>
+
+      <div class="aside-card" id="downloads-box" hidden>
+        <h4>Downloads</h4>
+        <ul class="links" id="downloads"></ul>
+      </div>
+
+      <div class="aside-card" id="tags-box" hidden>
+        <h4>Tags</h4>
+        <div class="tag-row" id="tags"></div>
+      </div>
+    </aside>
+
+    <!-- main content -->
+    <article id="article">
+      <section id="metrics" class="metrics" hidden></section>
+
+      <div id="body-html" class="article-body"><p>Loading project…</p></div>
+
+      <nav class="article-cta">
+        <a class="btn" href="projects.html">← Back to Projects</a>
+        <a class="btn btn-dark" href="contact.html" id="cta">Partner with us</a>
+      </nav>
+
+      <section id="related" class="related" hidden>
+        <h3>Related projects</h3>
+        <div class="related-grid" id="related-grid"></div>
+      </section>
+    </article>
+  </main>
+
+   <!-- Footer (kept) -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-column">
+        <h4>Main Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a class="active" href="th.html">About Us</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Research</a></li>
+          <li><a href="#">Consultancy</a></li>
+          <li><a href="#">Community Engagement</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Contact & Address</h4>
+        <p>+256 787 083553</p>
+        <p><a href="mailto:info@senlaresearchhub.com">info@senlaresearchhub.com</a></p>
+        <p>Rwebishuri, Mbarara, Uganda</p>
+      </div>
+      <div class="footer-column logo-social">
+        <img src="images/logo_2.jpg" alt="SENLA Logo">
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-x-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="y"></span> - SENLA Research Hub</p>
+    </div>
+  </footer>
+  <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</body>
+
+
+  <!-- Logic -->
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+
+    // helpers
+    const esc = s => (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+    const yyyy = d => (d ? new Date(d).getFullYear() : '');
+    const el = sel => document.querySelector(sel);
+
+    function setOG(p){
+      const add = (n,c) => { const m = document.createElement('meta'); m.setAttribute('property', n); m.setAttribute('content', c); document.head.appendChild(m); };
+      add('og:title', p.title);
+      add('og:description', p.summary || '');
+      add('og:type', 'article');
+      if (p.image) add('og:image', p.image.startsWith('http') ? p.image : (location.origin + '/' + p.image));
+      add('og:url', location.href);
+    }
+    function render404(){
+      document.title = 'Project not found • SENLA';
+      el('#kicker').textContent = 'Not Found';
+      el('#title').textContent = 'Project not found';
+      el('#lede').textContent = 'The link may be incorrect or the project was removed.';
+      el('.meta-row').style.display = 'none';
+      el('#body-html').innerHTML = `<p>Return to the <a href="projects.html">Projects</a> page and choose another item.</p>`;
+    }
+    function metricCard(m){
+      const fn = m.footnote ? `<span class="metric-note">${esc(m.footnote)}</span>` : '';
+      return `<div class="metric">
+        <div class="metric-value">${esc(m.value)}</div>
+        <div class="metric-label">${esc(m.label)}</div>
+        ${fn}
+      </div>`;
+    }
+    function relatedCard(p){
+      const date = new Date(p.date).toLocaleDateString(undefined,{year:'numeric',month:'short'});
+      return `<a class="rel-card" href="project.html?id=${esc(p.id)}">
+        <img src="${esc(p.image||'images/placeholder-16x9.png')}" alt="">
+        <div class="rel-meta"><span class="pill">${esc(p.category)}</span> <time datetime="${esc(p.date)}">${date}</time></div>
+        <h4>${esc(p.title)}</h4>
+      </a>`;
+    }
+
+    fetch('projects.data.json', {cache:'no-store'})
+      .then(res => res.json())
+      .then(DATA => {
+        const proj = DATA.find(p => p.id === id);
+        if (!proj) return render404();
+
+        // title & meta
+        document.title = `${proj.title} • SENLA`;
+        el('#kicker').textContent = proj.category || 'Project';
+        el('#title').textContent = proj.title;
+        el('#lede').textContent = proj.standfirst || proj.summary || '';
+        el('#year').textContent = yyyy(proj.date);
+        el('#leaders').textContent = (proj.members||[]).join(', ') || '—';
+        el('#crumb-cat').textContent = proj.category || 'Project';
+        el('#crumb-title').textContent = proj.title;
+
+        // cover
+        if (proj.image){
+          el('#cover-img').src = proj.image;
+          el('#cover-img').alt = proj.image_alt || proj.title;
+          el('#cover-cap').textContent = proj.image_caption || '';
+          el('#cover').hidden = false;
+        }
+
+        // highlights
+        if (proj.highlights && proj.highlights.length){
+          el('#highlights').innerHTML = proj.highlights.map(h=>`<li>${esc(h)}</li>`).join('');
+        } else {
+          el('#aside .aside-card').style.display = 'none';
+        }
+
+        // downloads
+        if (proj.downloads && proj.downloads.length){
+          el('#downloads').innerHTML = proj.downloads.map(d=>`<li><a href="${esc(d.href)}" target="_blank" rel="noopener">${esc(d.label)}</a></li>`).join('');
+          el('#downloads-box').hidden = false;
+        }
+
+        // tags
+        if (proj.tags && proj.tags.length){
+          el('#tags').innerHTML = proj.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('');
+          el('#tags-box').hidden = false;
+        }
+
+        // metrics
+        if (proj.metrics && proj.metrics.length){
+          el('#metrics').innerHTML = proj.metrics.map(metricCard).join('');
+          el('#metrics').hidden = false;
+        }
+
+        // body sections (prefer sections[]; fallback to body HTML)
+        if (proj.sections && proj.sections.length){
+          el('#body-html').innerHTML = proj.sections.map(s => `
+            <section class="section">
+              ${s.title ? `<h2 id="${esc((s.id||s.title||'').toLowerCase().replace(/[^a-z0-9]+/g,'-'))}">${esc(s.title)}</h2>` : ''}
+              ${s.html || ''}
+            </section>
+          `).join('');
+        } else {
+          el('#body-html').innerHTML = proj.body || `<p>${esc(proj.summary||'')}</p>`;
+        }
+
+        // CTA
+        const cta = el('#cta');
+        if (proj.category === 'Course/Pathway') cta.textContent = 'Enroll / Partner';
+        if (proj.category === 'Field Lab') cta.textContent = 'Run a Field Lab';
+        if (proj.category === 'Policy Brief') cta.textContent = 'Request the Brief';
+
+        // related (same category, newest first)
+        const related = DATA
+          .filter(p => p.id !== proj.id && p.category === proj.category)
+          .sort((a,b)=> new Date(b.date)-new Date(a.date))
+          .slice(0,3);
+        if (related.length){
+          el('#related-grid').innerHTML = related.map(relatedCard).join('');
+          el('#related').hidden = false;
+        }
+
+        try { setOG(proj); } catch(e){}
+      })
+      .catch(err => { console.error(err); render404(); });
+  </script>
+</body>
+</html>

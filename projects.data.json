@@ -1,0 +1,209 @@
+[
+  {
+    "id": "finlit-aspirations",
+    "title": "Financial Literacy & Aspirations: Experimental Evidence from Eastern Uganda",
+    "category": "Organization Project",
+    "date": "2024-06-30",
+    "image": "images/ugp.jpg",
+    "image_alt": "Women participating in a financial literacy session",
+    "image_caption": "Community sessions paired with a mobile game and an aspirations film.",
+    "members": ["Ester Agasha"],
+    "tags": ["Finance", "Women", "RCT", "Behavior Change"],
+    "standfirst": "Mobile-based financial education and an aspirations documentary aimed at boosting women’s money skills and future planning.",
+    "summary": "This project focused on improving women’s financial literacy and aspirations through mobile games and an aspirations video. Early evidence indicates meaningful gains in basic financial knowledge and empowerment.",
+    "highlights": [
+      "Offline-first mobile game covering budgeting, saving, and goal setting",
+      "Aspirations short film with relatable local role models",
+      "Simple facilitator guides with pre/post micro-quizzes"
+    ],
+    "metrics": [
+      { "label": "Primary audience", "value": "Women’s groups" },
+      { "label": "Delivery mode", "value": "Community sessions + mobile" },
+      { "label": "Outcome focus", "value": "Financial literacy & aspirations" }
+    ],
+    "downloads": [
+      { "label": "Program one-pager (PDF)", "href": "files/finlit_onepager.pdf" },
+      { "label": "Facilitator guide (DOCX)", "href": "files/finlit_facilitator_guide.docx" }
+    ],
+    "sections": [
+      {
+        "title": "Background & Objectives",
+        "html": "<p>Women in low-connectivity contexts face limited access to actionable, engaging financial education. The project objective is to provide <strong>short, practical learning</strong> that fits community schedules and strengthens agency through <strong>aspiration-building stories</strong>.</p>"
+      },
+      {
+        "title": "Intervention Design",
+        "html": "<ul><li>Lightweight Android game with short scenarios (budgeting, savings discipline, coping with shocks).</li><li>Aspirations short film featuring local entrepreneurs and goal-setting routines.</li><li>Micro-quizzes for before/after comparisons and discussion prompts.</li></ul>"
+      },
+      {
+        "title": "Implementation",
+        "html": "<p>Delivered via existing women’s groups with community champions. Sessions run 60–90 minutes, combining group viewing, gameplay, and reflection. Paper back-ups ensure inclusivity for participants without phones.</p>"
+      },
+      {
+        "title": "Early Learning",
+        "html": "<ul><li>High engagement with story-driven content; participants referenced film characters during discussions.</li><li>Micro-quiz results show improved understanding of basic budgeting and savings goals.</li><li>Requests for refresher sessions and spouse/partner inclusion.</li></ul>"
+      },
+      {
+        "title": "Next Steps",
+        "html": "<p>Refine modules (household budgeting, savings groups, micro-enterprise planning), expand to new districts, and explore light-touch follow-ups by SMS/WhatsApp where available.</p>"
+      }
+    ]
+  },
+  {
+    "id": "dietary-patterns-geo",
+    "title": "Green Riches, Golden Assets: Uganda’s Dietary Patterns",
+    "category": "Member Research",
+    "date": "2024-03-18",
+    "image": "images/ugandaforest.jpg",
+    "image_alt": "Satellite map layers of vegetation across Uganda",
+    "image_caption": "NDVI greenness layers matched to household areas and asset indices.",
+    "members": ["Ester Agasha", "Nathalie Nyanga"],
+    "tags": ["Geospatial", "Nutrition", "NDVI", "Assets"],
+    "standfirst": "Geospatial greenery (NDVI), household assets, and dietary diversity—how environment and socio-economics intersect.",
+    "summary": "Using geospatial tools, this project examined the relationship between environmental greenness, household assets, and diet diversity in Uganda. Results highlight the conditioning role of socio-economic status and market access.",
+    "highlights": [
+      "NDVI and land-cover layers processed in Google Earth Engine",
+      "Household asset indices built from inventories",
+      "Dietary diversity constructed from food group coverage"
+    ],
+    "metrics": [
+      { "label": "Geospatial proxy", "value": "NDVI greenness" },
+      { "label": "Key moderators", "value": "Socio-economic status, market access, seasonality" },
+      { "label": "Outcome", "value": "Dietary diversity score" }
+    ],
+    "downloads": [
+      { "label": "Methods note (PDF)", "href": "files/green_riches_methods.pdf" },
+      { "label": "Code snippets (ZIP)", "href": "files/green_riches_code.zip" }
+    ],
+    "sections": [
+      {
+        "title": "Concept & Questions",
+        "html": "<p>We ask whether greener environments predict more diverse diets and how this relationship is shaped by wealth, access to markets, and seasonality.</p>"
+      },
+      {
+        "title": "Data & Measures",
+        "html": "<ul><li><strong>Environment:</strong> NDVI and land-cover rasters; administrative boundaries for aggregation.</li><li><strong>Assets:</strong> Household inventory-based indices.</li><li><strong>Diet diversity:</strong> Food groups consumed over a reference period.</li></ul>"
+      },
+      {
+        "title": "Findings",
+        "html": "<ul><li>Greenness correlates with diet diversity, but effects attenuate for lower-asset households.</li><li>Market proximity and seasonality mediate the environment–diet link.</li><li>Policy implication: combine livelihoods, market linkage, and behavior change—not greenery alone.</li></ul>"
+      },
+      {
+        "title": "Limitations & Next Steps",
+        "html": "<p>Spatial resolution and household geolocation uncertainty may bias estimates. Next steps include adding market price time-series and diet cost indices.</p>"
+      }
+    ]
+  },
+  {
+    "id": "entrepreneurship-education-uganda",
+    "title": "Entrepreneurship Education in Uganda",
+    "category": "Organization Project",
+    "date": "2024-04-10",
+    "image": "images/sarabootcamp.jpg",
+    "image_alt": "Entrepreneurs in a workshop session",
+    "image_caption": "Applied workshops co-designed with local businesses.",
+    "members": ["Sarah Nabachwa"],
+    "tags": ["Entrepreneurship", "Education", "SMEs"],
+    "standfirst": "Co-designed, modular training and mentorship that fits around trading hours and real SME constraints.",
+    "summary": "A collaboration between academia and local businesses to develop tailored educational content for entrepreneurs. Hundreds have received practical training and mentorship through workshops and follow-up clinics.",
+    "highlights": [
+      "Short, modular lessons: pricing, cashflow, customer retention",
+      "Mentorship circles pairing founders with experienced operators",
+      "Simple templates: cashflow sheet, pricing calculator, customer log"
+    ],
+    "metrics": [
+      { "label": "Primary beneficiaries", "value": "Early-stage and small SMEs" },
+      { "label": "Format", "value": "Workshops + mentorship" },
+      { "label": "Focus areas", "value": "Pricing, costs, record-keeping, retention" }
+    ],
+    "downloads": [
+      { "label": "Toolkit (ZIP)", "href": "files/entrepreneurship_toolkit.zip" },
+      { "label": "Pricing calculator (XLSX)", "href": "files/pricing_calculator.xlsx" }
+    ],
+    "sections": [
+      {
+        "title": "Why This Program",
+        "html": "<p>Many entrepreneurs lack compact, context-fit training that translates into day-to-day operational changes. We designed modules that fit trading hours and emphasize <strong>immediate practice</strong>.</p>"
+      },
+      {
+        "title": "Program Components",
+        "html": "<ul><li>Interactive, 60–90 minute modules with local caselets.</li><li>Mentorship circles and peer accountability.</li><li>Templates for cashflow, costing, and customer tracking.</li></ul>"
+      },
+      {
+        "title": "Learning & Adaptation",
+        "html": "<p>Participants report better costing and record-keeping, with demand for refresher clinics. Future cohorts will include inventory and supplier management.</p>"
+      }
+    ]
+  },
+
+  {
+  "id": "bootcamps-street-smart-btcs",
+  "title": "Bootcamps — Street-Smart Entrepreneurship & Case Writing",
+  "category": "Courses",
+  "date": "2025-05-20",
+  "image": "images/senla_teach.jpg",
+  "image_alt": "Participants workshopping business cases",
+  "image_caption": "Hands-on bootcamps that produce usable outputs in days.",
+  "members": ["Sarah Nabachwa"],
+  "tags": ["Bootcamp", "BTCS", "Entrepreneurship", "MUST"],
+  "standfirst": "Short, intensive and practical bootcamps that help entrepreneurs improve their businesses and help faculty produce classroom-ready Business Teaching Case Studies (BTCS).",
+  "summary": "Two complementary bootcamp tracks—Entrepreneur Bootcamp and Case-Writing Sprint—deliver tangible outputs fast (cashbooks, pricing sheets, sales scripts, and draft teaching cases). The design is local, ethical, and low-bandwidth, with simple follow-up clinics for sustained outcomes.",
+  "highlights": [
+    "3–5 day, outcome-focused format",
+    "Real businesses, real numbers, practical tools",
+    "Follow-up clinics at 30, 60–90 days"
+  ],
+  "metrics": [
+    { "label": "Duration", "value": "3–5 days" },
+    { "label": "Cohort size", "value": "≈20 entrepreneurs, ≈10 faculty" },
+    { "label": "Outputs", "value": "6–10 draft cases; cashbooks; pricing sheets" },
+    { "label": "Follow-up", "value": "Two clinics over 90 days" }
+  ],
+  "downloads": [
+    { "label": "Facilitator run-sheet (PDF)", "href": "files/bootcamp_runsheet.pdf" },
+    { "label": "Cashbook template (XLSX)", "href": "files/bootcamp_cashbook_template.xlsx" },
+    { "label": "Consent form (DOCX)", "href": "files/bootcamp_consent_form.docx" }
+  ],
+  "sections": [
+    {
+      "title": "What is a Bootcamp?",
+      "html": "<p>A short, intensive, hands-on program that compresses learning and production into a few days. Participants leave with tangible outputs they can use immediately.</p>"
+    },
+    {
+      "title": "Design Principles",
+      "html": "<ul><li><strong>Local & practical:</strong> use real businesses and plain language.</li><li><strong>Evidence-based:</strong> simple worksheets and data logs to support decisions.</li><li><strong>Low-bandwidth:</strong> works offline with paper/Excel backups.</li><li><strong>Ethical & fair:</strong> informed consent, anonymisation options, and share-back value.</li></ul>"
+    },
+    {
+      "title": "Formats",
+      "html": "<h4>5-Day Case-Writing Sprint (Faculty/Researchers)</h4><ol><li>Case method basics, consent & ethics; outline a case.</li><li>Field protocols and interviews/observation.</li><li>Analysis: profitability, efficiency, diversification, HR, survival strategies.</li><li>Draft case + instructor note; peer review.</li><li>Micro-teaching/pilot and revision plan.</li></ol><h4>3-Day Entrepreneur Bootcamp</h4><ol><li>Map customers/channels; set up a cashbook.</li><li>Pricing & unit economics; customer discovery scripts; simple sales plan.</li><li>Operations & HR basics; micro-pitch; 30-day targets.</li></ol><h4>Joint Model</h4><p>Pair faculty teams with entrepreneurs. Mornings = skills; afternoons = fieldwork; evenings = peer review. Outcome: a usable case draft and a stronger business.</p>"
+    },
+    {
+      "title": "Tools (Offline / Low-Cost)",
+      "html": "<ul><li>Data collection: ODK/Kobo or paper forms.</li><li>Writing: Google Docs offline or LibreOffice; export to PDF.</li><li>Finance: Excel cashbook, pricing & breakeven sheets.</li><li>Storage: numbered consent forms and a simple data dictionary.</li></ul>"
+    },
+    {
+      "title": "Ethics & IP",
+      "html": "<ul><li>Written informed consent with option to anonymise names/figures.</li><li>Share-back: a one-pager for the business (tips + simple metrics).</li><li>Clear use rights for teaching/publishing BTCS.</li></ul>"
+    },
+    {
+      "title": "Success Metrics",
+      "html": "<ul><li>60–80% of cases reach publishable draft within 4–6 weeks.</li><li>≥70% of entrepreneurs maintain a cashbook after 30 days.</li><li>Concrete improvements: price changes, cost trims, better customer scripts.</li></ul>"
+    },
+    {
+      "title": "Timeline",
+      "html": "<ol><li>Week 0: recruit & consent.</li><li>Week 1: bootcamp delivery (3–5 days).</li><li>Weeks 2–3: drafting and edits.</li><li>Week 4: micro-teaching/pilot.</li><li>Weeks 6–8: finalisation and upload; clinic #1.</li><li>Month 3: clinic #2 and outcome check.</li></ol>"
+    },
+    {
+      "title": "Budget (Indicative)",
+      "html": "<p>Venue/meals, local transport, printing, small stipends, and facilitation typically total <strong>USD 3–7k</strong> per cohort (size-dependent). Add <strong>USD 1–2k</strong> for follow-up clinics and editing to reach classroom-ready cases.</p>"
+    },
+    {
+      "title": "Risks & Mitigation",
+      "html": "<ul><li><strong>Time slippage:</strong> daily checkpoints and end-of-day deliverables.</li><li><strong>Data gaps:</strong> capture ranges/ratios when exact figures are sensitive.</li><li><strong>Drop-off:</strong> schedule two clinics in advance and create a peer group (WhatsApp/Signal).</li></ul>"
+    },
+    {
+      "title": "Expected Outputs",
+      "html": "<ul><li>6–10 draft teaching cases with instructor notes.</li><li>Cashbooks, pricing sheets, and sales scripts for participating businesses.</li><li>A short evidence brief on street-smart models for partners and policy.</li><li>A sustained community of practice for continued peer feedback.</li></ul>"
+     }
+    ]
+  }
+]

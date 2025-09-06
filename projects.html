@@ -1,115 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projects & Programs • SENLA</title>
+  <link rel="stylesheet" href="styles.css?v=4"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
-<body>
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <img src="images/logo_2.jpg" alt="Senla Logo">
-            </div>
-            <nav>
-                   <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
-            </ul>
-            </nav>
-        </div>
-    </header>
+<body class="projects-index">
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="logo"><img src="images/logo_2.jpg" alt="SENLA logo" /></div>
+      <nav>
+        <ul>
+          <li><a class="active" href="index.html">Home</a></li>
+          <li><a href="th.html">About Us</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="contact.html">Contacts</a></li>
+        </ul>
+      </nav>
+     
+    </div>
+  </header>
 
-   
+  <!-- HERO -->
+  <section class="proj-hero">
+    <div class="wrap">
+      <span class="kicker">Our Work</span>
+      <h1>Projects & Programs</h1>
+      <p class="lede">Field labs, member research, courses, publications and briefs evidence in action across Africa.</p>
+    </div>
+  </section>
 
+  <!-- FEATURE TILES -->
+  <section class="feature-row">
+    <div class="wrap feats">
+      <div class="feat-card">
+        <div class="icon"><i class="fa-solid fa-flask"></i></div>
+        <h3>Field Labs</h3>
+        <p>Hands-on sprints with local partners to test ideas and generate actionable insight.</p>
+        <a class="btn btn-dark" href="#field-labs">Explore Field Labs</a>
+      </div>
+      <div class="feat-card mint">
+        <div class="icon"><i class="fa-solid fa-shapes"></i></div>
+        <h3>Bootcamps</h3>
+        <p>Learning pathways in "street-smart" entrepreneurships short courses, toolkits, and open resources.</p>
+        <a class="btn btn-dark" href="#pathways">See Pathways</a>
+      </div>
+    </div>
+  </section>
+  
+  
+  
+  
 
+  <!-- FILTERS -->
+  <section class="proj-controls">
+    <div class="wrap bar">
+      <div class="pills" id="filters" role="tablist" aria-label="Filter projects">
+        <button class="pill active" data-cat="">All</button>
+        <button class="pill" data-cat="Organization Project">Org Projects</button>
+        <button class="pill" data-cat="Member Research">Member Research</button>
+        <button class="pill" data-cat="Field Lab">Field Labs</button>
+        <button class="pill" data-cat="Policy Brief">Policy Briefs</button>
+        <button class="pill" data-cat="Course/Pathway">Courses</button>
+      </div>
+      <input id="q" type="search" placeholder="Search projects…" aria-label="Search projects"/>
+    </div>
+  </section>
 
-    <!-- Projects Section -->
-    <section class="projects-section">
-        <div class="container">
-            <!-- Project 1 -->
-            <div class="project-card">
-                <img src="images/ugp.jpg" alt="Financial Literacy Project">
-                <div class="project-info">
-                    <h2>Financial Literacy and Aspirations</h2>
-                    <p><strong>Lead Researchers:</strong> Dr. Ester Agasha</p>
-                    <p>
-                        This project, conducted in Eastern Uganda, focused on improving women's financial literacy and aspirations through mobile-based games and educational interventions. Results showed significant improvements in financial literacy and empowerment.
-                    </p>
-                    
-                </div>
-            </div>
+  <!-- GRID -->
+  <main class="wrap">
+    <div id="grid" class="proj-grid" aria-live="polite">
+      <div class="empty" id="loading">Loading projects…</div>
+    </div>
+  </main>
 
-            <!-- Project 2 -->
-            <div class="project-card">
-                <img src="images/p1.jpg" alt="Green Riches Project">
-                <div class="project-info">
-                    <h2>Green Riches, Golden Assets</h2>
-                    <p><strong>Lead Researchers:</strong> Ester Agasha, Nathalie Nyanga</p>
-                    <p>
-                        Using geospatial tools, this project examined the relationship between environmental greenery, asset ownership, and dietary patterns in Uganda. Findings highlighted the influence of socio-economic status on nutrition.
-                    </p>
-                 
-                </div>
-            </div>
+  <!-- PARTNERS -->
+<section class="partners fullbleed" id="get-involved">
+  <div class="wrap partners-inner">
+    <div>
+      <span class="pitch-badge">JOIN US IN OUR MISSION</span>
+      <p class="partners-copy">
+        Our work is driven by a passionate community of individuals and organizations. Together, we are building a network dedicated to providing accessible, immersive learning experiences across Africa.
+      </p>
+      <a class="btn-ghost mt-10" href="contact.html">Learn How to Contribute →</a>
+    </div>
+  </div>
+</section>
 
-            <!-- Project 3 -->
-            <div class="project-card">
-                 <div class="project-info">
-                    <h2>Entrepreneurship Education in Uganda</h2>
-                    <p><strong>Lead Researcher:</strong> Dr. Sarah Nabachwa</p>
-                    <p>
-                        A collaboration between academia and local businesses to develop tailored educational content for entrepreneurs. The project has supported hundreds of Ugandan entrepreneurs through workshops and mentorship.
-                    </p>
-            
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-         
-         <!-- Footer -->
-      <footer>
+  <!-- Footer (kept) -->
+  <footer>
     <div class="footer-content">
-        <div class="footer-column">
-            <h4>Main Links</h4>
-            <ul>
-               <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
-            </ul>
+      <div class="footer-column">
+        <h4>Main Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a class="active" href="th.html">About Us</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+        
+        
+      
+      <div class="footer-column">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Research</a></li>
+          <li><a href="#">Consultancy</a></li>
+          <li><a href="#">Community Engagement</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Contact & Address</h4>
+        <p>+256 787 083553</p>
+        <p><a href="mailto:info@senlaresearchhub.com">info@senlaresearchhub.com</a></p>
+        <p>Rwebishuri, Mbarara, Uganda</p>
+      </div>
+      <div class="footer-column logo-social">
+        <img src="images/logo_2.jpg" alt="SENLA Logo">
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-x-twitter"></i></a>
         </div>
-        <div class="footer-column">
-            <h4>Services</h4>
-            <ul>
-                <li><a href="#">Research</a></li>
-                <li><a href="#">Consultancy</a></li>
-                <li><a href="#">Community Engagement</a></li>
-            </ul>
-        </div>
-        <div class="footer-column">
-            <h4>Contact & Address</h4>
-            <p>+256 787 083553</p>
-            <p><a href="mailto: info@senlaresearchhub.com"></a></p>
-            <p>Address: Rwebishuri, Mbarara, Uganda</p>
-        </div>
-        <div class="footer-column logo-social">
-            <img src="images/logo_2.jpg" alt="ASRA Logo">
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-            </div>
-        </div>
+      </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; 2021 - SENLA Research Hub</p>
+      <p>&copy; <span id="y"></span> - SENLA Research Hub</p>
     </div>
-</footer>
+  </footer>
+  <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</body>
+
+  <!-- Scripts -->
+  <script>
+    // Year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Elements/state
+    const grid = document.getElementById('grid');
+    const q = document.getElementById('q');
+    const tabs = document.getElementById('filters');
+    let DATA = [];
+    let cat = '';
+
+    // Utils
+    const esc = s => (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+    const byDate = (a,b) => new Date(b.date) - new Date(a.date);
+
+    function matches(p){
+      const qq = (q.value||'').toLowerCase().trim();
+      if (cat && p.category !== cat) return false;
+      if (!qq) return true;
+      const hay = [p.title, p.summary, (p.members||[]).join(' '), (p.tags||[]).join(' ')].join(' ').toLowerCase();
+      return hay.includes(qq);
+    }
+    function card(p){
+      const date = new Date(p.date).toLocaleDateString(undefined,{year:'numeric',month:'short'});
+      return `
+        <a class="proj-card" href="project.html?id=${esc(p.id)}" aria-label="${esc(p.title)}">
+          <figure class="media"><img src="${esc(p.image||'images/placeholder-16x9.png')}" alt=""></figure>
+          <div class="body">
+            <div class="meta"><span class="pill">${esc(p.category)}</span>
+              <time datetime="${esc(p.date)}">${date}</time></div>
+            <h3>${esc(p.title)}</h3>
+            <p>${esc(p.summary)}</p>
+            <div class="by">By ${esc((p.members||[]).join(', '))}</div>
+          </div>
+        </a>`;
+    }
+    function render(){
+      const items = DATA.slice().sort(byDate).filter(matches);
+      grid.innerHTML = items.map(card).join('') || `<div class="empty">No results.</div>`;
+    }
+
+    q.addEventListener('input', render);
+    tabs.addEventListener('click', e=>{
+      if(!e.target.matches('.pill')) return;
+      tabs.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+      e.target.classList.add('active');
+      cat = e.target.dataset.cat || '';
+      render();
+    });
+
+    // Load JSON
+    fetch('projects.data.json', {cache:'no-store'})
+      .then(r => r.json())
+      .then(json => { DATA = json; render(); })
+      .catch(err => {
+        console.error('Error loading projects', err);
+        grid.innerHTML = `<div class="empty">Could not load projects.</div>`;
+      });
+  </script>
+</body>
+</html>

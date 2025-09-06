@@ -1,117 +1,346 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SENLA Research Hub - Research with Impact</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SENLA Research Hub — Research with Impact</title>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <img src="images/logo_2.jpg" alt="Senla Logo">
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="th.html">About Us</a></li>
-                    <li><a href="projects.html">Projects</a></li>
-   
-                    <li><a href="contact.html">Contacts</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
 
-<section class="hero">
-    <div class="hero-image"></div>
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="logo"><img src="images/logo_2.jpg" alt="SENLA logo" /></div>
+      <nav>
+        <ul>
+          <li><a class="active" href="index.html">Home</a></li>
+          <li><a href="th.html">About Us</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="contact.html">Contact US</a></li>
+        </ul>
+      </nav>
+      
+    </div>
+  </header>
+
+  
+ 
+    <!-- HERO (CSS-only carousel) -->
+<section class="hero hero-css" id="home" aria-label="SENLA background carousel">
+
+  <!-- radios (state) -->
+  <input class="hero__toggle" type="radio" name="hero" id="h-1" checked>
+  <input class="hero__toggle" type="radio" name="hero" id="h-2">
+  <input class="hero__toggle" type="radio" name="hero" id="h-3">
+
+  <!-- slides -->
+  <div class="hero__bg">
+    <div class="hero__slide s1" style="--hero-pos:30% 40%">
+      <img src="images/sara_field.jpg" alt="SENLA team facilitating a field session">
+    </div>
+    <div class="hero__slide s2" style="--hero-pos:60% 50%">
+      <img src="images/senla_teach.jpg" alt="Community training in progress">
+    </div>
+    <div class="hero__slide s3" style="--hero-pos:70% 50%">
+      <img src="images/game_field.jpg" alt="AI for development workshop outdoors">
+    </div>
+  </div>
+
+  <!-- copy -->
+  <div class="hero__inner">
+    <div class="hero__card" role="group" aria-label="SENLA headline">
+      <div class="hero__kicker">Research with Impact</div>
+      <h1 class="hero__title">Your Support <span class="slab">Empowers</span> Communities</h1>
+      <p class="hero__lede">We deliver evidence-based research and hands-on learning that helps governments and organizations make data-driven decisions across Africa.</p>
+      <div class="hero__actions">
+        <a class="hero__btn hero__btn--primary" href="projects.html">Explore Projects</a>
+        <a class="hero__btn hero__btn--ghost" href="contact.html">Partner with Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- arrows (one pair shown per slide via CSS) -->
+  <div class="hero__nav" aria-hidden="true">
+    <!-- when slide 1 is active -->
+    <label class="prev p1" for="h-3" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></label>
+    <label class="next n1" for="h-2" aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></label>
+    <!-- when slide 2 is active -->
+    <label class="prev p2" for="h-1" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></label>
+    <label class="next n2" for="h-3" aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></label>
+    <!-- when slide 3 is active -->
+    <label class="prev p3" for="h-2" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></label>
+    <label class="next n3" for="h-1" aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></label>
+  </div>
+
+  <!-- dots -->
+  <div class="hero__dots" aria-hidden="true">
+    <label for="h-1" aria-label="Go to slide 1"></label>
+    <label for="h-2" aria-label="Go to slide 2"></label>
+    <label for="h-3" aria-label="Go to slide 3"></label>
+  </div>
 </section>
 
+    
+    
+    
+    <!--pathway -->
 
-    <section class="about">
-        <h2>Who <span>We Are</span></h2>
-        <p>
-            SENLA Research Hub is an Africa-based and world-class research, training, and consultancy network dedicated to offering alternative pathways to economic development with a focus on Africa and other emerging markets. The network provides independent and comprehensive analyses of political, social, and economic conditions in Africa and beyond, with the view to proffering timely and workable solutions that transcend initial conditions.
-        </p>
-    </section>
+  
+  <section class="band fullbleed after-hero" id="highlights">
+  <div class="wrap">
+    <h2>Programs & <span>Pathways</span></h2>
+    <div class="accent" aria-hidden="true"></div>
+    <div class="tiles">
+      <a class="tile" href="projects.html#labs">
+        <i class="icon fa-solid fa-school-flag"></i>
+        <h3>Field Labs</h3>
+        <p>Hands-on research sprints with local partners to test ideas and generate rapid, actionable insight.</p>
+        <span class="link">Explore Field Labs →</span>
+      </a>
+      <a class="tile mint" href="projects.html#pathways">
+        <i class="icon fa-solid fa-route"></i>
+        <h3>Bootcamps</h3>
+        <p>Learning pathways in "street-smart" entrepreneurships short courses, toolkits, and open resources.</p>
+        <span class="link">See Bootcamps →</span>
+      </a>
+    </div>
+  </div>
+</section>
 
-    <section class="research-focus">
-        <h2>Research Focus</h2>
-        <div class="focus-cards">
-            <div class="card">
-                <i class="fas fa-dollar-sign"></i>
-                <p>Finance & Accounting</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-lightbulb"></i>
-                <p>Technological Innovation & Entrepreneurship</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-chart-line"></i>
-                <p>Management & Marketing</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-book"></i>
-                <p>Economics</p>
-            </div>
+  <!-- Services / What We Do (full-bleed) -->
+  <section class="services fullbleed" id="services">
+    <div class="wrap card">
+      <h2>What We Do</h2>
+      <div class="accent"></div>
+      <p class="lead">
+        Policy-relevant research, program design and evaluation, advisory papers, workshops, and capacity building through partnerships and open resources.
+      </p>
+      <div class="themes">
+        <div class="theme">
+          <i class="fa-solid fa-microscope" aria-hidden="true"></i>
+          <h4>Research</h4>
+          <p>Management, inclusive innovation, and economic development.</p>
         </div>
-    </section>
+        <div class="theme">
+          <i class="fa-solid fa-handshake-angle" aria-hidden="true"></i>
+          <h4>Consultancy</h4>
+          <p>Program design, M&E, and policy advisory support.</p>
+        </div>
+        <div class="theme">
+          <i class="fa-solid fa-people-group" aria-hidden="true"></i>
+          <h4>Engagement</h4>
+          <p>Knowledge sharing and skills development with communities.</p>
+        </div>
+      </div>
+      <div style="text-align:center">
+        <a class="btn-ghost" href="projects.html">See Projects</a>
+      </div>
+    </div>
+  </section>
 
-    <section class="why-we-exist">
-        <h2>Why <span>We Exist</span></h2>
-        <p>
-            There has been a need for cross collaboration between African nations, especially in the social research realm. As the continent continues to develop, we require accurate analysis and solutions to the problems at hand, aiming to enable efficient growth within Africa.
-        </p>
-    </section>
+  <!-- Impact stats (full-bleed & widened) -->
+  <section class="stats fullbleed" id="stats">
+    <div class="wrap">
+      <h2>Our <span>Impact</span></h2>
+      <div class="accent"></div>
+      <div class="grid" role="list">
+        <div class="stat" role="listitem"><div class="num">2</div><div class="lbl">Pilot Programs Launched</div></div>
+        <div class="stat" role="listitem"><div class="num">4000 +</div><div class="lbl">People Served</div></div>
+        <div class="stat" role="listitem"><div class="num">Articles & Guides</div><div class="lbl">Open Resources</div></div>
+      </div>
+    </div>
+  </section>
 
-    <section class="unique">
-        <h2>What Makes Us <span>Unique</span></h2>
-        <p>
-            We have a diversified team of qualified scholars with years of experience in academic research on socio-economic matters of Africa.
-        </p>
-    </section>
-
-    <!-- Footer -->
-         
-         <!-- Footer -->
-      <footer>
+  <!-- About mini-cards (full-bleed) -->
+  <section class="about fullbleed" id="about">
+    <div class="wrap">
+      <h2>Who <span>We Are</span></h2>
+      <div class="accent"></div>
+      <p class="lead">
+        SENLA Research Hub is a non-profit research organization registered in Uganda, dedicated to evidence-based socio-economic policy research and capacity building.
+      </p>
+      <div class="grid">
+        <div class="card"><h3>Mission</h3><p>Develop rapid and timely solutions through evidence-based research to address long- and short-term socioeconomic challenges facing Africa.</p></div>
+        <div class="card"><h3>Vision</h3><p>Serve as a hub of transformational, policy-oriented socioeconomic research for Africa.</p></div>
+        <div class="card"><h3>Legal Status</h3><p>Company limited by guarantee (non-profit); income and property used exclusively to advance objectives.</p></div>
+      </div>
+    </div>
+  </section>
+  
+  
+<section class="partners fullbleed" id="get-involved">
+  <div class="wrap partners-inner">
+    <div>
+      <span class="pitch-badge">JOIN US IN OUR MISSION</span>
+      <p class="partners-copy">
+        Our work is driven by a passionate community of individuals and organizations. Together, we are building a network dedicated to providing accessible, immersive learning experiences across Africa.
+      </p>
+      <a class="btn-ghost mt-12" href="contact.html">Learn How to Contribute →</a>
+    </div>
+  </div>
+</section>
+  
+   <!-- Footer (kept) -->
+  <footer>
     <div class="footer-content">
-        <div class="footer-column">
-            <h4>Main Links</h4>
-            <ul>
-               <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
-            </ul>
+      <div class="footer-column">
+        <h4>Main Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a class="active" href="th.html">About Us</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+        
+        
+      
+      <div class="footer-column">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Research</a></li>
+          <li><a href="#">Consultancy</a></li>
+          <li><a href="#">Community Engagement</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Contact & Address</h4>
+        <p>+256 787 083553</p>
+        <p><a href="mailto:info@senlaresearchhub.com">info@senlaresearchhub.com</a></p>
+        <p>Rwebishuri, Mbarara, Uganda</p>
+      </div>
+      <div class="footer-column logo-social">
+        <img src="images/logo_2.jpg" alt="SENLA Logo">
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-x-twitter"></i></a>
         </div>
-        <div class="footer-column">
-            <h4>Services</h4>
-            <ul>
-                <li><a href="#">Research</a></li>
-                <li><a href="#">Consultancy</a></li>
-                <li><a href="#">Community Engagement</a></li>
-            </ul>
-        </div>
-        <div class="footer-column">
-            <h4>Contact & Address</h4>
-            <p>+256 787 083553</p>
-            <p><a href="mailto: info@senlaresearchhub.com"></a></p>
-            <p>Address: Rwebishuri, Mbarara, Uganda</p>
-        </div>
-        <div class="footer-column logo-social">
-            <img src="images/logo_2.jpg" alt="ASRA Logo">
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-            </div>
-        </div>
+      </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; 2021 - SENLA Research Hub</p>
+      <p>&copy; <span id="y"></span> - SENLA Research Hub</p>
     </div>
-</footer>
+  </footer>
+  <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+</body>
+
+<!-- Partners (full-bleed) 
+  <section class="partners fullbleed" id="partners">
+    <div class="wrap partners-inner">
+      <div>
+        <span class="pitch-badge">BECOME A SENLA PARTNER</span>
+        <p class="partners-copy">
+          Each year, companies and philanthropic foundations sponsor our programs. Partners host interactive events and mentorships and help us deliver immersive learning experiences across Africa.
+        </p>
+        <a class="btn-ghost mt-12" href="contact.html">Our 2025 Partners →</a>
+      </div>
+      <ul class="logo-grid" aria-label="Partner logos">
+        <li><img src="images/partners/logo-metlife.png" alt="MetLife Foundation"></li>
+        <li><img src="images/partners/logo-rtx.png" alt="RTX"></li>
+        <li><img src="images/partners/logo-bank.png" alt="Bank Partner"></li>
+        <li><img src="images/partners/logo-exandr.png" alt="Exandr"></li>
+        <li><img src="images/partners/logo-synchrony.png" alt="Synchrony"></li>
+        <li><img src="images/partners/logo-generic.png" alt="Your Logo"></li>
+      </ul>
+    </div>
+  </section>-->
+
+
+<script>
+  // Footer year (unchanged)
+  document.getElementById('y').textContent = new Date().getFullYear();
+
+  // ===== Hero carousel =====
+  (function(){
+    const root  = document.getElementById('heroBg');
+    if(!root) return;
+
+    const hero  = root.closest('.hero');
+    const slides = Array.from(root.querySelectorAll('.hero__slide'));
+    const dotsWrap = hero.querySelector('.hero__dots');
+    const prev = hero.querySelector('.hero__nav .prev');
+    const next = hero.querySelector('.hero__nav .next');
+    const progress = hero.querySelector('.hero__progress span');
+
+    // set per-slide focal points via CSS var
+    slides.forEach(s => {
+      const pos = s.dataset.pos || '50% 50%';
+      s.style.setProperty('--hero-pos', pos);
+    });
+
+    // build dots
+    slides.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.setAttribute('aria-label', 'Go to slide ' + (i+1));
+      dotsWrap.appendChild(b);
+    });
+    const dots = Array.from(dotsWrap.querySelectorAll('button'));
+
+    let idx = 0, timer;
+    const AUTO = 5.2; // seconds
+
+    function setActive(i){
+      slides[idx].classList.remove('is-active');
+      dots[idx].classList.remove('is-active');
+
+      idx = (i + slides.length) % slides.length;
+
+      slides[idx].classList.add('is-active');
+      dots[idx].classList.add('is-active');
+
+      // reset & animate progress bar
+      if(progress){
+        progress.style.transition = 'none';
+        progress.style.width = '0';
+        requestAnimationFrame(()=>{
+          progress.style.transition = `width ${AUTO}s linear`;
+          progress.style.width = '100%';
+        });
+      }
+    }
+
+    function nextSlide(){ setActive(idx + 1); }
+    function prevSlide(){ setActive(idx - 1); }
+
+    next.addEventListener('click', nextSlide);
+    prev.addEventListener('click', prevSlide);
+    dotsWrap.addEventListener('click', e => {
+      const i = dots.indexOf(e.target);
+      if(i > -1) setActive(i);
+    });
+
+    // keyboard access
+    hero.addEventListener('keydown', (e)=>{
+      if(e.key === 'ArrowRight') nextSlide();
+      if(e.key === 'ArrowLeft')  prevSlide();
+    });
+    hero.tabIndex = 0; // focusable region
+
+    function start(){ stop(); timer = setInterval(nextSlide, AUTO*1000); }
+    function stop(){ if(timer) clearInterval(timer); }
+
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    document.addEventListener('visibilitychange', () => {
+      document.hidden ? stop() : start();
+    });
+
+    dots[0].classList.add('is-active');
+    setActive(0);
+    start();
+  })();
+</script>
+  
+ 
+</body>
 </html>
+

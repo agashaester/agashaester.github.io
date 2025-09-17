@@ -446,11 +446,39 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
 }
 
 /* 
-/* Banner adjustments */
-.hero {
-    background-size: contain !important;  /* instead of cover, so full image shows */
-    background-position: center top !important; /* keep main activity visible */
-    background-repeat: no-repeat;
+
+/* ===================== INDEX PAGE ENLARGED TEXT ===================== */
+
+/* 🔹 HERO SECTION (top banner text) */
+.hero__lede {
+  font-size: 2.2rem !important;   /* enlarged descriptive text under banner */
+  line-height: 1.5 !important;
+  font-weight: 600 !important;
 }
 
+/* 🔹 PROGRAMS & PATHWAYS (tiles section) */
+.tile {
+  font-size: 1.3rem !important;   /* bigger tile text */
+  line-height: 1.6 !important;
+}
+
+/* 🔹 SERVICES SECTION */
+.services {
+  font-size: 1.4rem !important;   /* enlarge service descriptions */
+  line-height: 1.6 !important;
+}
+
+/* 🔹 STATS SECTION (numbers + labels) */
+.stat .num {
+  font-size: clamp(30px, 3.2vw, 44px) !important;  /* bigger numbers */
+}
+.stat .lbl {
+  font-size: 14px !important;  /* larger labels */
+}
+
+/* 🔹 ABOUT SECTION (cards) */
+.about .card {
+  font-size: 1.2rem !important;   /* enlarge about card text */
+  line-height: 1.6 !important;
+}
 

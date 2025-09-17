@@ -449,26 +449,30 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
 
 /* ===================== INDEX PAGE ENLARGED TEXT ===================== */
 
-/* 🔹 HERO SECTION (top banner text) */
+/* 🔹 HERO SECTION (Top banner text + description) */
+/* Controls the small description text under the headline */
 .hero__lede {
   font-size: 2.2rem !important;   /* enlarged descriptive text under banner */
   line-height: 1.5 !important;
   font-weight: 600 !important;
 }
 
-/* 🔹 PROGRAMS & PATHWAYS (tiles section) */
+/* 🔹 PROGRAMS & PATHWAYS (Tiles) */
+/* Affects the text inside the program/service tiles */
 .tile {
   font-size: 1.3rem !important;   /* bigger tile text */
   line-height: 1.6 !important;
 }
 
-/* 🔹 SERVICES SECTION */
+/* 🔹 SERVICES SECTION (Cards + descriptions) */
+/* Enlarges the text inside the services section */
 .services {
   font-size: 1.4rem !important;   /* enlarge service descriptions */
   line-height: 1.6 !important;
 }
 
-/* 🔹 STATS SECTION (numbers + labels) */
+/* 🔹 STATS SECTION (Numbers + Labels) */
+/* Controls the large stats numbers and their labels */
 .stat .num {
   font-size: clamp(30px, 3.2vw, 44px) !important;  /* bigger numbers */
 }
@@ -476,14 +480,16 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
   font-size: 14px !important;  /* larger labels */
 }
 
-/* 🔹 ABOUT SECTION (cards) */
+/* 🔹 ABOUT SECTION (Mini-cards) */
+/* Enlarges the descriptive text inside about section cards */
 .about .card {
   font-size: 1.2rem !important;   /* enlarge about card text */
   line-height: 1.6 !important;
 }
+
+/* 🔹 HERO TITLE (Italics on “Research”) */
+/* Ensures the word wrapped in <span class="slab"> is italic */
 .hero__title .slab {
   font-family:"DM Serif Display", serif;
   font-style:italic;
 }
-
-

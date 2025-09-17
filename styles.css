@@ -606,3 +606,43 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
     font-size: 14px;
   }
 }
+/* ===================== INDEX PAGE TEXT ENLARGEMENT ===================== */
+
+/* 🔹 Section Headings (Programs & Pathways, What We Do, Our Impact, etc.) */
+section h2 {
+  font-size: clamp(32px, 3.8vw, 44px) !important;  /* larger main headings */
+  font-weight: 900 !important;
+  line-height: 1.3 !important;
+}
+
+/* 🔹 Subheadings (like "Research", "Consultancy", "Engagement") */
+.tile .link,
+.theme h3,
+.about .card h3,
+.stat .lbl,
+.services h3,
+.about h3 {
+  font-size: 1.5rem !important;  /* bigger than body */
+  font-weight: 800 !important;
+  line-height: 1.4;
+}
+
+/* 🔹 Paragraphs under sections */
+.tile,
+.theme,
+.about .card,
+.services,
+.stat,
+section p {
+  font-size: 1.2rem !important;   /* bigger body text */
+  line-height: 1.6 !important;
+  color: var(--ink);
+}
+
+/* 🔹 Links inside sections */
+section a {
+  font-size: 1.15rem !important;
+  font-weight: 700;
+}
+
+

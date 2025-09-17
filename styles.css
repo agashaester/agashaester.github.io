@@ -481,4 +481,9 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
   font-size: 1.2rem !important;   /* enlarge about card text */
   line-height: 1.6 !important;
 }
+.hero__title .slab {
+  font-family:"DM Serif Display", serif;
+  font-style:italic;
+}
+
 

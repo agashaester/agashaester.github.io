@@ -446,3 +446,11 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
 }
 
 /* 
+/* Banner adjustments */
+.hero {
+    background-size: contain !important;  /* instead of cover, so full image shows */
+    background-position: center top !important; /* keep main activity visible */
+    background-repeat: no-repeat;
+}
+
+

@@ -640,8 +640,8 @@ section h2 {
 .services,
 .stat,
 section p {
-  font-size: 1.2rem !important;   /* bigger body text */
-  line-height: 1.6 !important;
+  font-size: 1.5rem !important;   /* bigger body text */
+  line-height: 2.5 !important;
   color: var(--ink);
 }
 
@@ -650,6 +650,7 @@ section a {
   font-size: 1.15rem !important;
   font-weight: 700;
 }
+
 
 
 

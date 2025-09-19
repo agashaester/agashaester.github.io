@@ -500,7 +500,7 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
   height: auto;             /* keep aspect ratio */
   max-height: 740px;        /* cap height so it doesn’t take whole page */
   object-fit: contain;      /* ✅ always show full image */
-  object-position: top center; /* ✅ anchor to top so faces stay visible */
+  object-position: top right; /* ✅ anchor to top so faces stay visible */
   filter: brightness(0.85) saturate(0.95);
 }
 
@@ -650,6 +650,7 @@ section a {
   font-size: 1.15rem !important;
   font-weight: 700;
 }
+
 
 
 

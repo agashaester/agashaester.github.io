@@ -448,17 +448,16 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
 /* 
 
 /* ===================== HERO SECTION RESIZE (INDEX PAGE) ===================== */
-
 /* 🔹 HERO CONTAINER */
 .hero {
   position: relative;
   color: #fff;
   isolation: isolate;
   width: 100%;
-  height: clamp(460px, 65vh, 740px);  /* shorter hero so photo shows more */
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  height: auto; /* let image control height */
 }
 
 /* 🔹 HERO BACKGROUND (image with gradient overlay) */
@@ -487,19 +486,8 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
   );
 }
 
-.hero {
-  position: relative;
-  color: #fff;
-  isolation: isolate;
-  width: 100%;
-  height: auto;               /* ✅ let image decide height */
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
 .hero__bg {
-  position: relative;         /* ✅ not absolute, so it pushes height */
+  position: relative;
   width: 100%;
   overflow: hidden;
   z-index: -2;
@@ -507,16 +495,15 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
 
 .hero__bg img {
   display: block;
-  width: 100%;                /* ✅ scales proportionally */
-  height: auto;               /* ✅ keeps aspect ratio */
-  object-fit: contain;        /* ✅ no cropping ever */
+  width: 100%;
+  height: auto;         /* keep proportions */
+  max-height: 740px;    /* cap height on desktop */
+  object-fit: contain;  /* no cropping */
   object-position: center;
   filter: brightness(0.85) saturate(0.95);
 }
 
-
-
-/* 🔹 HERO INNER (positioning box) */
+/* 🔹 HERO INNER (text positioning box) */
 .hero__inner {
   position: absolute;
   bottom: 24px;
@@ -526,8 +513,8 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
 
 /* 🔹 HERO CARD (the translucent box) */
 .hero__card {
-  max-width: 420px;                /* smaller, less dominating */
-  padding: 16px 20px;              /* compact spacing */
+  max-width: 420px;
+  padding: 16px 20px;
   border-radius: 16px;
   background: linear-gradient(
     180deg,
@@ -564,7 +551,7 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
 }
 .hero__title .slab {
   font-family: "DM Serif Display", serif;
-  font-style: italic;             /* makes “Research” italic */
+  font-style: italic; /* italic for “Research” */
 }
 .hero__lede {
   color: #e6eeff;
@@ -612,11 +599,17 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
     max-width: 100%;
     padding: 14px 16px;
   }
- 
+  .hero__title {
+    font-size: clamp(24px, 8vw, 38px);
+  }
   .hero__lede {
     font-size: 14px;
   }
+  .hero__bg img {
+    max-height: 480px; /* smaller cap on mobile */
+  }
 }
+
 /* ===================== INDEX PAGE TEXT ENLARGEMENT ===================== */
 
 /* 🔹 Section Headings (Programs & Pathways, What We Do, Our Impact, etc.) */
@@ -655,6 +648,7 @@ section a {
   font-size: 1.15rem !important;
   font-weight: 700;
 }
+
 
 
 

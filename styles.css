@@ -487,21 +487,33 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
   );
 }
 
+.hero {
+  position: relative;
+  color: #fff;
+  isolation: isolate;
+  width: 100%;
+  height: auto;               /* ✅ let image decide height */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 .hero__bg {
-  position: absolute;
-  inset: 0;
+  position: relative;         /* ✅ not absolute, so it pushes height */
+  width: 100%;
   overflow: hidden;
   z-index: -2;
-  background: #000; /* fallback fill color */
 }
 
 .hero__bg img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;     /* show full image, no cropping */
-  object-position: center; /* keep centered */
+  display: block;
+  width: 100%;                /* ✅ scales proportionally */
+  height: auto;               /* ✅ keeps aspect ratio */
+  object-fit: contain;        /* ✅ no cropping ever */
+  object-position: center;
   filter: brightness(0.85) saturate(0.95);
 }
+
 
 
 /* 🔹 HERO INNER (positioning box) */
@@ -600,9 +612,7 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
     max-width: 100%;
     padding: 14px 16px;
   }
-  .hero__title {
-    font-size: clamp(24px, 8vw, 38px);
-  }
+ 
   .hero__lede {
     font-size: 14px;
   }
@@ -645,6 +655,7 @@ section a {
   font-size: 1.15rem !important;
   font-weight: 700;
 }
+
 
 
 

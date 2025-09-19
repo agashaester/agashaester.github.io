@@ -448,6 +448,9 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
 /* 
 
 /* ===================== HERO SECTION RESIZE (INDEX PAGE) ===================== */
+
+/* ===================== HERO SECTION RESIZE (INDEX PAGE) ===================== */
+
 /* 🔹 HERO CONTAINER */
 .hero {
   position: relative;
@@ -456,66 +459,41 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  height: auto; /* let image control height */
+  justify-content: space-between; /* spread text + image */
+  background: #071d3a;            /* brand dark blue fallback */
+  gap: 24px;                      /* space between card & image */
+  padding: 40px 24px;
+  flex-wrap: wrap;                 /* stack on mobile */
 }
 
-/* 🔹 HERO BACKGROUND (image with gradient overlay) */
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(
-    90deg,
-    rgba(7, 29, 58, 0.94) 0%,
-    rgba(7, 29, 58, 0.62) 35%,
-    rgba(7, 29, 58, 0.18) 72%,
-    rgba(7, 29, 58, 0.04) 100%
-  );
-}
-.hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: radial-gradient(
-    120% 120% at 50% 30%,
-    transparent 55%,
-    rgba(0, 0, 0, 0.35) 100%
-  );
-}
-/* changes*/
+/* 🔹 HERO IMAGE CONTAINER */
 .hero__bg {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  z-index: -2;
-  background: #071d3a; /* brand dark blue fallback instead of grey/white */
+  flex: 1 1 55%;      /* takes right side, flexible */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .hero__bg img {
   display: block;
   width: 100%;
-  height: auto;             /* keep aspect ratio */
-  max-height: 740px;        /* cap height so it doesn’t take whole page */
-  object-fit: contain;      /* ✅ always show full image */
-  object-position: top right; /* ✅ anchor to top so faces stay visible */
-  filter: brightness(0.85) saturate(0.95);
+  height: auto;              /* keep proportions */
+  max-height: 740px;         /* cap height */
+  object-fit: contain;       /* no cropping */
+  object-position: top right;
+  filter: brightness(0.9) saturate(0.95);
 }
 
-
-/* 🔹 HERO INNER (text positioning box) */
+/* 🔹 HERO TEXT SIDE */
 .hero__inner {
-  position: absolute;
-  bottom: 24px;
-  left: 24px;
-  max-width: 92vw;
+  flex: 1 1 40%;  /* takes left side */
+  max-width: 500px;
+  position: relative;
+  z-index: 2;
 }
 
-/* 🔹 HERO CARD (the translucent box) */
+/* 🔹 HERO CARD (translucent box) */
 .hero__card {
-  max-width: 420px;
   padding: 16px 20px;
   border-radius: 16px;
   background: linear-gradient(
@@ -590,27 +568,25 @@ section h2{text-align:center;margin:40px 0 10px;font-size:clamp(26px,3.4vw,36px)
   background: rgba(255, 255, 255, 0.06);
 }
 
-/* 🔹 HERO RESPONSIVE */
-@media (max-width: 620px) {
+/* 🔹 RESPONSIVE */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 16px;
+  }
+
   .hero__inner {
-    left: 12px;
-    right: 12px;
-    bottom: 16px;
-  }
-  .hero__card {
     max-width: 100%;
-    padding: 14px 16px;
+    margin-bottom: 20px;
   }
-  .hero__title {
-    font-size: clamp(24px, 8vw, 38px);
-  }
-  .hero__lede {
-    font-size: 14px;
-  }
+
   .hero__bg img {
     max-height: 480px; /* smaller cap on mobile */
   }
 }
+
 
 /* ===================== INDEX PAGE TEXT ENLARGEMENT ===================== */
 
@@ -650,6 +626,7 @@ section a {
   font-size: 1.15rem !important;
   font-weight: 700;
 }
+
 
 
 

@@ -318,7 +318,7 @@
     <div class="wrap">
       <div class="eyebrow" style="margin-bottom:14px">The notebook</div>
       <h1>Notes from <em>the field.</em></h1>
-      <p>Research updates, field journals, and reflections from the SENLA team. Posts are stored in Supabase and written by approved authors signed in with Google.</p>
+      <p>Research updates, field journals, and reflections from the SENLA team.</p>
     </div>
   </div>
 
@@ -818,7 +818,7 @@ function renderUserArea(){
   const u = getUser();
   const el = document.getElementById('user-area');
   if (!u){
-    el.innerHTML = `<button class="avatar signed-out" onclick="go('login')">Sign in →</button>`;
+    el.innerHTML = `<button onclick="go('login')" style="background:none;border:none;font-size:12px;color:var(--mute);cursor:pointer;padding:4px 8px;opacity:0.5">Admin</button>`;
     return;
   }
   const avatarHtml = u.avatar

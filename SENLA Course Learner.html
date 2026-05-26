@@ -1015,11 +1015,17 @@ const COURSE_AUTH_KEY  = 'senla_course_auth_v1';
 let courseSupa   = null;
 let courseConfig = {};
 
+const COURSE_DEFAULTS = {
+  supabaseUrl: "https://ipcwpphjlcdswmpuebgc.supabase.co",
+  supabaseAnonKey: "sb_publishable_KSHWc9aSDAFr_1kBncugJQ_7sm6vogz",
+  authorEmails: ["ester@senlaresearchhub.com"]
+};
+
 function initCourseAuth(){
   try {
     const raw = localStorage.getItem(BLOG_CONFIG_KEY);
-    courseConfig = raw ? JSON.parse(raw) : {};
-  } catch(e){ courseConfig = {}; }
+    courseConfig = raw ? { ...COURSE_DEFAULTS, ...JSON.parse(raw) } : { ...COURSE_DEFAULTS };
+  } catch(e){ courseConfig = { ...COURSE_DEFAULTS }; }
   courseSupa = null;
   if (courseConfig.supabaseUrl && courseConfig.supabaseAnonKey && window.supabase){
     try {

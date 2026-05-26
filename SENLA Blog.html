@@ -995,18 +995,37 @@ function saveLocalDB(p){ localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(p)) }
 
 let POSTS = [];
 
+async function seedSupabaseIfEmpty(){
+  try {
+    const rows = SEED_POSTS.map(p => ({
+      id: p.id,
+      slug: p.slug,
+      title: p.title,
+      category: p.category,
+      author: p.author,
+      cover: p.cover,
+      published_at: p.created_at ? p.created_at.slice(0,10) : null,
+      body: p.body || '',
+      status: p.status,
+      created_at: p.created_at
+    }));
+    await supa.from('posts').upsert(rows, { onConflict: 'id', ignoreDuplicates: true });
+  } catch(e){}
+}
+
 async function refreshPosts(){
   if (supa){
-    const u = getUser();
-    let query = supa.from('posts').select('*').order('created_at', { ascending: false });
-    // If signed in, also fetch own drafts (RLS handles security)
-    const { data, error } = await query;
+    const { data, error } = await supa.from('posts').select('*').order('created_at', { ascending: false });
     if (error){
       console.warn('Supabase fetch error:', error);
-      // Fall back to local
       POSTS = loadLocalDB();
+    } else if (!data || data.length === 0){
+      await seedSupabaseIfEmpty();
+      const { data: seeded } = await supa.from('posts').select('*').order('created_at', { ascending: false });
+      POSTS = (seeded || []).map(normalizeFromDB);
+      if (!POSTS.length) POSTS = [...SEED_POSTS];
     } else {
-      POSTS = (data || []).map(normalizeFromDB);
+      POSTS = data.map(normalizeFromDB);
     }
   } else {
     POSTS = loadLocalDB();

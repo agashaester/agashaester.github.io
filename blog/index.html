@@ -476,12 +476,12 @@
       </button>
 
       <div class="divider" style="margin:18px 0;display:flex;align-items:center;gap:10px;color:var(--mute);font-size:13px">
-        <span style="flex:1;height:1px;background:var(--border)"></span>or use email &amp; password<span style="flex:1;height:1px;background:var(--border)"></span>
+        <span style="flex:1;height:1px;background:var(--line)"></span>or use email &amp; password<span style="flex:1;height:1px;background:var(--line)"></span>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:10px">
-        <input id="pw-email" type="email" placeholder="your@email.com" style="padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none;width:100%;box-sizing:border-box"/>
-        <input id="pw-pass" type="password" placeholder="Password" style="padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none;width:100%;box-sizing:border-box"/>
+        <input id="pw-email" type="email" placeholder="your@email.com" style="padding:10px 14px;border:1px solid var(--line);border-radius:8px;font-size:14px;outline:none;width:100%;box-sizing:border-box"/>
+        <input id="pw-pass" type="password" placeholder="Password" style="padding:10px 14px;border:1px solid var(--line);border-radius:8px;font-size:14px;outline:none;width:100%;box-sizing:border-box"/>
         <button class="btn primary" onclick="signInWithPassword()" style="width:100%;padding:11px">Sign in</button>
       </div>
 
@@ -870,9 +870,26 @@ async function signInWithPassword(){
   const email = document.getElementById('pw-email').value.trim().toLowerCase();
   const pass  = document.getElementById('pw-pass').value;
   if (!email || !pass){ showPwMsg('Enter your email and password.'); return; }
-  if (!isAuthor(email)){ showPwMsg('This email is not authorised.'); return; }
-  const { error } = await supa.auth.signInWithPassword({ email, password: pass });
-  if (error){ showPwMsg('Sign-in failed: ' + error.message); }
+  if (!isAuthor(email)){ showPwMsg('This email is not authorised. Contact SENLA admin.'); return; }
+  const signBtn = document.querySelector('#r-login .btn.primary[onclick="signInWithPassword()"]');
+  if (signBtn){ signBtn.textContent = 'Signing in…'; signBtn.disabled = true; }
+  const { data, error } = await supa.auth.signInWithPassword({ email, password: pass });
+  if (signBtn){ signBtn.textContent = 'Sign in'; signBtn.disabled = false; }
+  if (error){ showPwMsg('Sign-in failed: ' + error.message); return; }
+  if (data?.user){
+    const u = data.user;
+    const meta = u.user_metadata || {};
+    setUser({
+      name: meta.full_name || meta.name || email,
+      email, role: 'author',
+      initial: (meta.full_name || email)[0].toUpperCase(),
+      avatar: meta.avatar_url || meta.picture || null,
+      demo: false
+    });
+    renderUserArea();
+    toast('Welcome back, ' + (meta.full_name || email.split('@')[0]) + ' ✓');
+    go('admin');
+  }
 }
 
 async function sendPasswordReset(){
@@ -969,8 +986,8 @@ function renderUserArea(){
   const el = document.getElementById('user-area');
   const mobileAuth = document.getElementById('mobile-auth');
   if (!u){
-    el.innerHTML = `<button onclick="go('login')" style="background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.5);border-radius:8px;font-size:13px;color:#fff;cursor:pointer;padding:8px 18px;font-weight:600;letter-spacing:.3px;white-space:nowrap">🔒 Admin Login</button>`;
-    if(mobileAuth) mobileAuth.innerHTML = `<a onclick="closeBlogNav();go('login')" style="font-size:16px;color:rgba(255,255,255,.7)">Admin Login</a>`;
+    el.innerHTML = `<button onclick="go('login')" style="background:var(--accent);border:none;border-radius:8px;font-size:13px;color:#fff;cursor:pointer;padding:9px 20px;font-weight:700;letter-spacing:.3px;white-space:nowrap;display:inline-flex;align-items:center;gap:7px">🔒 Admin Login</button>`;
+    if(mobileAuth) mobileAuth.innerHTML = `<a onclick="closeBlogNav();go('login')" style="font-size:16px;color:#fff;font-weight:600;background:var(--accent);padding:10px 28px;border-radius:99px">Admin Login</a>`;
     return;
   }
   const avatarHtml = u.avatar
@@ -1098,8 +1115,17 @@ const SEED_POSTS = [
 
 function loadLocalDB(){
   const raw = localStorage.getItem(LOCAL_DB_KEY);
-  if (!raw){ saveLocalDB(SEED_POSTS); return [...SEED_POSTS] }
-  try { return JSON.parse(raw) } catch { return [...SEED_POSTS] }
+  if (!raw){ saveLocalDB(SEED_POSTS); return [...SEED_POSTS]; }
+  try {
+    const posts = JSON.parse(raw);
+    if (!posts.some(p => p.status === 'published')){
+      const existingIds = new Set(posts.map(p => p.id));
+      const merged = [...SEED_POSTS, ...posts.filter(p => !existingIds.has(p.id))];
+      saveLocalDB(merged);
+      return merged;
+    }
+    return posts;
+  } catch { saveLocalDB(SEED_POSTS); return [...SEED_POSTS]; }
 }
 function saveLocalDB(p){ localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(p)) }
 
@@ -1227,6 +1253,11 @@ let currentFilter = 'all';
 function renderIndex(){
   const grid = document.getElementById('post-grid');
   const search = document.getElementById('search').value.trim().toLowerCase();
+  // Always guarantee at least the seed posts are in POSTS
+  if (!POSTS.some(p => p.status === 'published')){
+    const existingIds = new Set(POSTS.map(p => p.id));
+    POSTS = [...SEED_POSTS, ...POSTS.filter(p => !existingIds.has(p.id))];
+  }
   const visible = POSTS.filter(p =>
     p.status === 'published' &&
     (currentFilter === 'all' || p.category === currentFilter) &&

@@ -635,7 +635,16 @@ const USER_KEY = 'senla_user_v2';
 const DEFAULTS = /*EDITMODE-BEGIN*/{
   "supabaseUrl": "https://ipcwpphjlcdswmpuebgc.supabase.co",
   "supabaseAnonKey": "sb_publishable_KSHWc9aSDAFr_1kBncugJQ_7sm6vogz",
-  "authorEmails": ["ester@senlaresearchhub.com"]
+  "authorEmails": [
+    "jepchoge@senlaresearchhub.org",
+    "aester@senlaresearchhub.org",
+    "jepchoge51@gmail.com",
+    "nnathalie@senlaresearchhub.org",
+    "agashaester660@gmail.com",
+    "nathalienyanga@gmail.com",
+    "snabachwa@must.ac.ug",
+    "info@senlaresearchhub.org"
+  ]
 }/*EDITMODE-END*/;
 
 function loadConfig(){
@@ -788,22 +797,27 @@ async function bootSession(){
       });
     }
     // Listen for auth changes (e.g. after OAuth redirect)
-    supa.auth.onAuthStateChange((event, session) => {
+    supa.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session){
         const u = session.user;
         const meta = u.user_metadata || {};
         const email = u.email || '';
-        const author = isAuthor(email);
+        if (!isAuthor(email)){
+          await supa.auth.signOut();
+          setUser(null); renderUserArea();
+          toast('Access denied. This site is for SENLA team members only.');
+          return;
+        }
         setUser({
           name: meta.full_name || meta.name || email,
-          email, role: author ? 'author' : 'reader',
+          email, role: 'author',
           initial: (meta.full_name || email)[0].toUpperCase(),
           avatar: meta.avatar_url || meta.picture || null,
           demo: false
         });
         renderUserArea();
-        toast(author ? `Welcome, ${meta.full_name || email} (Author)` : `Signed in as ${meta.full_name || email}`);
-        if (author) go('admin');
+        toast(`Welcome, ${meta.full_name || email}`);
+        go('admin');
       } else if (event === 'SIGNED_OUT'){
         setUser(null); renderUserArea();
       }

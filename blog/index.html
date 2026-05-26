@@ -31,7 +31,7 @@
   header.site{background:var(--navy);color:#fff;border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:0;z-index:40}
   .head{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;gap:24px;max-width:1280px;margin:0 auto}
   .brand{display:flex;align-items:center;gap:12px}
-  .brand img{height:42px;border-radius:4px}
+  .brand img{height:58px;border-radius:4px}
   nav.main{display:flex;gap:30px;align-items:center}
   nav.main a{color:rgba(255,255,255,.85);font-size:14px;font-weight:500;padding:4px 0;position:relative}
   nav.main a.active{color:#fff}
@@ -385,6 +385,7 @@
   <a href="/blog/" onclick="go('index');closeBlogNav();return false">Blog</a>
   <a href="/course/" onclick="closeBlogNav()">Course</a>
   <a href="/contact/" onclick="closeBlogNav()">Contact</a>
+  <div id="mobile-auth" style="display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:8px;border-top:1px solid rgba(255,255,255,.15);padding-top:24px;width:100%;text-align:center"></div>
 </div>
 
 <!-- ============ STATUS BANNER (Supabase config indicator) ============ -->
@@ -966,8 +967,10 @@ async function bootSession(){
 function renderUserArea(){
   const u = getUser();
   const el = document.getElementById('user-area');
+  const mobileAuth = document.getElementById('mobile-auth');
   if (!u){
-    el.innerHTML = `<button onclick="go('login')" style="background:none;border:1.5px solid rgba(255,255,255,.5);border-radius:6px;font-size:13px;color:#fff;cursor:pointer;padding:6px 14px;font-weight:600;letter-spacing:.3px">Admin</button>`;
+    el.innerHTML = `<button onclick="go('login')" style="background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.5);border-radius:8px;font-size:13px;color:#fff;cursor:pointer;padding:8px 18px;font-weight:600;letter-spacing:.3px;white-space:nowrap">🔒 Admin Login</button>`;
+    if(mobileAuth) mobileAuth.innerHTML = `<a onclick="closeBlogNav();go('login')" style="font-size:16px;color:rgba(255,255,255,.7)">Admin Login</a>`;
     return;
   }
   const avatarHtml = u.avatar
@@ -978,14 +981,18 @@ function renderUserArea(){
       <div class="avatar" title="${u.email}" onclick="toggleMenu()" style="overflow:hidden;cursor:pointer">${avatarHtml}</div>
       <div style="display:flex;flex-direction:column;line-height:1.2;cursor:pointer" onclick="toggleMenu()">
         <span style="color:#fff;font-size:13px;font-weight:600;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${u.name.split(' ')[0]}</span>
-        <span style="color:rgba(255,255,255,.6);font-size:11px">${u.role === 'author' ? 'Author ▾' : 'Reader ▾'}</span>
+        <span style="color:rgba(255,255,255,.6);font-size:11px">${u.role === 'author' ? 'Author ▾' : 'Signed in ▾'}</span>
       </div>
       <div id="user-menu">
         <div class="uh"><b>${u.name}</b><small>${u.email}</small></div>
         ${u.role === 'author' ? '<a onclick="closeMenu();go(\'admin\')">✏️ Author workspace</a>' : ''}
-        <a onclick="closeMenu();signOut()" class="danger">Sign out</a>
+        <a onclick="closeMenu();signOut()" class="danger">🚪 Sign out</a>
       </div>
     </div>
+  `;
+  if(mobileAuth) mobileAuth.innerHTML = `
+    <a onclick="closeBlogNav();${u.role==='author'?"go('admin')":''}">✏️ ${u.name.split(' ')[0]}</a>
+    <a onclick="closeBlogNav();signOut()" style="color:#e07a5f">Sign out</a>
   `;
 }
 function toggleMenu(){ document.getElementById('user-menu').classList.toggle('show') }

@@ -379,9 +379,21 @@
         Continue with Google
       </button>
 
-      <div class="note">
-        Sign in with your SENLA Google account to write and publish posts.
+      <div class="divider" style="margin:18px 0;display:flex;align-items:center;gap:10px;color:var(--mute);font-size:13px">
+        <span style="flex:1;height:1px;background:var(--border)"></span>or use email &amp; password<span style="flex:1;height:1px;background:var(--border)"></span>
       </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <input id="pw-email" type="email" placeholder="your@email.com" style="padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none;width:100%;box-sizing:border-box"/>
+        <input id="pw-pass" type="password" placeholder="Password" style="padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none;width:100%;box-sizing:border-box"/>
+        <button class="btn primary" onclick="signInWithPassword()" style="width:100%;padding:11px">Sign in</button>
+      </div>
+
+      <div style="text-align:center;margin-top:12px">
+        <a onclick="sendPasswordReset()" style="font-size:13px;color:var(--mute);cursor:pointer;text-decoration:underline">First time or forgot password? Set your password →</a>
+      </div>
+
+      <div class="note" id="pw-msg" style="display:none;margin-top:10px;text-align:center"></div>
     </div>
   </div>
 </section>
@@ -748,6 +760,35 @@ async function signInWithGoogle(){
   if (error){ toast('Sign-in failed: ' + error.message) }
 }
 
+function showPwMsg(msg, ok){
+  const el = document.getElementById('pw-msg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.style.color = ok ? 'var(--ok)' : '#c0392b';
+}
+
+async function signInWithPassword(){
+  if (!supa){ toast('Supabase not connected'); return; }
+  const email = document.getElementById('pw-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('pw-pass').value;
+  if (!email || !pass){ showPwMsg('Enter your email and password.'); return; }
+  if (!isAuthor(email)){ showPwMsg('This email is not authorised.'); return; }
+  const { error } = await supa.auth.signInWithPassword({ email, password: pass });
+  if (error){ showPwMsg('Sign-in failed: ' + error.message); }
+}
+
+async function sendPasswordReset(){
+  if (!supa){ toast('Supabase not connected'); return; }
+  const email = document.getElementById('pw-email').value.trim().toLowerCase();
+  if (!email){ showPwMsg('Enter your email address first.'); return; }
+  if (!isAuthor(email)){ showPwMsg('This email is not authorised.'); return; }
+  const { error } = await supa.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + window.location.pathname + '?reset=1'
+  });
+  if (error){ showPwMsg('Error: ' + error.message); }
+  else { showPwMsg('Check your email for a password setup link.', true); }
+}
+
 function signInDemo(role){
   setUser({
     name: role === 'author' ? 'Dr. Ester Agasha' : 'Joan Mukasa',
@@ -785,6 +826,15 @@ async function bootSession(){
     }
     // Listen for auth changes (e.g. after OAuth redirect)
     supa.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'PASSWORD_RECOVERY'){
+        const newPass = prompt('Enter your new password (min 8 characters):');
+        if (newPass && newPass.length >= 8){
+          const { error } = await supa.auth.updateUser({ password: newPass });
+          if (error){ toast('Error setting password: ' + error.message); }
+          else { toast('Password set! You are now signed in.'); }
+        }
+        return;
+      }
       if (event === 'SIGNED_IN' && session){
         const u = session.user;
         const meta = u.user_metadata || {};
@@ -818,7 +868,7 @@ function renderUserArea(){
   const u = getUser();
   const el = document.getElementById('user-area');
   if (!u){
-    el.innerHTML = `<button onclick="go('login')" style="background:none;border:none;font-size:12px;color:var(--mute);cursor:pointer;padding:4px 8px;opacity:0.5">Admin</button>`;
+    el.innerHTML = `<button onclick="go('login')" style="background:none;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--navy);cursor:pointer;padding:5px 12px;font-weight:600">Admin</button>`;
     return;
   }
   const avatarHtml = u.avatar

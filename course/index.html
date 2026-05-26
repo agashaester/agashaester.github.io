@@ -73,6 +73,47 @@
 
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
+  /* ---- SITE HEADER ---- */
+  header.site{background:var(--navy);color:#fff;position:sticky;top:0;z-index:40;border-bottom:1px solid rgba(255,255,255,.06)}
+  .site-head{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;max-width:1280px;margin:0 auto;gap:20px}
+  .site-brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none}
+  .site-brand img{height:56px;border-radius:4px}
+  .site-nav{display:flex;gap:28px;align-items:center}
+  .site-nav a{color:rgba(255,255,255,.8);font-size:14px;font-weight:500;text-decoration:none}
+  .site-nav a:hover,.site-nav a.active{color:#fff}
+  #course-user-area{display:flex;align-items:center;gap:10px;position:relative}
+  .course-user-menu{display:none;position:absolute;right:0;top:50px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px;min-width:200px;box-shadow:0 10px 30px rgba(0,0,0,.1);color:var(--ink);z-index:50}
+  .course-user-menu.show{display:block}
+  .course-user-menu a{display:block;padding:8px 12px;font-size:13px;border-radius:6px;cursor:pointer;color:var(--ink)}
+  .course-user-menu a:hover{background:var(--paper)}
+  .course-user-menu .uh{padding:8px 12px;border-bottom:1px solid var(--line);margin-bottom:4px;font-size:12px;color:var(--mute)}
+  .course-user-menu .danger{color:#a8492a}
+  .hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px}
+  .hbg span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:all .25s}
+  .hbg.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .hbg.open span:nth-child(2){opacity:0}
+  .hbg.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .mnav{display:none;position:fixed;inset:0;background:var(--navy-2);z-index:50;flex-direction:column;align-items:center;justify-content:center;gap:30px}
+  .mnav.open{display:flex}
+  .mnav a{color:#fff;font-size:22px;font-weight:600;text-decoration:none}
+
+  /* ---- OVERVIEW PAGE ---- */
+  .overview-hero{background:var(--navy-2);color:#fff;padding:80px 0 64px}
+  .overview-hero h1{font-size:clamp(36px,6vw,72px);margin-bottom:18px}
+  .overview-hero h1 em{font-style:italic;color:var(--accent)}
+  .overview-hero p{font-size:18px;color:rgba(255,255,255,.8);max-width:58ch;margin:0 0 32px}
+  .overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:64px 0}
+  .ov-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:28px}
+  .ov-card .ico{font-size:28px;margin-bottom:14px}
+  .ov-card h3{font-size:20px;margin-bottom:10px}
+  .ov-card p{font-size:14px;color:var(--mute);margin:0;line-height:1.6}
+  .ov-locked{background:var(--paper);border-radius:16px;padding:48px;text-align:center;margin:0 0 64px}
+  .ov-locked h2{font-size:32px;margin-bottom:12px}
+  .ov-locked p{color:var(--mute);max-width:50ch;margin:0 auto 28px}
+
+  @media(max-width:1024px){.site-nav{display:none}.hbg{display:flex}.site-head{padding:12px 18px}}
+  @media(max-width:640px){.overview-grid{grid-template-columns:1fr}.ov-locked{padding:32px 20px}}
+
   /* =================== WELCOME =================== */
   .welcome{
     min-height:100vh;
@@ -414,36 +455,61 @@
 </head>
 <body>
 
-<!-- ============ ROUTE: AUTH GATE ============ -->
-<section class="route active" id="r-auth">
-  <div class="auth-gate">
-    <div class="auth-card">
-      <div class="mark">S</div>
-      <h2>Sign in to access</h2>
-      <div class="sub">Entrepreneur Bootcamps is available to authorized SENLA team members and facilitators. Sign in with the same Google account used for the blog.</div>
+<!-- ============ SITE HEADER (always visible) ============ -->
+<header class="site">
+  <div class="site-head">
+    <a class="site-brand" href="/"><img src="/images/logo.jpg" alt="SENLA Research Hub" /></a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/about/">About</a>
+      <a href="/blog/">Blog</a>
+      <a href="/course/" class="active">Course</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+    <div id="course-user-area"></div>
+    <button class="hbg" id="course-hbg" onclick="toggleCourseNav()"><span></span><span></span><span></span></button>
+  </div>
+</header>
 
-      <div class="auth-error" id="auth-error" style="display:none">
-        <b>Access denied.</b><br/>
-        Your Google account is not on the authorized list. Contact SENLA to request access.
-        <div style="margin-top:8px"><a href="/contact/" style="color:#7d2e10;font-weight:600">Request access →</a></div>
-      </div>
+<div class="mnav" id="course-mnav">
+  <a href="/" onclick="closeCourseNav()">Home</a>
+  <a href="/about/" onclick="closeCourseNav()">About</a>
+  <a href="/blog/" onclick="closeCourseNav()">Blog</a>
+  <a href="/course/" onclick="closeCourseNav()">Course</a>
+  <a href="/contact/" onclick="closeCourseNav()">Contact</a>
+  <div id="course-mobile-auth" style="margin-top:8px;text-align:center"></div>
+</div>
 
-      <div class="auth-error" id="auth-no-supabase" style="display:none">
-        <b>Google sign-in not yet configured.</b><br/>
-        Connect Supabase in the <a href="/blog/" style="color:#7d2e10;font-weight:600">Blog settings</a> first, then return here to sign in.
-      </div>
-
-      <button class="gbtn" onclick="courseSignIn()">
-        <span class="gico">
-          <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8c1.8-4.4 6-7.5 11.1-7.5 3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.4-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.2c-.4.4 6.7-4.9 6.7-14.8 0-1.2-.1-2.4-.4-3.5z"/></svg>
-        </span>
-        Continue with Google
+<!-- ============ ROUTE: OVERVIEW (public) ============ -->
+<section class="route active" id="r-overview">
+  <div class="overview-hero">
+    <div class="wrap">
+      <div class="eyebrow" style="margin-bottom:14px;color:rgba(255,255,255,.6)">SENLA · Entrepreneur Bootcamps</div>
+      <h1>Build your business.<br><em>Real</em> results.</h1>
+      <p>Immersive, hands-on learning for micro and small-business owners — practical tools, peer support, and growth strategies grounded in real-world realities.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="overview-grid">
+      <div class="ov-card"><div class="ico">📚</div><h3>8 Weeks</h3><p>Structured weekly modules covering finance, marketing, operations and strategy.</p></div>
+      <div class="ov-card"><div class="ico">🤝</div><h3>Peer Learning</h3><p>Group discussions, case studies, and real business challenges from your peers.</p></div>
+      <div class="ov-card"><div class="ico">📊</div><h3>Track Progress</h3><p>Log your reflections, complete quizzes, and see your growth week by week.</p></div>
+    </div>
+    <div class="ov-locked">
+      <div style="font-size:40px;margin-bottom:16px">🔒</div>
+      <h2>Course access is for SENLA team members</h2>
+      <p>Sign in with your authorized Google account to access the full course content, materials, and progress tracking.</p>
+      <button class="gbtn" style="max-width:320px;margin:0 auto" onclick="showCourseLogin()">
+        <span class="gico"><svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8c1.8-4.4 6-7.5 11.1-7.5 3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.4-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.2c-.4.4 6.7-4.9 6.7-14.8 0-1.2-.1-2.4-.4-3.5z"/></svg></span>
+        Sign in with Google
       </button>
-
-      <div class="note">Access is limited to SENLA team members and authorized facilitators.<br/><a href="/contact/">Request access →</a></div>
+      <div id="ov-auth-error" class="auth-error" style="max-width:320px;margin:12px auto 0"></div>
     </div>
   </div>
 </section>
+
+<!-- ============ ROUTE: AUTH GATE (hidden, kept for redirect flow) ============ -->
+<section class="route" id="r-auth"></section>
 
 <!-- ============ ROUTE: WELCOME (one-time onboarding) ============ -->
 <section class="route" id="r-welcome">
@@ -1080,11 +1146,11 @@ function enterCourse(){
   }
 }
 
-function courseSignIn(){
-  document.getElementById('auth-error').style.display='none';
-  document.getElementById('auth-no-supabase').style.display='none';
+function showCourseLogin(){
+  const err = document.getElementById('ov-auth-error');
+  if(err) err.style.display='none';
   if (!courseSupa){
-    document.getElementById('auth-no-supabase').style.display='block';
+    if(err){ err.textContent='Sign-in not yet configured.'; err.style.display='block'; }
     return;
   }
   courseSupa.auth.signInWithOAuth({
@@ -1093,47 +1159,93 @@ function courseSignIn(){
   });
 }
 
+function courseSignIn(){ showCourseLogin(); }
+
 function courseSignOut(){
   if (courseSupa){ try{ courseSupa.auth.signOut(); }catch(e){} }
   localStorage.removeItem(COURSE_AUTH_KEY);
-  go('auth');
+  renderCourseUserArea(null);
+  go('overview');
 }
+
+function renderCourseUserArea(email){
+  const el = document.getElementById('course-user-area');
+  const mob = document.getElementById('course-mobile-auth');
+  if (!el) return;
+  if (!email){
+    el.innerHTML = `<button onclick="showCourseLogin()" style="background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.5);border-radius:8px;font-size:13px;color:#fff;cursor:pointer;padding:8px 18px;font-weight:600;white-space:nowrap">🔒 Sign in</button>`;
+    if(mob) mob.innerHTML = `<a onclick="closeCourseNav();showCourseLogin()" style="font-size:16px;color:rgba(255,255,255,.7)">Sign in</a>`;
+  } else {
+    const initial = email[0].toUpperCase();
+    el.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;cursor:pointer" onclick="document.getElementById('course-umenu').classList.toggle('show')">
+        <div style="width:36px;height:36px;border-radius:50%;background:#fff;color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px">${initial}</div>
+        <span style="color:rgba(255,255,255,.8);font-size:13px">▾</span>
+      </div>
+      <div class="course-user-menu" id="course-umenu">
+        <div class="uh">${email}</div>
+        <a onclick="document.getElementById('course-umenu').classList.remove('show');courseSignOut()" class="danger">🚪 Sign out</a>
+      </div>`;
+    if(mob) mob.innerHTML = `<a onclick="closeCourseNav();courseSignOut()" style="color:#e07a5f">Sign out</a>`;
+  }
+}
+
+function toggleCourseNav(){
+  const open = document.getElementById('course-mnav').classList.toggle('open');
+  document.getElementById('course-hbg').classList.toggle('open',open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeCourseNav(){
+  document.getElementById('course-mnav').classList.remove('open');
+  document.getElementById('course-hbg').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#course-user-area')) {
+    const m = document.getElementById('course-umenu');
+    if(m) m.classList.remove('show');
+  }
+});
 
 async function bootCourseSession(){
   initCourseAuth();
-  if (!courseSupa){
-    const saved = localStorage.getItem(COURSE_AUTH_KEY);
-    if (saved){
-      try {
-        const a = JSON.parse(saved);
-        if (a.email && isAuthorized(a.email)){ enterCourse(); return; }
-      } catch(e){}
-    }
-    document.getElementById('auth-no-supabase').style.display='block';
-    return;
-  }
-  const { data } = await courseSupa.auth.getSession();
-  if (data?.session?.user){
-    const email = data.session.user.email||'';
-    if (isAuthorized(email)){
-      localStorage.setItem(COURSE_AUTH_KEY, JSON.stringify({email}));
-      enterCourse(); return;
-    } else {
-      document.getElementById('auth-error').style.display='block';
-      return;
-    }
-  }
-  courseSupa.auth.onAuthStateChange((event,session)=>{
-    if (event==='SIGNED_IN' && session){
-      const email = session.user.email||'';
+  renderCourseUserArea(null);
+  if (courseSupa){
+    const { data } = await courseSupa.auth.getSession();
+    if (data?.session?.user){
+      const email = data.session.user.email||'';
       if (isAuthorized(email)){
         localStorage.setItem(COURSE_AUTH_KEY, JSON.stringify({email}));
-        enterCourse();
-      } else {
-        document.getElementById('auth-error').style.display='block';
+        renderCourseUserArea(email);
+        enterCourse(); return;
       }
     }
-  });
+    courseSupa.auth.onAuthStateChange((event,session)=>{
+      if (event==='SIGNED_IN' && session){
+        const email = session.user.email||'';
+        if (isAuthorized(email)){
+          localStorage.setItem(COURSE_AUTH_KEY, JSON.stringify({email}));
+          renderCourseUserArea(email);
+          enterCourse();
+        } else {
+          const err = document.getElementById('ov-auth-error');
+          if(err){ err.textContent='Access denied. Contact SENLA to request access.'; err.style.display='block'; }
+        }
+      } else if(event==='SIGNED_OUT'){
+        renderCourseUserArea(null);
+        go('overview');
+      }
+    });
+  }
+  // Check saved session
+  const saved = localStorage.getItem(COURSE_AUTH_KEY);
+  if (saved){
+    try {
+      const a = JSON.parse(saved);
+      if (a.email && isAuthorized(a.email)){ renderCourseUserArea(a.email); enterCourse(); }
+    } catch(e){}
+  }
 }
 
 /* ===================== INIT ===================== */

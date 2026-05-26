@@ -675,22 +675,7 @@ async function fetchAllowedEmails(){
 
 function updateStatusBanner(){
   const b = document.getElementById('status-banner');
-  const m = document.getElementById('status-msg');
-  const stat = document.getElementById('stat-storage');
-  const lbl = document.getElementById('storage-mode-label');
-  if (supa){
-    b.classList.add('ok');
-    b.style.display = 'flex';
-    m.textContent = `Connected to Supabase · ${new URL(CFG.supabaseUrl).host}`;
-    if (stat) stat.textContent = 'Supabase';
-    if (lbl) lbl.textContent = 'Saving to Supabase';
-  } else {
-    b.classList.remove('ok');
-    b.style.display = 'flex';
-    m.textContent = 'Posts are stored locally in this browser (will be lost if you clear it).';
-    if (stat) stat.textContent = 'Local';
-    if (lbl) lbl.textContent = 'Saving locally';
-  }
+  if (b) b.style.display = 'none';
 }
 
 /* =================================================================

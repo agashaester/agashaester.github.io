@@ -906,6 +906,7 @@ async function signOut(){
 }
 
 async function bootSession(){
+  try {
   if (supa){
     const { data } = await supa.auth.getSession();
     if (data && data.session && data.session.user){
@@ -959,6 +960,7 @@ async function bootSession(){
   }
   renderUserArea();
   await refreshPosts();
+  } catch(e){ console.warn('bootSession error:', e); renderUserArea(); renderIndex(); }
 }
 
 function renderUserArea(){
@@ -1090,7 +1092,7 @@ function loadLocalDB(){
 }
 function saveLocalDB(p){ localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(p)) }
 
-let POSTS = [];
+let POSTS = loadLocalDB();
 
 async function seedSupabaseIfEmpty(){
   try {
@@ -1646,7 +1648,9 @@ function setTheme(t){ applyTheme(t); }
    INIT
    ================================================================= */
 initSupabase();
-bootSession();
+renderUserArea();  // show Admin button immediately
+renderIndex();     // show seed articles immediately
+bootSession();     // then update from Supabase in background
 </script>
 
 <!-- VIDEO EMBED MODAL -->

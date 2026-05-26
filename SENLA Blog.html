@@ -270,6 +270,14 @@
   #user-menu a.danger{color:#a8492a}
 
   /* responsive */
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;z-index:60}
+  .hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:all .25s}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .mobile-nav{display:none;position:fixed;inset:0;background:var(--navy-2);z-index:50;flex-direction:column;align-items:center;justify-content:center;gap:32px}
+  .mobile-nav.open{display:flex}
+  .mobile-nav a{color:#fff;font-size:22px;font-weight:600;text-decoration:none}
   @media (max-width:1024px){
     .post-grid{grid-template-columns:1fr 1fr}
     .composer{grid-template-columns:1fr}
@@ -278,9 +286,21 @@
     .post-row{grid-template-columns:60px 1fr;gap:12px}
     .post-row .pill,.post-row .by,.post-row .when,.post-row .actions{grid-column:2}
     nav.main{display:none}
+    .hamburger{display:flex}
+    .head{padding:12px 18px}
   }
   @media (max-width:640px){
     .post-grid{grid-template-columns:1fr}
+    .filters{flex-wrap:wrap;gap:8px}
+    .search{width:100%;margin-top:4px}
+    .login-wrap{padding:16px}
+    .login-card{padding:28px 20px}
+    .admin-bar{flex-wrap:wrap;gap:8px;padding:10px 16px}
+    .admin-bar .right{flex-wrap:wrap;gap:8px}
+    .wrap{padding:0 16px}
+    .blog-hero .wrap{padding:40px 16px 32px}
+    .admin-stats{grid-template-columns:1fr 1fr}
+    .composer .field input,.composer .field select,.composer .field textarea{font-size:15px}
   }
 </style>
 </head>
@@ -302,8 +322,19 @@
     <div class="right" id="user-area">
       <!-- filled by JS based on session -->
     </div>
+    <button class="hamburger" id="blog-hamburger" aria-label="Menu" onclick="toggleBlogNav()">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
+<div class="mobile-nav" id="blog-mobile-nav">
+  <a href="SENLA Homepage.html" onclick="closeBlogNav()">Home</a>
+  <a href="SENLA About.html" onclick="closeBlogNav()">About</a>
+  <a href="SENLA Blog.html" onclick="go('index');closeBlogNav();return false">Blog</a>
+  <a href="SENLA Course Learner.html" onclick="closeBlogNav()">Course</a>
+  <a href="SENLA Contact.html" onclick="closeBlogNav()">Contact</a>
+</div>
 
 <!-- ============ STATUS BANNER (Supabase config indicator) ============ -->
 <div class="status-banner" id="status-banner" style="display:none">
@@ -868,7 +899,7 @@ function renderUserArea(){
   const u = getUser();
   const el = document.getElementById('user-area');
   if (!u){
-    el.innerHTML = `<button onclick="go('login')" style="background:none;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--navy);cursor:pointer;padding:5px 12px;font-weight:600">Admin</button>`;
+    el.innerHTML = `<button onclick="go('login')" style="background:none;border:1.5px solid rgba(255,255,255,.5);border-radius:6px;font-size:13px;color:#fff;cursor:pointer;padding:6px 14px;font-weight:600;letter-spacing:.3px">Admin</button>`;
     return;
   }
   const avatarHtml = u.avatar
@@ -1433,6 +1464,17 @@ document.getElementById('modal-bg').addEventListener('click', e => {
 document.addEventListener('click', e => {
   if (!e.target.closest('#user-area')) closeMenu();
 });
+
+function toggleBlogNav(){
+  const open = document.getElementById('blog-mobile-nav').classList.toggle('open');
+  document.getElementById('blog-hamburger').classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeBlogNav(){
+  document.getElementById('blog-mobile-nav').classList.remove('open');
+  document.getElementById('blog-hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}
 
 /* =================================================================
    INIT

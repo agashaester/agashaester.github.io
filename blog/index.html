@@ -1292,8 +1292,6 @@ document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () =
   renderIndex();
 }));
 document.getElementById('search').addEventListener('input', renderIndex);
-// restore saved layout on load
-(function(){ setLayout(currentLayout); })();
 
 /* =================================================================
    ARTICLE

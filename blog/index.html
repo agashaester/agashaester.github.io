@@ -142,6 +142,82 @@
   .reader article h2{font-family:'DM Serif Display';font-size:34px;margin:48px 0 18px;line-height:1.2}
   .reader article blockquote{border-left:3px solid var(--accent);padding:8px 0 8px 22px;margin:32px 0;font-family:'DM Serif Display';font-style:italic;font-size:22px;color:#2a2e3d}
 
+  /* ====== POST TYPE BADGE ====== */
+  .type-bar{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+  .type-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+
+  /* ====== 10 VISUAL TEMPLATES ====== */
+
+  /* 1 — ARTICLE (default) */
+  .tpl-article{}
+
+  /* 2 — RESEARCH BRIEF */
+  .tpl-research{background:#f4f8f6}
+  .tpl-research article h2{color:#1a4a3a;border-bottom:1px solid #c8e0d4;padding-bottom:10px;margin-bottom:14px}
+  .tpl-research article{max-width:720px}
+  .tpl-research article ul li,.tpl-research article ol li{margin-bottom:8px}
+  .tpl-research .key-findings{background:#e6f5ee;border-left:4px solid #2c7a4b;border-radius:0 10px 10px 0;padding:22px 26px;margin:28px 0;font-size:16px}
+  .tpl-research .key-findings strong{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#2c7a4b;margin-bottom:10px}
+
+  /* 3 — STORY / DOCUMENTARY */
+  .tpl-story{background:#fdf6ee}
+  .tpl-story .reader{background:#fdf6ee}
+  .tpl-story article{font-size:19px;line-height:1.85}
+  .tpl-story article blockquote{border-left:4px solid var(--accent);font-size:28px;line-height:1.4;background:rgba(199,90,54,.06);padding:20px 24px 20px 28px;border-radius:0 10px 10px 0}
+  .tpl-story article p:first-of-type::first-letter{font-family:'DM Serif Display';float:left;font-size:64px;line-height:0.8;padding-top:10px;padding-right:10px;color:var(--accent)}
+
+  /* 4 — CASE STUDY */
+  .tpl-casestudy article h2{display:flex;align-items:center;gap:12px;font-size:22px;background:var(--navy);color:#fff;padding:10px 18px;border-radius:8px;margin:36px 0 16px}
+  .tpl-casestudy article h2::before{content:attr(data-step);font-size:12px;letter-spacing:.12em;opacity:.7}
+  .tpl-casestudy .outcome-box{background:#e6f5ee;border:1px solid #b8dfc8;border-radius:10px;padding:20px 24px;margin:24px 0}
+  .tpl-casestudy .outcome-box strong{display:block;color:#2c7a4b;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+
+  /* 5 — HOW-TO / TUTORIAL */
+  .tpl-howto article ol{list-style:none;padding:0;counter-reset:steps}
+  .tpl-howto article ol li{counter-increment:steps;display:flex;gap:18px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:14px}
+  .tpl-howto article ol li::before{content:counter(steps);display:flex;align-items:center;justify-content:center;width:36px;height:36px;min-width:36px;border-radius:50%;background:var(--navy);color:#fff;font-family:'DM Serif Display';font-size:18px;font-style:italic}
+  .tpl-howto article ul li{padding:8px 0;border-bottom:1px solid var(--line)}
+  .tpl-howto article h2{font-size:22px;color:var(--navy);background:var(--paper);padding:10px 16px;border-radius:8px;margin:32px 0 16px}
+
+  /* 6 — INTERVIEW / Q&A */
+  .tpl-interview article p strong:first-child{display:block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;font-weight:700}
+  .tpl-interview article p:has(strong:first-child){background:var(--paper);border-radius:10px;padding:16px 20px;margin-bottom:6px}
+  .tpl-interview article p+p:not(:has(strong)){background:#fff;border-left:3px solid var(--line);padding:14px 20px;margin-bottom:20px;font-size:17px}
+
+  /* 7 — NEWS & UPDATE */
+  .tpl-news{background:#fff}
+  .tpl-news .reader h1{font-size:clamp(28px,4.5vw,52px);line-height:1.1}
+  .tpl-news article{max-width:640px;font-size:17px}
+  .tpl-news article h2{font-size:22px;margin:28px 0 12px}
+  .tpl-news .news-lede{font-size:19px;font-weight:600;border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:24px;font-family:'DM Serif Display'}
+
+  /* 8 — EVENT RECAP */
+  .tpl-event{background:var(--paper)}
+  .tpl-event .event-header{background:var(--navy-2);color:#fff;padding:28px 32px;border-radius:12px;margin-bottom:36px;display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .tpl-event .event-header .edate{font-family:'DM Serif Display';font-size:48px;line-height:1;color:var(--accent)}
+  .tpl-event .event-header .einfo{flex:1}
+  .tpl-event .event-header .einfo b{display:block;font-size:18px;margin-bottom:4px}
+  .tpl-event .event-header .einfo span{font-size:13px;color:rgba(255,255,255,.7)}
+  .tpl-event article h2{color:var(--navy-2);font-size:24px;margin:36px 0 14px}
+  .tpl-event .highlight-strip{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0}
+  .tpl-event .highlight-strip span{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:500}
+
+  /* 9 — VIDEO COMPANION */
+  .tpl-video .cover{display:none}
+  .tpl-video .video-hero{margin-bottom:36px}
+  .tpl-video .video-hero .video-wrap{margin:0;border-radius:12px;overflow:hidden}
+  .tpl-video article{max-width:720px;font-size:17px}
+  .tpl-video article h2{font-size:24px;margin:36px 0 14px}
+
+  /* 10 — DIGEST / ROUNDUP */
+  .tpl-digest article{max-width:760px}
+  .tpl-digest article ul{list-style:none;padding:0}
+  .tpl-digest article ul li{border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin-bottom:12px;background:#fff}
+  .tpl-digest article ul li::before{display:none}
+  .tpl-digest article h2{font-size:22px;border-bottom:2px solid var(--line);padding-bottom:10px;margin:40px 0 16px}
+  .tpl-digest .digest-intro{background:var(--navy-2);color:#fff;padding:24px 28px;border-radius:12px;margin-bottom:36px;font-size:16px;line-height:1.6}
+  .tpl-digest .digest-intro strong{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.7;margin-bottom:8px}
+
   /* article theme toggle */
   .theme-btns{display:flex;gap:6px;margin-top:24px;margin-bottom:36px}
   .theme-btn{background:none;border:1px solid var(--line);border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer;color:var(--mute);font-family:inherit;transition:all .15s}
@@ -459,11 +535,14 @@
     <div class="filters">
       <button class="chip active" data-cat="all">All</button>
       <button class="chip" data-cat="Research">Research</button>
-      <button class="chip" data-cat="Field notes">Field notes</button>
-      <button class="chip" data-cat="Update">Updates</button>
-      <button class="chip" data-cat="Opinion">Opinion</button>
-      <button class="chip" data-cat="Video">Video</button>
-      <button class="chip" data-cat="Photo essay">Photo essay</button>
+      <button class="chip" data-cat="Stories">Stories</button>
+      <button class="chip" data-cat="Opinion">Opinion &amp; Leadership</button>
+      <button class="chip" data-cat="How-To">How-To</button>
+      <button class="chip" data-cat="Updates">Updates</button>
+      <button class="chip" data-cat="Events">Events</button>
+      <button class="chip" data-cat="Interviews">Interviews</button>
+      <button class="chip" data-cat="Video">Video &amp; Media</button>
+      <button class="chip" data-cat="Digests">Digests</button>
       <div class="search">
         🔍 <input type="text" id="search" placeholder="Search posts..." />
       </div>
@@ -482,7 +561,7 @@
 <section class="route" id="r-article">
   <div class="wrap reader" id="article-reader">
     <span class="back-link" onclick="go('index')">← All posts</span>
-    <div class="meta"><span class="pcat" id="ar-cat">Research</span></div>
+    <div class="type-bar" id="ar-type-bar"></div>
     <h1 id="ar-title">Article title</h1>
     <p class="lead" id="ar-lead">Article subtitle / lead paragraph appears here.</p>
     <div class="by">
@@ -647,18 +726,61 @@
         </div>
 
         <div class="panel">
-          <h4>Category</h4>
+          <h4>Post Type</h4>
           <div class="field">
-            <select id="c-cat">
-              <option>Research</option>
-              <option>Field notes</option>
-              <option>Update</option>
-              <option>Opinion</option>
-              <option>Video</option>
-              <option>Photo essay</option>
+            <select id="c-cat" onchange="onTypeChange()">
+              <optgroup label="Research &amp; Analysis">
+                <option>Research &amp; Policy Briefs</option>
+                <option>Trend Analysis Articles</option>
+                <option>Data Visualization Posts</option>
+                <option>Industry Insights</option>
+              </optgroup>
+              <optgroup label="Stories">
+                <option>Documentary Story Blogs</option>
+                <option>Entrepreneur Success Stories</option>
+                <option>Impact Stories</option>
+                <option>Behind-the-Scenes Posts</option>
+                <option>Field Reports</option>
+              </optgroup>
+              <optgroup label="Opinion &amp; Leadership">
+                <option>Thought Leadership Blogs</option>
+                <option>Opinion Pieces</option>
+                <option>Founder Letters</option>
+                <option>AI &amp; Technology Commentary</option>
+                <option>Financial Literacy Articles</option>
+              </optgroup>
+              <optgroup label="How-To &amp; Education">
+                <option>Tutorials / How-To Guides</option>
+                <option>Educational / Explainer Posts</option>
+              </optgroup>
+              <optgroup label="News &amp; Updates">
+                <option>News &amp; Updates</option>
+                <option>Project Progress Updates</option>
+                <option>Partnership Announcements</option>
+                <option>Product / Feature Announcements</option>
+              </optgroup>
+              <optgroup label="Events">
+                <option>Event Recaps</option>
+                <option>Bootcamp / Training Reflections</option>
+              </optgroup>
+              <optgroup label="Interviews">
+                <option>Interviews &amp; Q&amp;A Posts</option>
+                <option>Community Spotlight Posts</option>
+              </optgroup>
+              <optgroup label="Video &amp; Media">
+                <option>Video Companion Blogs</option>
+                <option>Infographic Blogs</option>
+              </optgroup>
+              <optgroup label="Digests">
+                <option>Resource Roundups</option>
+                <option>Weekly or Monthly Digests</option>
+                <option>Case Studies</option>
+              </optgroup>
             </select>
           </div>
-          <h4>Tags</h4>
+          <div id="type-preview-bar" style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:var(--mute)"></div>
+          <button class="btn ghost sm" onclick="loadTypeTemplate()" style="width:100%;margin-top:10px;font-size:12px">⚡ Load type template</button>
+          <h4 style="margin-top:16px">Tags</h4>
           <div class="tag-input" id="tag-input">
             <input type="text" id="tag-new" placeholder="add tag + Enter" />
           </div>
@@ -1167,6 +1289,80 @@ const SEED_POSTS = [
   }
 ];
 
+/* =================================================================
+   POST TYPE SYSTEM — 28 types mapped to 10 visual templates
+   ================================================================= */
+const TYPE_META = {
+  'Research & Policy Briefs':       { ico:'📊', color:'#1a4a3a', bg:'#e6f5ee', grp:'Research',   tpl:'tpl-research'  },
+  'Trend Analysis Articles':        { ico:'📈', color:'#1a4a3a', bg:'#e6f5ee', grp:'Research',   tpl:'tpl-research'  },
+  'Data Visualization Posts':       { ico:'📉', color:'#1a4a5a', bg:'#e8f0f8', grp:'Research',   tpl:'tpl-research'  },
+  'Industry Insights':              { ico:'🔭', color:'#1a4a3a', bg:'#e6f5ee', grp:'Research',   tpl:'tpl-research'  },
+  'Documentary Story Blogs':        { ico:'🎬', color:'#7a2030', bg:'#fde8ec', grp:'Stories',    tpl:'tpl-story'     },
+  'Entrepreneur Success Stories':   { ico:'🏆', color:'#7a3a10', bg:'#fdf0e4', grp:'Stories',    tpl:'tpl-story'     },
+  'Impact Stories':                 { ico:'🌟', color:'#7a2030', bg:'#fde8ec', grp:'Stories',    tpl:'tpl-story'     },
+  'Behind-the-Scenes Posts':        { ico:'🎥', color:'#4a2060', bg:'#f0e8f8', grp:'Stories',    tpl:'tpl-story'     },
+  'Field Reports':                  { ico:'🗺',  color:'#3a4a1a', bg:'#eef4e0', grp:'Stories',    tpl:'tpl-story'     },
+  'Thought Leadership Blogs':       { ico:'💡', color:'#1a3a7a', bg:'#e4ecf8', grp:'Opinion',    tpl:'tpl-article'   },
+  'Opinion Pieces':                 { ico:'✍️',  color:'#5a2a7a', bg:'#f0e8f8', grp:'Opinion',    tpl:'tpl-article'   },
+  'Founder Letters':                { ico:'✉️',  color:'#3a2a5a', bg:'#eee8f4', grp:'Opinion',    tpl:'tpl-article'   },
+  'AI & Technology Commentary':     { ico:'🤖', color:'#1a3a6b', bg:'#e4ecf8', grp:'Opinion',    tpl:'tpl-article'   },
+  'Financial Literacy Articles':    { ico:'💰', color:'#1a4a3a', bg:'#e6f5ee', grp:'Opinion',    tpl:'tpl-article'   },
+  'Tutorials / How-To Guides':      { ico:'🛠',  color:'#4a3a1a', bg:'#f8f2e4', grp:'How-To',    tpl:'tpl-howto'     },
+  'Educational / Explainer Posts':  { ico:'📚', color:'#2a5a2a', bg:'#e8f4e8', grp:'How-To',    tpl:'tpl-howto'     },
+  'News & Updates':                 { ico:'📣', color:'#c75a36', bg:'#fdf0e8', grp:'Updates',    tpl:'tpl-news'      },
+  'Project Progress Updates':       { ico:'📌', color:'#c75a36', bg:'#fdf0e8', grp:'Updates',    tpl:'tpl-news'      },
+  'Partnership Announcements':      { ico:'🤝', color:'#1a4a3a', bg:'#e6f5ee', grp:'Updates',    tpl:'tpl-news'      },
+  'Product / Feature Announcements':{ ico:'🚀', color:'#c75a36', bg:'#fdf0e8', grp:'Updates',    tpl:'tpl-news'      },
+  'Event Recaps':                   { ico:'📅', color:'#1a5a6b', bg:'#e4f4f8', grp:'Events',     tpl:'tpl-event'     },
+  'Bootcamp / Training Reflections':{ ico:'🎓', color:'#3a3a7a', bg:'#eaeaf8', grp:'Events',     tpl:'tpl-event'     },
+  'Interviews & Q&A Posts':         { ico:'🎤', color:'#3a3a7a', bg:'#eaeaf8', grp:'Interviews', tpl:'tpl-interview' },
+  'Community Spotlight Posts':      { ico:'🌟', color:'#3a3a7a', bg:'#eaeaf8', grp:'Interviews', tpl:'tpl-interview' },
+  'Video Companion Blogs':          { ico:'▶️',  color:'#1a1a4a', bg:'#e4e4f4', grp:'Video',      tpl:'tpl-video'     },
+  'Infographic Blogs':              { ico:'📊', color:'#1a4a5a', bg:'#e4f0f8', grp:'Video',      tpl:'tpl-video'     },
+  'Resource Roundups':              { ico:'📦', color:'#3a3a3a', bg:'#efefef', grp:'Digests',    tpl:'tpl-digest'    },
+  'Weekly or Monthly Digests':      { ico:'📬', color:'#3a3a3a', bg:'#efefef', grp:'Digests',    tpl:'tpl-digest'    },
+  'Case Studies':                   { ico:'📋', color:'#1a3a6b', bg:'#e4ecf8', grp:'Digests',    tpl:'tpl-casestudy' },
+  // Legacy category names (backward compat)
+  'Research':      { ico:'📊', color:'#1a4a3a', bg:'#e6f5ee', grp:'Research',  tpl:'tpl-research' },
+  'Field notes':   { ico:'🗺',  color:'#3a4a1a', bg:'#eef4e0', grp:'Stories',  tpl:'tpl-story'    },
+  'Update':        { ico:'📣', color:'#c75a36', bg:'#fdf0e8', grp:'Updates',   tpl:'tpl-news'     },
+  'Opinion':       { ico:'✍️',  color:'#5a2a7a', bg:'#f0e8f8', grp:'Opinion',  tpl:'tpl-article'  },
+  'Video':         { ico:'▶️',  color:'#1a1a4a', bg:'#e4e4f4', grp:'Video',    tpl:'tpl-video'    },
+  'Photo essay':   { ico:'📷', color:'#4a2060', bg:'#f0e8f8', grp:'Stories',  tpl:'tpl-story'    },
+};
+
+function getTypeMeta(cat){ return TYPE_META[cat] || { ico:'📝', color:'var(--navy)', bg:'var(--paper)', grp:'all', tpl:'tpl-article' }; }
+
+const TYPE_TEMPLATES = {
+  'tpl-research': `<h2>Abstract</h2>\n<p>Brief overview of the research, context and key questions addressed.</p>\n<h2>Background &amp; Objectives</h2>\n<p>Why this matters and what we set out to find.</p>\n<h2>Methodology</h2>\n<p>How the research was conducted — data sources, sample, approach.</p>\n<h2>Key Findings</h2>\n<ul><li>Finding one</li><li>Finding two</li><li>Finding three</li></ul>\n<h2>Policy Implications</h2>\n<p>What practitioners and decision-makers should take away.</p>\n<h2>Next Steps</h2>\n<p>Future research directions or planned follow-up work.</p>`,
+  'tpl-story': `<p>Opening scene — set the stage. Where are we, who do we meet?</p>\n<blockquote>A powerful quote or moment that captures the heart of the story.</blockquote>\n<h2>The Journey</h2>\n<p>Describe what happened — the challenge, the turning point, the effort.</p>\n<h2>The Outcome</h2>\n<p>What changed? What was achieved? What does it mean?</p>\n<h2>Looking Ahead</h2>\n<p>What comes next for the people in this story.</p>`,
+  'tpl-casestudy': `<h2>The Challenge</h2>\n<p>What problem were we trying to solve? Who was affected?</p>\n<h2>Our Approach</h2>\n<p>How did we tackle it — methods, partners, timeline.</p>\n<h2>Results</h2>\n<p>What was achieved, with evidence.</p>\n<blockquote>Quote from a participant or stakeholder.</blockquote>\n<h2>Lessons Learned</h2>\n<p>What worked, what didn't, what we'd do differently.</p>\n<h2>Replication &amp; Scale</h2>\n<p>Could this work elsewhere? What would it take?</p>`,
+  'tpl-howto': `<h2>What You'll Need</h2>\n<ul><li>Resource or prerequisite 1</li><li>Resource or prerequisite 2</li></ul>\n<h2>Step-by-Step Guide</h2>\n<ol><li>First step — what to do and why</li><li>Second step — what to do and why</li><li>Third step — what to do and why</li></ol>\n<h2>Tips &amp; Common Mistakes</h2>\n<ul><li>Tip 1</li><li>Common mistake to avoid</li></ul>\n<h2>Summary</h2>\n<p>Recap the key actions and expected outcome.</p>`,
+  'tpl-interview': `<p><strong>Q: Your opening question here?</strong></p>\n<p>Interviewee's answer goes here. Can span multiple sentences.</p>\n<p><strong>Q: Second question — dig deeper?</strong></p>\n<p>Answer here...</p>\n<p><strong>Q: A challenge or turning point question?</strong></p>\n<p>Answer here...</p>\n<p><strong>Q: Looking ahead — what's next?</strong></p>\n<p>Final answer here.</p>`,
+  'tpl-news': `<p>Lead paragraph — the most important information first (who, what, when, where, why).</p>\n<h2>Background</h2>\n<p>Context that helps readers understand why this matters.</p>\n<h2>Details</h2>\n<p>Supporting information, data, or quotes from key stakeholders.</p>\n<blockquote>Direct quote from a spokesperson or partner.</blockquote>\n<h2>What Happens Next</h2>\n<p>Timeline, actions, or next milestones to watch for.</p>`,
+  'tpl-event': `<h2>Event Overview</h2>\n<p>Brief summary — what happened, who attended, and the key purpose.</p>\n<h2>Highlights</h2>\n<ul><li>Highlight or session 1</li><li>Highlight or session 2</li><li>Highlight or session 3</li></ul>\n<h2>Key Takeaways</h2>\n<p>What participants walked away with. What shifted.</p>\n<blockquote>Quote from a participant or facilitator.</blockquote>\n<h2>What's Next</h2>\n<p>Follow-up actions, upcoming events, or continued engagement.</p>`,
+  'tpl-video': `<p>Brief introduction — what this video is about and why you should watch it.</p>\n<h2>What to Watch For</h2>\n<ul><li>Key moment or theme 1</li><li>Key moment or theme 2</li></ul>\n<h2>Discussion Questions</h2>\n<ol><li>Question to reflect on</li><li>Question to discuss with peers</li></ol>\n<h2>Further Reading</h2>\n<p>Related articles, research, or resources linked to the video's themes.</p>`,
+  'tpl-digest': `<h2>This Week in Brief</h2>\n<p>A short summary of the top themes covered in this edition.</p>\n<h2>Featured Story</h2>\n<ul><li><strong>Title:</strong> Story or article title<br/><strong>Why it matters:</strong> One sentence explanation.</li></ul>\n<h2>Resources Worth Reading</h2>\n<ul><li>Resource title — short description and why it's relevant</li><li>Resource title — short description</li></ul>\n<h2>From the Field</h2>\n<p>A brief note, observation, or update from SENLA's ongoing work.</p>\n<h2>Coming Up</h2>\n<p>Events, publications, or milestones to look forward to.</p>`,
+  'tpl-article': `<p>Opening paragraph — state your main argument or insight clearly.</p>\n<h2>Context</h2>\n<p>Why this matters now. What's the backdrop?</p>\n<h2>The Argument</h2>\n<p>Your core thinking, evidence, and reasoning.</p>\n<blockquote>A key insight or supporting quote.</blockquote>\n<h2>Implications</h2>\n<p>What does this mean for practitioners, policymakers, or communities?</p>\n<h2>Conclusion</h2>\n<p>Summarise and call to action or further reflection.</p>`,
+};
+
+function onTypeChange(){
+  const cat = document.getElementById('c-cat').value;
+  const m = getTypeMeta(cat);
+  const bar = document.getElementById('type-preview-bar');
+  if(bar) bar.innerHTML = `<span style="font-size:18px">${m.ico}</span><span style="background:${m.bg};color:${m.color};padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.08em">${cat}</span>`;
+}
+
+function loadTypeTemplate(){
+  const cat = document.getElementById('c-cat').value;
+  const m = getTypeMeta(cat);
+  const html = TYPE_TEMPLATES[m.tpl] || TYPE_TEMPLATES['tpl-article'];
+  const body = document.getElementById('c-body');
+  if(body.innerHTML.trim() && !confirm('This will replace your current content with the template. Continue?')) return;
+  body.innerHTML = html;
+  toast('Template loaded for "' + cat + '"');
+}
+
 function loadLocalDB(){
   const raw = localStorage.getItem(LOCAL_DB_KEY);
   if (!raw){ saveLocalDB(SEED_POSTS); return [...SEED_POSTS]; }
@@ -1319,7 +1515,7 @@ function renderIndex(){
   }
   const visible = POSTS.filter(p =>
     p.status === 'published' &&
-    (currentFilter === 'all' || p.category === currentFilter) &&
+    (currentFilter === 'all' || getTypeMeta(p.category).grp === currentFilter) &&
     (!search || (p.title+p.lead+(p.tags||[]).join(' ')).toLowerCase().includes(search))
   );
 
@@ -1333,16 +1529,12 @@ function renderIndex(){
   }
 
   grid.innerHTML = visible.map(p => {
-    const catClass = {
-      'Video':'cat-video','Photo essay':'cat-photo',
-      'Opinion':'cat-opinion','Field notes':'cat-field'
-    }[p.category] || '';
-    const videoIcon = p.category === 'Video' ? '▶ ' : p.category === 'Photo essay' ? '📷 ' : '';
+    const m = getTypeMeta(p.category);
     return `
     <article class="post-card" onclick="go('article','${p.id}')">
       <div class="pimg">${p.cover ? `<img src="${p.cover}" alt="" loading="lazy"/>` : ''}</div>
       <div class="pcontent">
-        <div class="pcat ${catClass}">${videoIcon}${p.category}</div>
+        <div class="pcat" style="background:${m.bg};color:${m.color}">${m.ico} ${p.category}</div>
         <h3>${escapeHtml(p.title)}</h3>
         <p>${escapeHtml(p.lead||'')}</p>
         <div class="pby"><b>${escapeHtml(p.author||'')}</b> · ${estimateRead(stripHtml(p.body))} · ${formatDate(p.created_at)}</div>
@@ -1364,6 +1556,14 @@ document.getElementById('search').addEventListener('input', renderIndex);
 function renderArticle(id){
   const p = POSTS.find(x => x.id === id);
   if (!p) return go('index');
+  const m = getTypeMeta(p.category);
+  // Apply visual template class to reader
+  const reader = document.getElementById('article-reader');
+  reader.className = reader.className.replace(/\btpl-\S+/g, '').trim();
+  reader.classList.add(m.tpl);
+  // Type bar badge
+  const typeBar = document.getElementById('ar-type-bar');
+  if (typeBar) typeBar.innerHTML = `<span style="display:inline-flex;align-items:center;gap:6px;background:${m.bg};color:${m.color};padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700;letter-spacing:.3px;">${m.ico} ${p.category}</span>`;
   document.getElementById('ar-cat').textContent = p.category;
   document.getElementById('ar-title').textContent = p.title;
   document.getElementById('ar-lead').textContent = p.lead;
@@ -1475,10 +1675,11 @@ function openComposer(id){
     document.getElementById('c-title').value = '';
     document.getElementById('c-lead').value = '';
     document.getElementById('c-body').innerHTML = '';
-    document.getElementById('c-cat').value = 'Research';
+    document.getElementById('c-cat').value = 'Research & Policy Briefs';
     composeTags = [];
     coverData = null;
   }
+  onTypeChange();
   renderTags();
   renderCover();
   updateSEO();

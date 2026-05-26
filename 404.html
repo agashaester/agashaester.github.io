@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>Redirecting — SENLA Research Hub</title>
+<script>
+var map = {
+  'SENLA Homepage.html': '/',
+  'SENLA%20Homepage.html': '/',
+  'SENLA About.html': '/about/',
+  'SENLA%20About.html': '/about/',
+  'SENLA Blog.html': '/blog/',
+  'SENLA%20Blog.html': '/blog/',
+  'SENLA Course Learner.html': '/course/',
+  'SENLA%20Course%20Learner.html': '/course/',
+  'SENLA Contact.html': '/contact/',
+  'SENLA%20Contact.html': '/contact/',
+  'SENLA Projects.html': '/blog/',
+  'SENLA%20Projects.html': '/blog/'
+};
+var path = window.location.pathname.replace(/^\//, '');
+var dest = map[path] || map[decodeURIComponent(path)] || '/';
+window.location.replace(dest);
+</script>
+</head><body>
+<p>Redirecting...</p>
+</body></html>

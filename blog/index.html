@@ -88,6 +88,10 @@
   .post-card .pimg img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
   .post-card:hover .pimg img{transform:scale(1.04)}
   .pcat{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:10px}
+  .pcat.cat-video{color:#1a6b4a}
+  .pcat.cat-photo{color:#5c3d9e}
+  .pcat.cat-opinion{color:#2a5fa8}
+  .pcat.cat-field{color:#7a4a1e}
   .post-card h3{font-family:'DM Serif Display';font-size:24px;line-height:1.2;margin-bottom:10px;color:var(--ink)}
   .post-card:hover h3{color:var(--navy)}
   .post-card p{font-size:14.5px;color:var(--mute);margin:0 0 14px;flex:1}
@@ -320,7 +324,7 @@
   #user-menu a:hover{background:var(--paper)}
   #user-menu a.danger{color:#a8492a}
 
-  /* responsive */
+  /* ====== RESPONSIVE ====== */
   .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;z-index:60}
   .hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:all .25s}
   .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
@@ -329,6 +333,7 @@
   .mobile-nav{display:none;position:fixed;inset:0;background:var(--navy-2);z-index:50;flex-direction:column;align-items:center;justify-content:center;gap:32px}
   .mobile-nav.open{display:flex}
   .mobile-nav a{color:#fff;font-size:22px;font-weight:600;text-decoration:none}
+
   @media (max-width:1024px){
     .post-grid{grid-template-columns:1fr 1fr}
     .composer{grid-template-columns:1fr}
@@ -339,19 +344,64 @@
     nav.main{display:none}
     .hamburger{display:flex}
     .head{padding:12px 18px}
+    .blog-hero h1{font-size:clamp(36px,7vw,72px)}
+    .reader h1{font-size:clamp(28px,5vw,52px)}
+    .reader article{font-size:16px}
+    .reader.theme-sidebar .article-shell{grid-template-columns:1fr}
+    .toc{display:none!important}
   }
+
   @media (max-width:640px){
+    /* layout */
     .post-grid{grid-template-columns:1fr}
+    .post-grid.layout-list .post-card{flex-direction:column}
+    .post-grid.layout-list .post-card .pimg{width:100%}
+    .post-grid.layout-mag{grid-template-columns:1fr}
+    .post-grid.layout-mag .post-card:first-child{flex-direction:column;gap:0}
+    .post-grid.layout-mag .post-card:first-child .pimg{margin-bottom:16px}
+    /* filters */
     .filters{flex-wrap:wrap;gap:8px}
-    .search{width:100%;margin-top:4px}
-    .login-wrap{padding:16px}
-    .login-card{padding:28px 20px}
-    .admin-bar{flex-wrap:wrap;gap:8px;padding:10px 16px}
-    .admin-bar .right{flex-wrap:wrap;gap:8px}
+    .search{width:100%;margin-left:0;margin-top:4px;order:10}
+    .layout-btns{margin-left:auto}
+    /* hero */
+    .blog-hero{padding:36px 0 28px}
+    .blog-hero h1{font-size:clamp(32px,10vw,52px)}
+    .blog-hero p{font-size:15px}
     .wrap{padding:0 16px}
-    .blog-hero .wrap{padding:40px 16px 32px}
+    /* cards */
+    .post-card h3{font-size:20px}
+    /* login */
+    .login-wrap{padding:16px}
+    .login-card{padding:28px 18px}
+    /* admin */
+    .admin-bar{flex-wrap:wrap;gap:8px;padding:10px 16px}
+    .admin-bar .right{flex-wrap:wrap;gap:8px;margin-left:0;width:100%}
+    .admin-head{flex-direction:column;align-items:flex-start}
+    .admin-head h1{font-size:clamp(32px,8vw,48px)}
     .admin-stats{grid-template-columns:1fr 1fr}
+    .post-row{grid-template-columns:1fr;gap:10px;padding:12px}
+    .post-row .thumb{display:none}
+    .post-row .pill,.post-row .by,.post-row .when,.post-row .actions{grid-column:1}
+    /* reader */
+    .reader{padding:28px 0 60px}
+    .reader h1{font-size:clamp(24px,8vw,40px)}
+    .reader .lead{font-size:16px}
+    .reader article{font-size:15px;line-height:1.7}
+    .reader article h2{font-size:26px}
+    .theme-btns{flex-wrap:wrap;gap:6px}
+    /* composer */
+    .composer .editor{padding:20px 16px}
+    .title-input{font-size:28px}
     .composer .field input,.composer .field select,.composer .field textarea{font-size:15px}
+    /* header */
+    .head{padding:10px 16px}
+    #user-area button{padding:7px 12px;font-size:12px}
+  }
+
+  @media (max-width:400px){
+    .blog-hero h1{font-size:28px}
+    .post-card h3{font-size:18px}
+    .chip{font-size:12px;padding:6px 10px}
   }
 </style>
 </head>
@@ -412,6 +462,8 @@
       <button class="chip" data-cat="Field notes">Field notes</button>
       <button class="chip" data-cat="Update">Updates</button>
       <button class="chip" data-cat="Opinion">Opinion</button>
+      <button class="chip" data-cat="Video">Video</button>
+      <button class="chip" data-cat="Photo essay">Photo essay</button>
       <div class="search">
         🔍 <input type="text" id="search" placeholder="Search posts..." />
       </div>
@@ -587,10 +639,10 @@
           </div>
           <input type="file" id="cover-file" accept="image/*" style="display:none" />
           <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
-            <button class="btn tiny ghost" onclick="presetCover('images/field3.jpg')">Field 1</button>
-            <button class="btn tiny ghost" onclick="presetCover('images/sara_field.jpg')">Field 2</button>
-            <button class="btn tiny ghost" onclick="presetCover('images/conf2.jpg')">Conf</button>
-            <button class="btn tiny ghost" onclick="presetCover('images/natpresent.jpg')">Talk</button>
+            <button class="btn tiny ghost" onclick="presetCover('/images/field3.jpg')">Field 1</button>
+            <button class="btn tiny ghost" onclick="presetCover('/images/sara_field.jpg')">Field 2</button>
+            <button class="btn tiny ghost" onclick="presetCover('/images/conf2.jpg')">Conf</button>
+            <button class="btn tiny ghost" onclick="presetCover('/images/natpresent.jpg')">Talk</button>
           </div>
         </div>
 
@@ -602,6 +654,8 @@
               <option>Field notes</option>
               <option>Update</option>
               <option>Opinion</option>
+              <option>Video</option>
+              <option>Photo essay</option>
             </select>
           </div>
           <h4>Tags</h4>
@@ -1034,7 +1088,7 @@ const SEED_POSTS = [
 <ul><li>High engagement with story-driven content; participants referenced film characters during discussions.</li><li>Micro-quiz results show improved understanding of basic budgeting and savings goals.</li><li>Requests for refresher sessions and spouse/partner inclusion.</li></ul>
 <h2>Next Steps</h2>
 <p>Refine modules (household budgeting, savings groups, micro-enterprise planning), expand to new districts, and explore light-touch follow-ups by SMS/WhatsApp where available.</p>`,
-    cover: 'images/field2.jpg',
+    cover: '/images/field2.jpg',
     category: 'Research',
     tags: ['Finance','Women','RCT','Behavior Change'],
     author: 'Ester Agasha',
@@ -1056,7 +1110,7 @@ const SEED_POSTS = [
 <ul><li>Greenness correlates with diet diversity, but effects attenuate for lower-asset households.</li><li>Market proximity and seasonality mediate the environment–diet link.</li><li>Policy implication: combine livelihoods, market linkage, and behavior change — not greenery alone.</li></ul>
 <h2>Limitations &amp; Next Steps</h2>
 <p>Spatial resolution and household geolocation uncertainty may bias estimates. Next steps include adding market price time-series and diet cost indices.</p>`,
-    cover: 'images/forest.jpg',
+    cover: '/images/forest.jpg',
     category: 'Research',
     tags: ['Geospatial','Nutrition','NDVI','Assets'],
     author: 'Ester Agasha & Nathalie Nyanga',
@@ -1078,7 +1132,7 @@ const SEED_POSTS = [
 <ul><li>Short, modular lessons: pricing, cashflow, customer retention.</li><li>Mentorship circles pairing founders with experienced operators.</li><li>Simple templates: cashflow sheet, pricing calculator, customer log.</li></ul>
 <h2>Learning &amp; Adaptation</h2>
 <p>Participants report better costing and record-keeping, with demand for refresher clinics. Future cohorts will include inventory and supplier management.</p>`,
-    cover: 'images/sarabootcamp.jpg',
+    cover: '/images/sarabootcamp.jpg',
     category: 'Research',
     tags: ['Entrepreneurship','Education','SMEs'],
     author: 'Sarah Nabachwa',
@@ -1102,7 +1156,7 @@ const SEED_POSTS = [
 <ol><li>Case method basics, consent &amp; ethics; outline a case.</li><li>Field protocols and interviews/observation.</li><li>Analysis: profitability, efficiency, diversification, HR, survival strategies.</li><li>Draft case + instructor note; peer review.</li><li>Micro-teaching/pilot and revision plan.</li></ol>
 <h2>Expected Outputs</h2>
 <ul><li>6–10 draft teaching cases with instructor notes.</li><li>Cashbooks, pricing sheets, and sales scripts for participating businesses.</li><li>A short evidence brief on street-smart models for partners and policy.</li><li>A sustained community of practice for continued peer feedback.</li></ul>`,
-    cover: 'images/senla_teach.jpg',
+    cover: '/images/senla_teach.jpg',
     category: 'Update',
     tags: ['Bootcamp','BTCS','Entrepreneurship','MUST'],
     author: 'Sarah Nabachwa',
@@ -1117,7 +1171,12 @@ function loadLocalDB(){
   const raw = localStorage.getItem(LOCAL_DB_KEY);
   if (!raw){ saveLocalDB(SEED_POSTS); return [...SEED_POSTS]; }
   try {
-    const posts = JSON.parse(raw);
+    let posts = JSON.parse(raw);
+    // Fix any old relative image paths to absolute
+    posts = posts.map(p => ({
+      ...p,
+      cover: p.cover ? p.cover.replace(/^(?!\/|https?:\/\/)/, '/') : p.cover
+    }));
     if (!posts.some(p => p.status === 'published')){
       const existingIds = new Set(posts.map(p => p.id));
       const merged = [...SEED_POSTS, ...posts.filter(p => !existingIds.has(p.id))];
@@ -1273,17 +1332,23 @@ function renderIndex(){
     return;
   }
 
-  grid.innerHTML = visible.map(p => `
+  grid.innerHTML = visible.map(p => {
+    const catClass = {
+      'Video':'cat-video','Photo essay':'cat-photo',
+      'Opinion':'cat-opinion','Field notes':'cat-field'
+    }[p.category] || '';
+    const videoIcon = p.category === 'Video' ? '▶ ' : p.category === 'Photo essay' ? '📷 ' : '';
+    return `
     <article class="post-card" onclick="go('article','${p.id}')">
-      <div class="pimg">${p.cover ? `<img src="${p.cover}" alt="" />` : ''}</div>
+      <div class="pimg">${p.cover ? `<img src="${p.cover}" alt="" loading="lazy"/>` : ''}</div>
       <div class="pcontent">
-        <div class="pcat">${p.category}</div>
+        <div class="pcat ${catClass}">${videoIcon}${p.category}</div>
         <h3>${escapeHtml(p.title)}</h3>
         <p>${escapeHtml(p.lead||'')}</p>
         <div class="pby"><b>${escapeHtml(p.author||'')}</b> · ${estimateRead(stripHtml(p.body))} · ${formatDate(p.created_at)}</div>
       </div>
-    </article>
-  `).join('');
+    </article>`;
+  }).join('');
 }
 document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
   document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));

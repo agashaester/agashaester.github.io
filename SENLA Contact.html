@@ -111,11 +111,28 @@
   .socials a{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff}
   .socials a:hover{background:var(--accent);border-color:var(--accent)}
 
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;z-index:60}
+  .hamburger span{display:block;width:22px;height:2px;background:#fff;border-radius:2px;transition:all .25s}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .mobile-nav{display:none;position:fixed;inset:0;background:var(--navy);z-index:50;flex-direction:column;align-items:center;justify-content:center;gap:32px}
+  .mobile-nav.open{display:flex}
+  .mobile-nav a{color:#fff;font-size:22px;font-weight:600;text-decoration:none}
   @media (max-width:1024px){
     .contact-grid,.a-grid,.foot-grid{grid-template-columns:1fr;gap:28px}
     .form-row{grid-template-columns:1fr}
     nav.main{display:none}
+    .hamburger{display:flex}
     .info-card,.form-card{padding:32px 26px}
+    .head{padding:12px 18px}
+  }
+  @media (max-width:640px){
+    .wrap{padding:0 16px}
+    .form-card{padding:24px 18px}
+    .info-card{padding:24px 18px}
+    .c-hero{padding:48px 0 36px}
+    .contact-shell{padding:32px 0 64px}
   }
 </style>
 </head>
@@ -129,14 +146,24 @@
     <nav class="main">
       <a href="SENLA Homepage.html">Home</a>
       <a href="SENLA About.html">About</a>
-      <a href="SENLA Projects.html">Projects</a>
       <a href="SENLA Blog.html">Blog</a>
       <a href="SENLA Course Learner.html">Course</a>
       <a href="SENLA Contact.html" class="active">Contact</a>
     </nav>
     <a href="mailto:info@senlaresearchhub.com" class="cta">Email us →</a>
+    <button class="hamburger" id="contact-hamburger" aria-label="Menu" onclick="toggleContactNav()">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
+<div class="mobile-nav" id="contact-mobile-nav">
+  <a href="SENLA Homepage.html">Home</a>
+  <a href="SENLA About.html">About</a>
+  <a href="SENLA Blog.html">Blog</a>
+  <a href="SENLA Course Learner.html">Course</a>
+  <a href="SENLA Contact.html">Contact</a>
+</div>
 
 <section class="c-hero">
   <div class="wrap">
@@ -334,6 +361,11 @@
     window.location.href = `mailto:info@senlaresearchhub.com?subject=${encodeURIComponent(subject)}&body=${body}`;
     setTimeout(()=>this.reset(), 200);
   });
+function toggleContactNav(){
+  const open = document.getElementById('contact-mobile-nav').classList.toggle('open');
+  document.getElementById('contact-hamburger').classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
 </script>
 </body>
 </html>

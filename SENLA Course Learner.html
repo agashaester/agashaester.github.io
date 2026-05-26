@@ -1043,6 +1043,16 @@ function initCourseAuth(){
       });
     } catch(e){}
   }
+  if (courseSupa) fetchCourseAllowedEmails();
+}
+
+async function fetchCourseAllowedEmails(){
+  try {
+    const { data, error } = await courseSupa.from('allowed_emails').select('email');
+    if (!error && data && data.length > 0){
+      courseConfig.authorEmails = data.map(r => r.email.toLowerCase());
+    }
+  } catch(e){}
 }
 
 function isAuthorized(email){

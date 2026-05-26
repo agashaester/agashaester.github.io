@@ -668,7 +668,17 @@ function initSupabase(){
     } catch(e){ console.warn('Supabase init failed:', e) }
   }
   updateStatusBanner();
+  if (supa) fetchAllowedEmails();
   return supa;
+}
+
+async function fetchAllowedEmails(){
+  try {
+    const { data, error } = await supa.from('allowed_emails').select('email');
+    if (!error && data && data.length > 0){
+      CFG.authorEmails = data.map(r => r.email.toLowerCase());
+    }
+  } catch(e){}
 }
 
 function updateStatusBanner(){

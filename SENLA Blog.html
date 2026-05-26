@@ -225,6 +225,16 @@
   .editor-body h2{font-family:'DM Serif Display';font-size:30px;margin:32px 0 14px;line-height:1.2}
   .editor-body blockquote{border-left:3px solid var(--accent);padding:6px 0 6px 18px;margin:24px 0;font-family:'DM Serif Display';font-style:italic;font-size:20px;color:#2a2e3d}
   .editor-body[contenteditable]:empty::before{content:"Start writing your post... use the toolbar above for formatting.";color:#aaa49a}
+  .video-embed-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}
+  .video-embed-modal.open{display:flex}
+  .video-embed-card{background:#fff;border-radius:16px;padding:32px;width:100%;max-width:480px;box-shadow:0 30px 60px rgba(0,0,0,.2)}
+  .video-embed-card h3{font-size:20px;margin:0 0 6px}
+  .video-embed-card .sub{font-size:13px;color:var(--mute);margin:0 0 20px}
+  .video-embed-card input{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;margin-bottom:14px}
+  .video-embed-card input:focus{border-color:var(--navy)}
+  .video-embed-card .row{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+  .video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;margin:24px 0}
+  .video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:8px}
   .editor-body img{max-width:100%;border-radius:6px;margin:12px 0}
 
   .cover-upload{border:2px dashed var(--line);border-radius:10px;padding:18px;text-align:center;color:var(--mute);font-size:13px;cursor:pointer;background:#fafaf5}
@@ -559,6 +569,8 @@
           <div class="sep"></div>
           <button data-cmd="createLink" title="Link">🔗</button>
           <button data-cmd="insertImage" title="Image">🖼</button>
+          <div class="sep"></div>
+          <button data-cmd="insertVideo" title="Embed video (YouTube, Vimeo, Google Drive)">▶ Video</button>
         </div>
 
         <div class="editor-body" id="c-body" contenteditable="true"></div>
@@ -1416,6 +1428,7 @@ document.getElementById('cover-file').addEventListener('change', e => {
   reader.readAsDataURL(file);
 });
 
+let savedRange = null;
 document.getElementById('toolbar').addEventListener('click', e => {
   const btn = e.target.closest('button');
   if (!btn) return;
@@ -1423,8 +1436,59 @@ document.getElementById('toolbar').addEventListener('click', e => {
   let val = btn.dataset.val || null;
   if (cmd === 'createLink'){ val = prompt('URL?'); if (!val) return }
   if (cmd === 'insertImage'){ val = prompt('Image URL?'); if (!val) return }
+  if (cmd === 'insertVideo'){
+    const sel = window.getSelection();
+    if (sel.rangeCount) savedRange = sel.getRangeAt(0).cloneRange();
+    openVideoModal();
+    return;
+  }
   document.execCommand(cmd, false, val);
 });
+
+function openVideoModal(){
+  document.getElementById('video-url-input').value = '';
+  document.getElementById('video-modal').classList.add('open');
+  setTimeout(() => document.getElementById('video-url-input').focus(), 50);
+}
+function closeVideoModal(){
+  document.getElementById('video-modal').classList.remove('open');
+}
+
+function parseVideoUrl(url){
+  url = url.trim();
+  // YouTube
+  let m = url.match(/(?:youtube\.com\/watch\?.*v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  if (m) return `https://www.youtube.com/embed/${m[1]}?rel=0`;
+  // YouTube shorts
+  m = url.match(/youtube\.com\/shorts\/([A-Za-z0-9_-]{11})/);
+  if (m) return `https://www.youtube.com/embed/${m[1]}?rel=0`;
+  // Vimeo
+  m = url.match(/vimeo\.com\/(\d+)/);
+  if (m) return `https://player.vimeo.com/video/${m[1]}`;
+  // Google Drive
+  m = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+  if (m) return `https://drive.google.com/file/d/${m[1]}/preview`;
+  m = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+  if (m) return `https://drive.google.com/file/d/${m[1]}/preview`;
+  return null;
+}
+
+function insertVideoEmbed(){
+  const url = document.getElementById('video-url-input').value;
+  const embedUrl = parseVideoUrl(url);
+  if (!embedUrl){ toast('Could not recognise that URL. Try YouTube, Vimeo or Google Drive.'); return; }
+  const html = `<div class="video-wrap"><iframe src="${embedUrl}" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe></div>`;
+  const body = document.getElementById('c-body');
+  body.focus();
+  if (savedRange){
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedRange);
+  }
+  document.execCommand('insertHTML', false, html);
+  closeVideoModal();
+  toast('Video embedded');
+}
 
 ['c-title','c-lead','c-body','c-cat'].forEach(id => {
   document.getElementById(id).addEventListener('input', updateSEO);
@@ -1584,6 +1648,22 @@ function setTheme(t){ applyTheme(t); }
 initSupabase();
 bootSession();
 </script>
+
+<!-- VIDEO EMBED MODAL -->
+<div class="video-embed-modal" id="video-modal">
+  <div class="video-embed-card">
+    <h3>Embed a video</h3>
+    <p class="sub">Paste a YouTube, Vimeo, or Google Drive link</p>
+    <input type="url" id="video-url-input" placeholder="https://www.youtube.com/watch?v=..." />
+    <div style="font-size:12px;color:var(--mute);margin-bottom:16px">
+      Supported: youtube.com · youtu.be · vimeo.com · drive.google.com
+    </div>
+    <div class="row">
+      <button class="btn ghost sm" onclick="closeVideoModal()">Cancel</button>
+      <button class="btn primary sm" onclick="insertVideoEmbed()">Insert video</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

@@ -32,9 +32,9 @@
   .wrap{max-width:1200px;margin:0 auto;padding:0 28px}
   .eyebrow{font-family:'Inter';font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
 
-  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:99px;font-weight:600;font-size:14px;border:none;transition:all .15s ease}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:99px;font-weight:600;font-size:14px;border:none;transition:all .15s ease;cursor:pointer}
   .btn.primary{background:var(--accent);color:#fff}
-  .btn.primary:hover{background:#a8492a}
+  .btn.primary:hover{background:#a8492a;transform:translateY(-1px)}
   .btn.dark{background:var(--navy);color:#fff}
   .btn.dark:hover{background:var(--navy-3)}
   .btn.ghost{background:transparent;border:1.5px solid var(--navy);color:var(--navy)}
@@ -42,6 +42,8 @@
   .btn.lg{padding:14px 30px;font-size:15px}
   .btn.sm{padding:7px 14px;font-size:13px}
   .btn:disabled{opacity:.5;cursor:not-allowed}
+  .lede{font-size:18px;line-height:1.65}
+  .auth-error{background:#fff3e8;border:1px solid #f6d4be;color:#a8492a;font-size:13px;padding:12px 14px;border-radius:8px;text-align:left;line-height:1.5}
 
   /* =================== ROUTE SHELL =================== */
   .route{display:none;min-height:100vh}
@@ -98,21 +100,106 @@
   .mnav a{color:#fff;font-size:22px;font-weight:600;text-decoration:none}
 
   /* ---- OVERVIEW PAGE ---- */
-  .overview-hero{background:var(--navy-2);color:#fff;padding:80px 0 64px}
-  .overview-hero h1{font-size:clamp(36px,6vw,72px);margin-bottom:18px}
-  .overview-hero h1 em{font-style:italic;color:var(--accent)}
-  .overview-hero p{font-size:18px;color:rgba(255,255,255,.8);max-width:58ch;margin:0 0 32px}
-  .overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:64px 0}
-  .ov-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:28px}
-  .ov-card .ico{font-size:28px;margin-bottom:14px}
-  .ov-card h3{font-size:20px;margin-bottom:10px}
-  .ov-card p{font-size:14px;color:var(--mute);margin:0;line-height:1.6}
-  .ov-locked{background:var(--paper);border-radius:16px;padding:48px;text-align:center;margin:0 0 64px}
-  .ov-locked h2{font-size:32px;margin-bottom:12px}
-  .ov-locked p{color:var(--mute);max-width:50ch;margin:0 auto 28px}
 
-  @media(max-width:1024px){.site-nav{display:none}.hbg{display:flex}.site-head{padding:12px 18px}}
-  @media(max-width:640px){.overview-grid{grid-template-columns:1fr}.ov-locked{padding:32px 20px}}
+  /* Hero */
+  .ov-hero{
+    position:relative;min-height:88vh;color:#fff;overflow:hidden;
+    background:var(--navy-2);display:flex;align-items:flex-end;padding:0 0 80px;
+  }
+  .ov-hero-media{position:absolute;inset:0;overflow:hidden}
+  .ov-hero-media img{width:100%;height:100%;object-fit:cover}
+  .ov-hero-media::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(0,21,58,.55) 0%,rgba(0,21,58,.3) 40%,rgba(0,21,58,.88) 100%),
+      linear-gradient(90deg,rgba(0,21,58,.75) 0%,rgba(0,21,58,.15) 65%,transparent 100%);
+  }
+  .ov-hero-inner{position:relative;width:100%}
+  .ov-hero-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:60px;align-items:end}
+  .ov-hero h1{font-size:clamp(44px,7vw,96px);color:#fff;margin-bottom:20px;line-height:1.05}
+  .ov-hero h1 em{font-style:italic;color:var(--accent)}
+  .ov-hero p.lede{font-size:18px;color:rgba(255,255,255,.85);max-width:56ch;line-height:1.65;margin:0 0 36px}
+  .ov-hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .ov-hero-meta{align-self:end;padding-bottom:6px;border-left:1px solid rgba(255,255,255,.2);padding-left:28px}
+  .ov-hero-meta .mlbl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:6px}
+  .ov-hero-meta .mval{font-family:'DM Serif Display';font-size:22px;color:#fff;line-height:1.2;margin-bottom:16px}
+  .ov-hero-meta .mval:last-child{margin-bottom:0}
+
+  /* Stats strip */
+  .ov-stats{background:var(--paper);border-bottom:1px solid var(--line)}
+  .ov-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+  .ov-stat{padding:40px 28px;border-right:1px solid var(--line)}
+  .ov-stat:last-child{border-right:none}
+  .ov-stat .sn{font-family:'DM Serif Display';font-size:64px;line-height:1;color:var(--navy);margin-bottom:6px}
+  .ov-stat .sn sup{font-size:28px;color:var(--accent);font-style:italic}
+  .ov-stat .sl{font-size:13px;color:var(--mute);letter-spacing:.04em;line-height:1.45}
+
+  /* Pillars */
+  .ov-pillars-section{background:#fff;padding:80px 0}
+  .ov-section-head{display:grid;grid-template-columns:1fr 1.5fr;gap:60px;margin-bottom:56px;align-items:end}
+  .ov-section-head h2{font-size:clamp(34px,4vw,56px)}
+  .ov-section-head h2 em{font-style:italic;color:var(--accent)}
+  .ov-pillars-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  .ov-pillar{border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:all .22s ease}
+  .ov-pillar:hover{transform:translateY(-4px);box-shadow:0 20px 40px -12px rgba(0,33,87,.14);border-color:rgba(0,33,87,.2)}
+  .ov-pillar .ph{height:180px;overflow:hidden;background:var(--paper-2)}
+  .ov-pillar .ph img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+  .ov-pillar:hover .ph img{transform:scale(1.05)}
+  .ov-pillar .body{padding:24px;flex:1;display:flex;flex-direction:column}
+  .ov-pillar .body .ico{font-size:26px;margin-bottom:12px}
+  .ov-pillar .body h3{font-size:22px;margin-bottom:10px}
+  .ov-pillar .body p{font-size:14px;color:var(--mute);line-height:1.6;flex:1;margin:0}
+
+  /* Curriculum preview */
+  .ov-curriculum{background:var(--paper);padding:80px 0}
+  .ov-weeks{display:grid;gap:12px;margin-top:48px}
+  .ov-week{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:22px 28px;display:grid;grid-template-columns:56px 1fr auto;gap:20px;align-items:center;
+  }
+  .ov-week .wn{
+    width:48px;height:48px;border-radius:12px;background:var(--navy);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display';font-size:22px;flex-shrink:0;
+  }
+  .ov-week .winfo h4{font-family:'DM Serif Display';font-size:20px;margin:0 0 4px}
+  .ov-week .winfo .obj{font-size:12px;color:var(--mute)}
+  .ov-week .warrow{font-size:18px;color:var(--line)}
+
+  /* Who section */
+  .ov-who{background:var(--navy);color:#fff;padding:80px 0}
+  .ov-who-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  .ov-who h2{font-size:clamp(36px,4vw,56px);color:#fff;margin-bottom:20px}
+  .ov-who h2 em{font-style:italic;color:var(--accent)}
+  .ov-who p{font-size:17px;color:rgba(255,255,255,.8);line-height:1.65;max-width:52ch;margin:0 0 28px}
+  .ov-who-list{display:flex;flex-direction:column;gap:16px}
+  .ov-who-item{display:flex;gap:16px;align-items:flex-start}
+  .ov-who-item .ci{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .ov-who-item .ct{font-size:15px;color:rgba(255,255,255,.85);line-height:1.55}
+  .ov-who-item .ct b{display:block;color:#fff;margin-bottom:3px}
+  .ov-who-img{border-radius:16px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
+  .ov-who-img img{width:100%;height:100%;object-fit:cover}
+
+  /* CTA / locked */
+  .ov-cta{background:var(--accent-soft);border-top:1px solid var(--line);padding:80px 0;text-align:center}
+  .ov-cta-inner{max-width:540px;margin:0 auto}
+  .ov-cta h2{font-size:clamp(30px,4vw,48px);margin-bottom:14px}
+  .ov-cta h2 em{font-style:italic;color:var(--accent)}
+  .ov-cta p{font-size:17px;color:var(--mute);max-width:46ch;margin:0 auto 32px;line-height:1.6}
+
+  @media(max-width:1024px){
+    .site-nav{display:none}.hbg{display:flex}.site-head{padding:12px 18px}
+    .ov-hero-grid{grid-template-columns:1fr}
+    .ov-hero-meta{display:none}
+    .ov-section-head{grid-template-columns:1fr;gap:20px}
+    .ov-who-grid{grid-template-columns:1fr}
+    .ov-who-img{display:none}
+  }
+  @media(max-width:640px){
+    .ov-stats-grid{grid-template-columns:1fr 1fr}
+    .ov-stat{border-bottom:1px solid var(--line)}
+    .ov-pillars-grid{grid-template-columns:1fr}
+    .ov-hero{padding:0 0 56px}
+    .ov-cta{padding:56px 20px}
+  }
 
   /* =================== WELCOME =================== */
   .welcome{
@@ -482,30 +569,179 @@
 
 <!-- ============ ROUTE: OVERVIEW (public) ============ -->
 <section class="route active" id="r-overview">
-  <div class="overview-hero">
-    <div class="wrap">
-      <div class="eyebrow" style="margin-bottom:14px;color:rgba(255,255,255,.6)">SENLA · Entrepreneur Bootcamps</div>
-      <h1>Build your business.<br><em>Real</em> results.</h1>
-      <p>Immersive, hands-on learning for micro and small-business owners — practical tools, peer support, and growth strategies grounded in real-world realities.</p>
+
+  <!-- HERO -->
+  <div class="ov-hero">
+    <div class="ov-hero-media">
+      <img src="/images/sarabootcamp.jpg" alt="Entrepreneur Bootcamp" />
+    </div>
+    <div class="ov-hero-inner wrap">
+      <div class="ov-hero-grid">
+        <div>
+          <div class="eyebrow" style="margin-bottom:16px;color:rgba(255,255,255,.65)">SENLA · Entrepreneur Bootcamps</div>
+          <h1>Build your business.<br><em>Real</em> results.</h1>
+          <p class="lede">Immersive, hands-on learning for micro and small-business owners in Uganda — practical tools, peer support, and weekly accountability grounded in real-world realities.</p>
+          <div class="ov-hero-actions">
+            <button class="btn primary lg" onclick="showCourseLogin()">
+              <span>Access the course →</span>
+            </button>
+            <a href="#ov-curriculum" style="color:rgba(255,255,255,.8);font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:6px" onclick="event.preventDefault();document.getElementById('ov-curriculum').scrollIntoView({behavior:'smooth'})">
+              See curriculum ↓
+            </a>
+          </div>
+          <div id="ov-auth-error" class="auth-error" style="max-width:420px;margin:16px 0 0;display:none"></div>
+        </div>
+        <div class="ov-hero-meta">
+          <div class="mlbl">Program length</div>
+          <div class="mval">5 Weeks</div>
+          <div class="mlbl">Format</div>
+          <div class="mval">Weekly group circles</div>
+          <div class="mlbl">Target participant</div>
+          <div class="mval">Micro &amp; small-<br>business owners</div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="wrap">
-    <div class="overview-grid">
-      <div class="ov-card"><div class="ico">📚</div><h3>8 Weeks</h3><p>Structured weekly modules covering finance, marketing, operations and strategy.</p></div>
-      <div class="ov-card"><div class="ico">🤝</div><h3>Peer Learning</h3><p>Group discussions, case studies, and real business challenges from your peers.</p></div>
-      <div class="ov-card"><div class="ico">📊</div><h3>Track Progress</h3><p>Log your reflections, complete quizzes, and see your growth week by week.</p></div>
+
+  <!-- STATS -->
+  <div class="ov-stats">
+    <div class="wrap">
+      <div class="ov-stats-grid">
+        <div class="ov-stat"><div class="sn">5</div><div class="sl">Structured weekly<br>modules</div></div>
+        <div class="ov-stat"><div class="sn">80<sup>+</sup></div><div class="sl">Entrepreneurs<br>trained to date</div></div>
+        <div class="ov-stat"><div class="sn">3</div><div class="sl">Districts across<br>Eastern Uganda</div></div>
+        <div class="ov-stat"><div class="sn">100<sup>%</sup></div><div class="sl">Peer-led circles<br>&amp; accountability</div></div>
+      </div>
     </div>
-    <div class="ov-locked">
-      <div style="font-size:40px;margin-bottom:16px">🔒</div>
-      <h2>Course access is for SENLA team members</h2>
-      <p>Sign in with your authorized Google account to access the full course content, materials, and progress tracking.</p>
-      <button class="gbtn" style="max-width:320px;margin:0 auto" onclick="showCourseLogin()">
+  </div>
+
+  <!-- PILLARS -->
+  <div class="ov-pillars-section">
+    <div class="wrap">
+      <div class="ov-section-head">
+        <div>
+          <div class="eyebrow" style="margin-bottom:14px">What you'll gain</div>
+          <h2>Three pillars of <em>growth</em></h2>
+        </div>
+        <div>
+          <p style="font-size:17px;color:var(--mute);line-height:1.65;margin:0">The Entrepreneur Bootcamp combines inspirational reflection, structured goal-setting, and ongoing peer accountability into a proven weekly rhythm.</p>
+        </div>
+      </div>
+      <div class="ov-pillars-grid">
+        <div class="ov-pillar">
+          <div class="ph"><img src="/images/senla_teach.jpg" alt="Inspiration" /></div>
+          <div class="body">
+            <div class="ico">🎥</div>
+            <h3>Inspiration</h3>
+            <p>Documentaries of real entrepreneurs overcoming obstacles in contexts just like yours. See what's possible and reflect on your own story.</p>
+          </div>
+        </div>
+        <div class="ov-pillar">
+          <div class="ph"><img src="/images/field3.jpg" alt="Goal Setting" /></div>
+          <div class="body">
+            <div class="ico">🎯</div>
+            <h3>Planning &amp; Goals</h3>
+            <p>Translate big dreams into tangible weekly sales targets. Calculate the steps, identify obstacles, and build a roadmap you can actually follow.</p>
+          </div>
+        </div>
+        <div class="ov-pillar">
+          <div class="ph"><img src="/images/conf2.jpg" alt="Peer Support" /></div>
+          <div class="body">
+            <div class="ico">🤝</div>
+            <h3>Peer Support</h3>
+            <p>A peer circle to share talents, celebrate wins, and offer encouragement. Accountability from women who understand your exact challenges.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CURRICULUM PREVIEW -->
+  <div class="ov-curriculum" id="ov-curriculum">
+    <div class="wrap">
+      <div class="ov-section-head">
+        <div>
+          <div class="eyebrow" style="margin-bottom:14px">5-week programme</div>
+          <h2>The <em>curriculum</em></h2>
+        </div>
+        <div>
+          <p style="font-size:17px;color:var(--mute);line-height:1.65;margin:0">Each week builds on the last. Sign in to access videos, discussion questions, and your personal goal log.</p>
+        </div>
+      </div>
+      <div class="ov-weeks">
+        <div class="ov-week">
+          <div class="wn">1</div>
+          <div class="winfo"><h4>Aspirations Development</h4><div class="obj">Reflect on your vision — watch a documentary and name your biggest obstacles.</div></div>
+          <div class="warrow">🔒</div>
+        </div>
+        <div class="ov-week">
+          <div class="wn">2</div>
+          <div class="winfo"><h4>Goal-Setting Strategy</h4><div class="obj">Turn dreams into weekly revenue targets with the Lamb Story and a tangible plan.</div></div>
+          <div class="warrow">🔒</div>
+        </div>
+        <div class="ov-week">
+          <div class="wn">3</div>
+          <div class="winfo"><h4>Recognition of Agency</h4><div class="obj">Identify your natural gifts and how your community sees you — then leverage them.</div></div>
+          <div class="warrow">🔒</div>
+        </div>
+        <div class="ov-week">
+          <div class="wn">4</div>
+          <div class="winfo"><h4>Visualising Pathways</h4><div class="obj">Map the step-by-step path from where you are to where you want to be.</div></div>
+          <div class="warrow">🔒</div>
+        </div>
+        <div class="ov-week">
+          <div class="wn">5</div>
+          <div class="winfo"><h4>Regular Check-In</h4><div class="obj">Weekly peer circle: report achievement, share obstacles, offer advice to sisters.</div></div>
+          <div class="warrow">🔒</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHO IS IT FOR -->
+  <div class="ov-who">
+    <div class="wrap">
+      <div class="ov-who-grid">
+        <div>
+          <div class="eyebrow" style="margin-bottom:14px;color:rgba(255,255,255,.55)">Who it's for</div>
+          <h2>Built for <em>women</em> building businesses</h2>
+          <p>The bootcamp was designed with and for micro and small-business owners in Eastern Uganda — people who are already working hard but need the right tools, community, and mindset to grow further.</p>
+          <div class="ov-who-list">
+            <div class="ov-who-item">
+              <div class="ci">🌱</div>
+              <div class="ct"><b>Micro-enterprise owners</b>Traders, market vendors, small shop owners ready to grow beyond survival.</div>
+            </div>
+            <div class="ov-who-item">
+              <div class="ci">📈</div>
+              <div class="ct"><b>Growth-minded entrepreneurs</b>Business owners who have a vision but need a structured path and peer accountability.</div>
+            </div>
+            <div class="ov-who-item">
+              <div class="ci">🤝</div>
+              <div class="ct"><b>Women's group members</b>Participants in existing groups or circles who want to add a practical business layer.</div>
+            </div>
+          </div>
+        </div>
+        <div class="ov-who-img">
+          <img src="/images/sara_field.jpg" alt="Participants" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGN-IN CTA -->
+  <div class="ov-cta">
+    <div class="ov-cta-inner">
+      <div style="font-size:48px;margin-bottom:18px">🔒</div>
+      <h2>Ready to <em>begin?</em></h2>
+      <p>Course access is for SENLA team members and programme participants. Sign in with your authorised Google account to unlock all five weeks.</p>
+      <button class="gbtn" style="max-width:340px;margin:0 auto" onclick="showCourseLogin()">
         <span class="gico"><svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8c1.8-4.4 6-7.5 11.1-7.5 3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.4-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.2c-.4.4 6.7-4.9 6.7-14.8 0-1.2-.1-2.4-.4-3.5z"/></svg></span>
         Sign in with Google
       </button>
-      <div id="ov-auth-error" class="auth-error" style="max-width:320px;margin:12px auto 0"></div>
+      <div id="ov-auth-error-2" class="auth-error" style="max-width:340px;margin:12px auto 0;display:none"></div>
     </div>
   </div>
+
 </section>
 
 <!-- ============ ROUTE: AUTH GATE (hidden, kept for redirect flow) ============ -->
@@ -1147,10 +1383,9 @@ function enterCourse(){
 }
 
 function showCourseLogin(){
-  const err = document.getElementById('ov-auth-error');
-  if(err) err.style.display='none';
+  ['ov-auth-error','ov-auth-error-2'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
   if (!courseSupa){
-    if(err){ err.textContent='Sign-in not yet configured.'; err.style.display='block'; }
+    ['ov-auth-error','ov-auth-error-2'].forEach(id=>{const e=document.getElementById(id);if(e){e.textContent='Sign-in not yet configured.';e.style.display='block';}});
     return;
   }
   courseSupa.auth.signInWithOAuth({
@@ -1229,8 +1464,8 @@ async function bootCourseSession(){
           renderCourseUserArea(email);
           enterCourse();
         } else {
-          const err = document.getElementById('ov-auth-error');
-          if(err){ err.textContent='Access denied. Contact SENLA to request access.'; err.style.display='block'; }
+          courseSupa.auth.signOut();
+          ['ov-auth-error','ov-auth-error-2'].forEach(id=>{const e=document.getElementById(id);if(e){e.textContent='Access denied. Contact SENLA to request access.';e.style.display='block';}});
         }
       } else if(event==='SIGNED_OUT'){
         renderCourseUserArea(null);

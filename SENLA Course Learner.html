@@ -1,0 +1,1107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Entrepreneur Bootcamps — SENLA</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --navy:#002157;
+    --navy-2:#00163d;
+    --navy-3:#0e3a82;
+    --paper:#f6f1e7;
+    --paper-2:#efe8d6;
+    --ink:#0b1326;
+    --mute:#5a5f70;
+    --line:#dfd6c2;
+    --accent:#c75a36;
+    --accent-soft:#f5e6dc;
+    --white:#fbfaf5;
+    --ok:#2c7a4b;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;letter-spacing:-.01em;line-height:1.1;margin:0}
+  button{font-family:inherit;cursor:pointer}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+  .eyebrow{font-family:'Inter';font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:99px;font-weight:600;font-size:14px;border:none;transition:all .15s ease}
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.primary:hover{background:#a8492a}
+  .btn.dark{background:var(--navy);color:#fff}
+  .btn.dark:hover{background:var(--navy-3)}
+  .btn.ghost{background:transparent;border:1.5px solid var(--navy);color:var(--navy)}
+  .btn.ghost:hover{background:var(--navy);color:#fff}
+  .btn.lg{padding:14px 30px;font-size:15px}
+  .btn.sm{padding:7px 14px;font-size:13px}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+
+  /* =================== ROUTE SHELL =================== */
+  .route{display:none;min-height:100vh}
+  .route.active{display:block}
+
+  /* =================== HEADER =================== */
+  header.app{
+    background:var(--navy);color:#fff;
+    padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;
+    position:sticky;top:0;z-index:40;border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  header.app .brand{display:flex;align-items:center;gap:14px}
+  header.app .brand img{height:40px;border-radius:4px}
+  header.app .brand .label{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:600;border-left:1px solid rgba(255,255,255,.2);padding-left:14px;margin-left:6px}
+  header.app .right{display:flex;align-items:center;gap:14px}
+  header.app .pill-preview{
+    background:var(--accent-soft);color:var(--accent);
+    padding:5px 12px;border-radius:99px;font-size:11px;font-weight:600;letter-spacing:.08em;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  header.app .pill-preview .d{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
+  header.app .avatar{
+    width:36px;height:36px;border-radius:50%;background:#fff;color:var(--navy);
+    display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display';font-size:16px;
+    border:1.5px solid rgba(255,255,255,.25);cursor:pointer;
+  }
+  header.app .menu-link{font-size:13px;color:rgba(255,255,255,.7);cursor:pointer}
+  header.app .menu-link:hover{color:#fff}
+
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  /* =================== WELCOME =================== */
+  .welcome{
+    min-height:100vh;
+    background:linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+    display:flex;align-items:center;padding:60px 28px;
+  }
+  .welcome-card{
+    max-width:880px;margin:0 auto;
+    background:#fff;border:1px solid var(--line);border-radius:24px;
+    padding:60px 64px;box-shadow:0 30px 60px -20px rgba(0,33,87,.12);
+  }
+  .welcome-card .brand{display:flex;align-items:center;gap:14px;margin-bottom:32px}
+  .welcome-card .brand img{height:48px;border-radius:4px}
+  .welcome-card h1{
+    font-size:clamp(40px,5vw,64px);margin-bottom:18px;line-height:1.05;
+  }
+  .welcome-card h1 em{font-style:italic;color:var(--accent)}
+  .welcome-card .lead{font-size:18px;color:#3a3f50;line-height:1.6;margin:0 0 32px;max-width:60ch}
+  .welcome-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:36px}
+  .pillar{background:var(--paper);border-radius:14px;padding:24px}
+  .pillar .ico{font-size:28px;margin-bottom:12px}
+  .pillar b{display:block;font-family:'DM Serif Display';font-size:20px;margin-bottom:4px}
+  .pillar span{font-size:13px;color:var(--mute);line-height:1.5}
+  .welcome-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .welcome-meta{font-size:13px;color:var(--mute);margin-left:auto}
+
+  /* =================== COURSE HOME =================== */
+  .course-home{padding:48px 0 80px}
+  .course-hero{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:end;margin-bottom:48px}
+  .course-hero h1{font-size:clamp(40px,5vw,68px);line-height:1.05;margin-bottom:14px}
+  .course-hero h1 em{font-style:italic;color:var(--accent)}
+  .course-hero p{font-size:17px;color:#3a3f50;max-width:50ch;line-height:1.6;margin:0}
+  .progress-circle{
+    background:var(--navy);color:#fff;border-radius:18px;
+    padding:28px 32px;display:flex;align-items:center;gap:20px;
+  }
+  .progress-circle .ring{
+    width:80px;height:80px;flex-shrink:0;position:relative;
+  }
+  .progress-circle .ring svg{transform:rotate(-90deg)}
+  .progress-circle .ring .bg{stroke:rgba(255,255,255,.15)}
+  .progress-circle .ring .fg{stroke:var(--accent);transition:stroke-dashoffset .6s ease}
+  .progress-circle .ring .pct{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:'DM Serif Display';font-size:22px;
+  }
+  .progress-circle .info{flex:1}
+  .progress-circle .info .lbl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px}
+  .progress-circle .info .v{font-family:'DM Serif Display';font-size:24px;line-height:1.2}
+
+  .weeks-list{display:grid;gap:14px}
+  .week-card{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;display:grid;grid-template-columns:64px 1fr auto;gap:22px;align-items:center;
+    cursor:pointer;transition:all .15s ease;
+  }
+  .week-card:hover{border-color:var(--navy);transform:translateY(-1px);box-shadow:0 10px 24px -10px rgba(0,33,87,.15)}
+  .week-card.locked{opacity:.55;cursor:not-allowed}
+  .week-card.locked:hover{transform:none;border-color:var(--line);box-shadow:none}
+  .week-card .num{
+    width:56px;height:56px;border-radius:14px;background:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'DM Serif Display';font-size:24px;color:var(--navy);
+  }
+  .week-card.done .num{background:var(--ok);color:#fff}
+  .week-card.current .num{background:var(--navy);color:#fff;box-shadow:0 0 0 4px rgba(0,33,87,.12)}
+  .week-card.locked .num{background:#ece6d4;color:#a8a08c}
+  .week-card .info h3{font-family:'DM Serif Display';font-size:22px;line-height:1.2;margin-bottom:4px}
+  .week-card .info .lab{font-size:12px;color:var(--mute);letter-spacing:.04em}
+  .week-card .status{display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-size:12px}
+  .week-card .pill{
+    padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;letter-spacing:.04em;
+  }
+  .pill.done{background:#e0f1e6;color:var(--ok)}
+  .pill.now{background:var(--accent-soft);color:var(--accent)}
+  .pill.locked{background:var(--paper-2);color:var(--mute)}
+  .week-card .arrow{font-size:20px;color:var(--mute)}
+
+  /* =================== WEEK DETAIL =================== */
+  .week-detail{padding:0 0 80px;background:var(--paper)}
+  .week-top{
+    background:var(--navy);color:#fff;padding:48px 0 36px;border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .back-link{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.7);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:20px}
+  .back-link:hover{color:#fff}
+  .week-top .row{display:grid;grid-template-columns:1.5fr 1fr;gap:48px;align-items:end}
+  .week-top h1{font-size:clamp(36px,4.5vw,56px);color:#fff;line-height:1.05;margin-bottom:14px}
+  .week-top h1 em{color:var(--accent);font-style:italic}
+  .week-top .obj{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;font-weight:600}
+  .week-top .summary{font-size:17px;color:rgba(255,255,255,.8);max-width:54ch;line-height:1.6}
+  .week-stats{display:flex;flex-direction:column;gap:14px;border-left:1px solid rgba(255,255,255,.15);padding-left:32px}
+  .week-stats .row-stat{display:flex;justify-content:space-between;gap:18px;font-size:13px;color:rgba(255,255,255,.7)}
+  .week-stats .row-stat b{color:#fff;font-weight:600}
+
+  /* video player */
+  .video-section{margin:-1px 0 0;background:#000;color:#fff}
+  .video-frame{
+    max-width:1200px;margin:0 auto;aspect-ratio:16/9;position:relative;
+    background:linear-gradient(135deg,#001a4a,#0e3a82);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .video-frame .placeholder{
+    color:rgba(255,255,255,.6);text-align:center;
+  }
+  .video-frame .placeholder .play{
+    width:88px;height:88px;border-radius:50%;background:rgba(255,255,255,.95);color:var(--navy);
+    display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 16px;
+    cursor:pointer;transition:transform .2s ease;
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
+  }
+  .video-frame .placeholder .play:hover{transform:scale(1.05)}
+  .video-frame .placeholder .lbl{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.5)}
+  .video-frame .placeholder .ti{font-family:'DM Serif Display';font-size:26px;color:#fff;margin-top:8px}
+
+  .progress-strip{
+    max-width:1200px;margin:0 auto;padding:18px 28px;
+    background:var(--navy-2);color:#fff;display:flex;align-items:center;gap:24px;
+  }
+  .progress-strip .pct-box{
+    width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.05);
+    display:flex;align-items:center;justify-content:center;font-size:18px;
+  }
+  .progress-strip .info{flex:1}
+  .progress-strip .info b{display:block;font-size:13px;margin-bottom:6px}
+  .progress-strip .info .bar{
+    height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;
+  }
+  .progress-strip .info .bar i{
+    display:block;height:100%;background:var(--accent);width:0%;transition:width 1s ease;
+  }
+  .progress-strip .pct{font-family:'DM Serif Display';font-size:20px}
+  .progress-strip .force{
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;
+    padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:.08em;
+  }
+  .progress-strip .force:hover{background:rgba(255,255,255,.15)}
+
+  /* story block */
+  .story-block{
+    background:var(--accent-soft);border-left:4px solid var(--accent);
+    padding:32px 36px;margin:36px 0;border-radius:0 12px 12px 0;
+  }
+  .story-block .lbl{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .story-block .quote{font-family:'DM Serif Display';font-style:italic;font-size:22px;line-height:1.5;color:#3a2a20}
+
+  /* activity steps */
+  .activity{margin:48px 0}
+  .activity h2{font-size:28px;margin-bottom:24px;display:flex;align-items:center;gap:14px}
+  .activity h2 .ico{
+    width:48px;height:48px;border-radius:12px;background:var(--paper);
+    display:flex;align-items:center;justify-content:center;font-size:22px;
+  }
+  .steps{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .step{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:22px 24px;display:flex;gap:16px;align-items:flex-start;
+    transition:all .15s ease;
+  }
+  .step .n{
+    flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display';font-size:16px;
+  }
+  .step .t{font-size:15px;line-height:1.5;color:var(--ink)}
+
+  /* discussion */
+  .discussion{margin:48px 0}
+  .discussion h2{font-size:28px;margin-bottom:8px}
+  .discussion .sub{color:var(--mute);font-size:14px;margin-bottom:24px}
+  .q-locked{
+    text-align:center;padding:48px 28px;border:2px dashed var(--line);
+    border-radius:14px;background:#fff;
+  }
+  .q-locked .lockico{
+    width:60px;height:60px;margin:0 auto 18px;border-radius:50%;
+    background:var(--paper);display:flex;align-items:center;justify-content:center;font-size:24px;
+  }
+  .q-locked h3{font-size:22px;margin-bottom:6px}
+  .q-locked p{color:var(--mute);font-size:14px;margin:0}
+  .q-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .q-card{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:22px;
+  }
+  .q-card .qnum{
+    font-family:'DM Serif Display';font-size:14px;color:var(--accent);margin-bottom:8px;font-style:italic;letter-spacing:.04em;
+  }
+  .q-card .q{font-family:'DM Serif Display';font-size:18px;line-height:1.35;margin-bottom:14px;color:var(--ink)}
+  .q-card textarea{
+    width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;
+    font-family:inherit;font-size:14px;background:#fafaf5;outline:none;
+    min-height:80px;resize:vertical;line-height:1.5;
+  }
+  .q-card textarea:focus{border-color:var(--navy);background:#fff}
+
+  /* goal save */
+  .save-section{
+    margin:64px 0 0;padding:48px 0 0;border-top:1px solid var(--line);
+  }
+  .save-section h2{font-size:28px;margin-bottom:8px}
+  .save-section .sub{color:var(--mute);font-size:14px;margin-bottom:28px}
+  .save-fields{display:grid;grid-template-columns:1fr 1.2fr;gap:18px}
+  .save-fields .field label{display:block;font-size:11px;font-weight:600;color:var(--mute);margin-bottom:8px;letter-spacing:.14em;text-transform:uppercase}
+  .save-fields .field input,
+  .save-fields .field textarea{
+    width:100%;border:1px solid var(--line);border-radius:12px;padding:18px 22px;
+    font-family:'DM Serif Display';font-size:24px;background:#fff;outline:none;
+    transition:border-color .15s;
+  }
+  .save-fields .field textarea{font-family:'Inter';font-size:15px;line-height:1.6;font-weight:400;min-height:120px;resize:vertical}
+  .save-fields .field input:focus,
+  .save-fields .field textarea:focus{border-color:var(--navy)}
+
+  .save-btn{
+    margin-top:28px;width:100%;padding:18px;background:var(--navy);color:#fff;border:none;
+    border-radius:99px;font-size:14px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
+    cursor:pointer;transition:all .15s;
+  }
+  .save-btn:hover{background:var(--navy-3)}
+  .save-btn.done{background:var(--ok)}
+  .save-btn.done::before{content:"✓ "}
+
+  /* =================== PROGRESS PAGE =================== */
+  .progress-page{padding:48px 0 80px}
+  .big-progress{
+    background:var(--navy);color:#fff;border-radius:24px;padding:48px 56px;
+    display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:center;
+    margin-bottom:48px;position:relative;overflow:hidden;
+  }
+  .big-progress::before{
+    content:"";position:absolute;right:-100px;top:-100px;width:400px;height:400px;
+    background:radial-gradient(circle,rgba(199,90,54,.25),transparent 60%);
+  }
+  .big-progress h2{font-size:48px;color:#fff;line-height:1.05;margin-bottom:16px;position:relative}
+  .big-progress h2 em{color:var(--accent);font-style:italic}
+  .big-progress .l{color:rgba(255,255,255,.7);font-size:17px;max-width:48ch;line-height:1.6;position:relative}
+  .big-ring{position:relative;display:flex;align-items:center;justify-content:center}
+  .big-ring svg{width:240px;height:240px;transform:rotate(-90deg)}
+  .big-ring .bg{stroke:rgba(255,255,255,.1)}
+  .big-ring .fg{stroke:var(--accent);transition:stroke-dashoffset 1s ease;stroke-linecap:round}
+  .big-ring .pct-big{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:'DM Serif Display';font-size:56px;
+  }
+
+  .log-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .log-card{
+    background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;
+  }
+  .log-card .num{font-family:'DM Serif Display';font-size:14px;color:var(--accent);margin-bottom:6px;font-style:italic}
+  .log-card h3{font-family:'DM Serif Display';font-size:20px;margin-bottom:14px;line-height:1.2}
+  .log-card .pill{
+    display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;
+    letter-spacing:.04em;margin-bottom:12px;
+  }
+  .log-card .row{font-size:13px;padding:8px 0;border-top:1px solid var(--line);color:var(--mute);display:flex;justify-content:space-between;gap:10px}
+  .log-card .row b{color:var(--ink);font-weight:600;font-family:'DM Serif Display';font-size:16px}
+
+  /* =================== BOTTOM NAV =================== */
+  .bnav{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    background:#fff;border:1px solid var(--line);border-radius:99px;
+    box-shadow:0 30px 60px -20px rgba(0,33,87,.25);
+    padding:6px;display:flex;gap:4px;z-index:50;
+  }
+  .bnav button{
+    background:transparent;border:none;padding:12px 22px;border-radius:99px;
+    font-size:13px;font-weight:600;color:var(--mute);
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .bnav button.on{background:var(--navy);color:#fff}
+  .bnav button:hover:not(.on){color:var(--navy)}
+
+  /* =================== TOAST =================== */
+  .toast{
+    position:fixed;bottom:90px;left:50%;transform:translate(-50%,20px);background:var(--navy);color:#fff;
+    padding:14px 22px;border-radius:99px;font-size:14px;font-weight:500;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);opacity:0;pointer-events:none;
+    transition:all .25s ease;z-index:200;display:flex;align-items:center;gap:10px;
+  }
+  .toast.show{transform:translate(-50%,0);opacity:1}
+  .toast .d{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+
+  @media (max-width:960px){
+    .course-hero,.week-top .row,.big-progress{grid-template-columns:1fr;gap:24px}
+    .week-stats{border-left:none;border-top:1px solid rgba(255,255,255,.15);padding-left:0;padding-top:18px}
+    .steps,.q-grid,.welcome-pillars,.save-fields,.log-grid{grid-template-columns:1fr}
+    .welcome-card{padding:36px 28px}
+    .video-frame{border-radius:0}
+  }
+
+  /* =================== AUTH GATE =================== */
+  .auth-gate{
+    min-height:100vh;
+    background:linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+    display:flex;align-items:center;justify-content:center;padding:40px 20px;
+  }
+  .auth-card{
+    background:#fff;border:1px solid var(--line);border-radius:18px;
+    padding:48px 44px;width:100%;max-width:420px;
+    box-shadow:0 30px 60px -20px rgba(0,33,87,.12);text-align:center;
+  }
+  .auth-card .mark{
+    width:64px;height:64px;border-radius:12px;background:var(--navy);
+    margin:0 auto 24px;display:flex;align-items:center;justify-content:center;
+    color:#fff;font-family:'DM Serif Display';font-size:32px;
+  }
+  .auth-card h2{font-size:32px;margin-bottom:6px}
+  .auth-card .sub{color:var(--mute);font-size:14px;margin-bottom:28px;line-height:1.55}
+  .auth-error{
+    background:#fff3e8;border:1px solid #f6d4be;color:#a8492a;
+    font-size:13px;padding:12px 14px;border-radius:8px;
+    margin-bottom:16px;display:none;text-align:left;line-height:1.5;
+  }
+  .auth-error b{color:#7d2e10}
+  .auth-card .note{font-size:12px;color:var(--mute);margin-top:18px;line-height:1.55}
+  .auth-card .note a{color:var(--navy);font-weight:600}
+  .gbtn{
+    width:100%;display:inline-flex;align-items:center;justify-content:center;gap:12px;
+    border:1.5px solid var(--ink);background:#fff;padding:13px 18px;border-radius:10px;
+    font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;color:var(--ink);
+    transition:all .15s ease;margin-bottom:12px;
+  }
+  .gbtn:hover{background:#fafaf5;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+  .gbtn .gico{width:18px;height:18px;flex:0 0 18px}
+  .gbtn .gico svg{width:100%;height:100%;display:block}
+</style>
+</head>
+<body>
+
+<!-- ============ ROUTE: AUTH GATE ============ -->
+<section class="route active" id="r-auth">
+  <div class="auth-gate">
+    <div class="auth-card">
+      <div class="mark">S</div>
+      <h2>Sign in to access</h2>
+      <div class="sub">Entrepreneur Bootcamps is available to authorized SENLA team members and facilitators. Sign in with the same Google account used for the blog.</div>
+
+      <div class="auth-error" id="auth-error" style="display:none">
+        <b>Access denied.</b><br/>
+        Your Google account is not on the authorized list. Contact SENLA to request access.
+        <div style="margin-top:8px"><a href="SENLA Contact.html" style="color:#7d2e10;font-weight:600">Request access →</a></div>
+      </div>
+
+      <div class="auth-error" id="auth-no-supabase" style="display:none">
+        <b>Google sign-in not yet configured.</b><br/>
+        Connect Supabase in the <a href="SENLA Blog.html" style="color:#7d2e10;font-weight:600">Blog settings</a> first, then return here to sign in.
+      </div>
+
+      <button class="gbtn" onclick="courseSignIn()">
+        <span class="gico">
+          <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8c1.8-4.4 6-7.5 11.1-7.5 3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.4-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.2c-.4.4 6.7-4.9 6.7-14.8 0-1.2-.1-2.4-.4-3.5z"/></svg>
+        </span>
+        Continue with Google
+      </button>
+
+      <div class="note">Access is limited to SENLA team members and authorized facilitators.<br/><a href="SENLA Contact.html">Request access →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROUTE: WELCOME (one-time onboarding) ============ -->
+<section class="route" id="r-welcome">
+  <div class="welcome">
+    <div class="welcome-card">
+      <div class="brand">
+        <img src="images/logo.jpg" alt="SENLA" />
+        <div style="font-family:'Inter';font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);font-weight:600;border-left:1px solid var(--line);padding-left:14px">Entrepreneur Bootcamps</div>
+      </div>
+
+      <span class="eyebrow" style="display:inline-block;margin-bottom:14px">Practical business learning</span>
+      <h1>Build your business. <em>Real</em> results.</h1>
+      <p class="lead">Immersive, hands-on learning for micro and small-business owners — practical tools, peer support, and growth strategies grounded in real-world realities.</p>
+
+      <div class="welcome-pillars">
+        <div class="pillar">
+          <div class="ico">🎥</div>
+          <b>Inspiration</b>
+          <span>Documentaries of real entrepreneurs overcoming obstacles</span>
+        </div>
+        <div class="pillar">
+          <div class="ico">🎯</div>
+          <b>Planning</b>
+          <span>Break large dreams into tangible weekly sales targets</span>
+        </div>
+        <div class="pillar">
+          <div class="ico">🤝</div>
+          <b>Peer support</b>
+          <span>A circle to share talents and offer encouragement</span>
+        </div>
+      </div>
+
+      <div class="welcome-actions">
+        <button class="btn primary lg" onclick="go('home')">Begin Week 1 →</button>
+        <button class="btn ghost" onclick="resetProgress()">Reset my progress</button>
+        <span class="welcome-meta">Continue where you left off</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROUTE: COURSE HOME ============ -->
+<section class="route" id="r-home">
+  <header class="app">
+    <div class="brand">
+      <img src="images/logo.jpg" alt="SENLA" />
+      <span class="label">Entrepreneur Bootcamps</span>
+    </div>
+    <div class="right">
+      <span class="pill-preview"><span class="d"></span> LEARNER PREVIEW</span>
+      <span class="menu-link" onclick="courseSignOut()">Sign out</span>
+      <div class="avatar" title="Joan Mukasa">J</div>
+    </div>
+  </header>
+
+  <div class="wrap course-home">
+
+    <div class="course-hero">
+      <div>
+        <div class="eyebrow" style="margin-bottom:14px">Your learning journey</div>
+        <h1>Welcome back, <em>Joan.</em></h1>
+        <p>Continue your 5-week journey to building a flourishing business. Each week unlocks once you complete the previous one.</p>
+      </div>
+      <div class="progress-circle">
+        <div class="ring">
+          <svg viewBox="0 0 80 80">
+            <circle class="bg" cx="40" cy="40" r="34" stroke-width="6" fill="none" />
+            <circle class="fg" id="home-fg" cx="40" cy="40" r="34" stroke-width="6" fill="none"
+                    stroke-dasharray="213.6" stroke-dashoffset="213.6" stroke-linecap="round"/>
+          </svg>
+          <div class="pct" id="home-pct">0%</div>
+        </div>
+        <div class="info">
+          <div class="lbl">Overall progress</div>
+          <div class="v" id="home-progress-text">Just getting started</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="weeks-list" id="weeks-list"></div>
+  </div>
+</section>
+
+<!-- ============ ROUTE: WEEK DETAIL ============ -->
+<section class="route" id="r-week">
+  <header class="app">
+    <div class="brand">
+      <img src="images/logo.jpg" alt="SENLA" />
+      <span class="label">Entrepreneur Bootcamps</span>
+    </div>
+    <div class="right">
+      <span class="pill-preview"><span class="d"></span> LEARNER PREVIEW</span>
+      <span class="menu-link" onclick="go('home')">All weeks</span>
+      <div class="avatar" title="Joan Mukasa">J</div>
+    </div>
+  </header>
+
+  <div class="week-detail">
+    <div class="week-top">
+      <div class="wrap">
+        <span class="back-link" onclick="go('home')">← All weeks</span>
+        <div class="row">
+          <div>
+            <div class="obj" id="w-obj">Objective</div>
+            <h1 id="w-title">Week title</h1>
+            <p class="summary" id="w-summary"></p>
+          </div>
+          <div class="week-stats">
+            <div class="row-stat"><span>Week of 5</span><b id="w-num">1 / 5</b></div>
+            <div class="row-stat"><span>Status</span><b id="w-status">In progress</b></div>
+            <div class="row-stat"><span>Activities</span><b id="w-acount">0</b></div>
+            <div class="row-stat"><span>Discussion questions</span><b id="w-qcount">0</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO (conditional) -->
+    <div class="video-section" id="w-video-section">
+      <div class="video-frame">
+        <div class="placeholder">
+          <div class="play" onclick="startVideo()">▶</div>
+          <div class="lbl">Documentary film</div>
+          <div class="ti" id="w-video-title">Watch this week's documentary</div>
+        </div>
+      </div>
+      <div class="progress-strip">
+        <div class="pct-box">🎬</div>
+        <div class="info">
+          <b id="w-video-msg">Watch the documentary to unlock the circle discussion</b>
+          <div class="bar"><i id="w-video-bar"></i></div>
+        </div>
+        <div class="pct" id="w-video-pct">0%</div>
+        <button class="force" onclick="markVideoDone()">Force unlock</button>
+      </div>
+    </div>
+
+    <div class="wrap" style="padding-top:32px">
+
+      <!-- STORY (conditional) -->
+      <div class="story-block" id="w-story-block" style="display:none">
+        <div class="lbl">💬 Contextual story</div>
+        <div class="quote" id="w-story-text"></div>
+      </div>
+
+      <!-- ACTIVITY (conditional) -->
+      <div class="activity" id="w-activity-section" style="display:none">
+        <h2><span class="ico" id="w-act-ico">📈</span> <span id="w-act-label">Session Activity</span></h2>
+        <div class="steps" id="w-act-steps"></div>
+      </div>
+
+      <!-- DISCUSSION -->
+      <div class="discussion">
+        <h2>Circle discussion</h2>
+        <p class="sub">Share your reflections with the group. Answers save automatically.</p>
+
+        <div class="q-locked" id="q-locked" style="display:none">
+          <div class="lockico">🔒</div>
+          <h3>Discussion locked</h3>
+          <p>Finish watching this week's documentary to unlock the discussion questions.</p>
+        </div>
+
+        <div class="q-grid" id="q-list"></div>
+      </div>
+
+      <!-- GOAL + NOTES -->
+      <div class="save-section">
+        <h2>Your goal this week</h2>
+        <p class="sub">Set a target you can reach by next week's circle. Be specific, be honest.</p>
+        <div class="save-fields">
+          <div class="field">
+            <label>Weekly sales target (UGX)</label>
+            <input type="text" id="w-goal" placeholder="e.g. 100,000" oninput="saveWeek()" />
+          </div>
+          <div class="field">
+            <label>Personal notes &amp; reflections</label>
+            <textarea id="w-notes" placeholder="What did you take from today's session?" oninput="saveWeek()"></textarea>
+          </div>
+        </div>
+        <button class="save-btn" id="w-save" onclick="completeWeek()">Save and continue →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROUTE: PROGRESS ============ -->
+<section class="route" id="r-progress">
+  <header class="app">
+    <div class="brand">
+      <img src="images/logo.jpg" alt="SENLA" />
+      <span class="label">Entrepreneur Bootcamps</span>
+    </div>
+    <div class="right">
+      <span class="pill-preview"><span class="d"></span> LEARNER PREVIEW</span>
+      <span class="menu-link" onclick="courseSignOut()">Sign out</span>
+      <div class="avatar" title="Joan Mukasa">J</div>
+    </div>
+  </header>
+
+  <div class="wrap progress-page">
+    <div class="big-progress">
+      <div>
+        <div class="eyebrow" style="color:var(--accent);margin-bottom:14px">Your success pathway</div>
+        <h2>One step <em>every</em> day.</h2>
+        <p class="l">"By the time the lamb became a sheep, she had become so strong it was easy for her." Track your weekly goals, reflections, and accomplishments here.</p>
+      </div>
+      <div class="big-ring">
+        <svg viewBox="0 0 240 240">
+          <circle class="bg" cx="120" cy="120" r="100" stroke-width="20" fill="none" />
+          <circle class="fg" id="big-fg" cx="120" cy="120" r="100" stroke-width="20" fill="none"
+                  stroke-dasharray="628.3" stroke-dashoffset="628.3" />
+        </svg>
+        <div class="pct-big" id="big-pct">0%</div>
+      </div>
+    </div>
+
+    <div class="log-grid" id="log-grid"></div>
+  </div>
+</section>
+
+<!-- ============ BOTTOM NAV ============ -->
+<div class="bnav" id="bnav" style="display:none">
+  <button id="nav-home" class="on" onclick="go('home')">📚 Course</button>
+  <button id="nav-progress" onclick="go('progress')">🏆 Progress</button>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast"><span class="d"></span><span id="toast-msg">Saved</span></div>
+
+<script>
+/* =====================================================
+   CURRICULUM DATA (from aspire-senla.html)
+   ===================================================== */
+const WEEKS = [
+  {
+    id: 1, label: 'Vision',
+    title: 'Aspirations Development',
+    objective: 'Inspirational reflection on future goals',
+    summary: 'Watch a documentary about real entrepreneurs overcoming obstacles. Reflect on your own business, identify what success looks like for you, and name the obstacles in your way.',
+    hasVideo: true,
+    videoTitle: 'Real entrepreneurs, real journeys',
+    activity: null,
+    story: null,
+    questions: [
+      'What did you think about the video? How did it feel watching it?',
+      'How satisfied are you at present with your own small business? Why?',
+      'Describe what your business would be like if it were perfectly successful.',
+      'What do you see as the most challenging obstacles keeping you from success?',
+      'How might it be possible to overcome some of these challenging obstacles?'
+    ]
+  },
+  {
+    id: 2, label: 'Setting',
+    title: 'Goal-Setting Strategy',
+    objective: 'Articulate tangible short & long-term goals',
+    summary: 'Translate dreams into tangible weekly targets. Calculate the sales increase you would need to reach your long-term goal — and the obstacles you will face this week.',
+    hasVideo: false,
+    story: 'A girl bet her friend that she could carry a sheep across the pasture. Her friend said it was impossible. But after a new lamb was born, every day the girl would carry the lamb. By the time it was grown, she was strong enough that carrying the sheep was easy!',
+    activity: {
+      ico: '📈',
+      label: 'Goal-setting exercise',
+      steps: [
+        'Tell the Lamb Story to the group',
+        'State your tangible long-term weekly revenue goal (6–12 months from now)',
+        'Calculate the weekly sales increase required to reach it',
+        'Identify specific obstacles for this week'
+      ]
+    },
+    questions: [
+      'What are your long-term dreams? How would they help your family?',
+      'What is your tangible revenue goal 6–12 months from now?',
+      'What are the first obstacles to meeting your goal this week?',
+      'What practical steps will you take to overcome them?'
+    ]
+  },
+  {
+    id: 3, label: 'Agency',
+    title: 'Recognition of Agency',
+    objective: 'Identify internal gifts &amp; capabilities',
+    summary: 'Name your strengths and the talents that others see in you. Use them as leverage for the obstacles ahead.',
+    hasVideo: false,
+    story: null,
+    activity: {
+      ico: '💎',
+      label: 'Talent exercise',
+      steps: [
+        'Check-in: goal outcome from last week',
+        'Name 2 things you are excellent at in business',
+        'Name 2 things others say you are good at',
+        'Group praise: sisters identify talents they appreciate about you'
+      ]
+    },
+    questions: [
+      'What was your goal this past week? Were you able to reach it?',
+      'What challenging obstacles did you face in your sales?',
+      'How can your natural talents help you overcome these obstacles?'
+    ]
+  },
+  {
+    id: 4, label: 'Pathway',
+    title: 'Visualizing Pathways',
+    objective: 'Step-by-step visualization',
+    summary: 'Watch another documentary and map out the sequence of steps from where you are to where you want to be. Who in your community can help?',
+    hasVideo: true,
+    videoTitle: 'Mapping the road ahead',
+    activity: null,
+    story: null,
+    questions: [
+      'What were the obstacles the women in the video had to overcome?',
+      'What community resources or people could help you overcome your current obstacles?',
+      'Identify the sequence of steps to meet your goal. What does your pathway look like?'
+    ]
+  },
+  {
+    id: 5, label: 'Support',
+    title: 'Regular Check-In',
+    objective: 'Weekly circle support &amp; accountability',
+    summary: 'Report your sales achievement, share obstacles, and offer advice to your sisters. The circle becomes the engine of progress.',
+    hasVideo: false,
+    story: null,
+    activity: {
+      ico: '🔄',
+      label: 'Support circle',
+      steps: [
+        'Report your weekly sales achievement',
+        'Share obstacles you faced this week',
+        'Offer advice and encouragement to sisters'
+      ]
+    },
+    questions: [
+      'Did you meet your goal? What obstacles did you confront?',
+      'Using your talents and resources, how can you overcome next week\'s obstacles?',
+      'How far along are you to reaching your long-term goal?'
+    ]
+  }
+];
+
+/* ===================== STATE ===================== */
+const STATE_KEY = 'senla_learner_v1';
+const DEFAULT_STATE = {
+  unlocked: [1],
+  completed: [],
+  activeWeek: 1,
+  perWeek: {} // { 1: { goal, notes, answers:[], videoPct:0, videoDone:false } }
+};
+function loadState(){
+  const raw = localStorage.getItem(STATE_KEY);
+  if (!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+  try { return { ...DEFAULT_STATE, ...JSON.parse(raw) } } catch { return JSON.parse(JSON.stringify(DEFAULT_STATE)) }
+}
+function saveState(){ localStorage.setItem(STATE_KEY, JSON.stringify(S)) }
+let S = loadState();
+
+function wd(id){
+  if (!S.perWeek[id]) S.perWeek[id] = { goal:'', notes:'', answers:[], videoPct:0, videoDone:false };
+  return S.perWeek[id];
+}
+
+/* ===================== ROUTING ===================== */
+function go(name){
+  document.querySelectorAll('.route').forEach(r => r.classList.remove('active'));
+  document.getElementById('r-' + name).classList.add('active');
+  window.scrollTo({top:0});
+  document.getElementById('bnav').style.display = (name === 'home' || name === 'progress') ? 'flex' : 'none';
+  document.getElementById('nav-home').classList.toggle('on', name === 'home');
+  document.getElementById('nav-progress').classList.toggle('on', name === 'progress');
+  if (name === 'home') renderHome();
+  if (name === 'week') renderWeek(S.activeWeek);
+  if (name === 'progress') renderProgress();
+}
+
+function resetProgress(){
+  if (!confirm('Reset all your progress? This cannot be undone.')) return;
+  S = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  saveState();
+  toast('Progress reset');
+}
+
+/* ===================== HOME ===================== */
+function renderHome(){
+  const list = document.getElementById('weeks-list');
+  list.innerHTML = WEEKS.map(w => {
+    const done = S.completed.includes(w.id);
+    const unlocked = S.unlocked.includes(w.id);
+    const cls = done ? 'done' : (unlocked && !done && w.id === Math.max(...S.unlocked)) ? 'current' : !unlocked ? 'locked' : '';
+    const pill = done ? '<span class="pill done">Completed</span>'
+                : unlocked ? '<span class="pill now">In progress</span>'
+                : '<span class="pill locked">Locked</span>';
+    return `
+      <div class="week-card ${cls}" onclick="${unlocked?`openWeek(${w.id})`:`toast('Complete previous week to unlock')`}">
+        <div class="num">${done ? '✓' : w.id}</div>
+        <div class="info">
+          <div class="lab">Week ${w.id} · ${w.label}</div>
+          <h3>${w.title}</h3>
+        </div>
+        <div class="status">
+          ${pill}
+          <span class="arrow">→</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const pct = Math.round((S.completed.length / WEEKS.length) * 100);
+  const circ = 2 * Math.PI * 34;
+  document.getElementById('home-fg').setAttribute('stroke-dashoffset', circ * (1 - pct/100));
+  document.getElementById('home-pct').textContent = pct + '%';
+  document.getElementById('home-progress-text').textContent =
+    pct === 0 ? 'Just getting started' :
+    pct === 100 ? 'Course complete! 🎉' :
+    `${S.completed.length} of ${WEEKS.length} weeks complete`;
+}
+
+function openWeek(id){ S.activeWeek = id; saveState(); go('week') }
+
+/* ===================== WEEK ===================== */
+function renderWeek(id){
+  const w = WEEKS.find(x => x.id === id);
+  const d = wd(id);
+  document.getElementById('w-obj').innerHTML = w.objective;
+  document.getElementById('w-title').textContent = w.title;
+  document.getElementById('w-summary').textContent = w.summary;
+  document.getElementById('w-num').textContent = `${w.id} / 5`;
+  document.getElementById('w-status').textContent = S.completed.includes(id) ? 'Completed' : 'In progress';
+  document.getElementById('w-acount').textContent = w.activity ? w.activity.steps.length : 0;
+  document.getElementById('w-qcount').textContent = w.questions.length;
+
+  // VIDEO
+  const vidSec = document.getElementById('w-video-section');
+  if (w.hasVideo){
+    vidSec.style.display = '';
+    document.getElementById('w-video-title').textContent = w.videoTitle || 'This week\'s documentary';
+    const pct = d.videoDone ? 100 : (d.videoPct || 0);
+    document.getElementById('w-video-bar').style.width = pct + '%';
+    document.getElementById('w-video-pct').textContent = pct + '%';
+    document.getElementById('w-video-msg').textContent = d.videoDone ? '✓ Documentary complete — circle discussion unlocked' : 'Watch the documentary to unlock the circle discussion';
+  } else {
+    vidSec.style.display = 'none';
+  }
+
+  // STORY
+  const storyBlock = document.getElementById('w-story-block');
+  if (w.story){
+    storyBlock.style.display = '';
+    document.getElementById('w-story-text').textContent = w.story;
+  } else {
+    storyBlock.style.display = 'none';
+  }
+
+  // ACTIVITY
+  const actSec = document.getElementById('w-activity-section');
+  if (w.activity){
+    actSec.style.display = '';
+    document.getElementById('w-act-ico').textContent = w.activity.ico;
+    document.getElementById('w-act-label').textContent = w.activity.label;
+    document.getElementById('w-act-steps').innerHTML = w.activity.steps.map((s,i) => `
+      <div class="step"><div class="n">${i+1}</div><div class="t">${s}</div></div>
+    `).join('');
+  } else {
+    actSec.style.display = 'none';
+  }
+
+  // QUESTIONS
+  const qLocked = w.hasVideo && !d.videoDone;
+  document.getElementById('q-locked').style.display = qLocked ? '' : 'none';
+  const qList = document.getElementById('q-list');
+  qList.style.display = qLocked ? 'none' : '';
+  if (!qLocked){
+    qList.innerHTML = w.questions.map((q,i) => `
+      <div class="q-card">
+        <div class="qnum">Question ${i+1}</div>
+        <div class="q">${q}</div>
+        <textarea data-q="${i}" oninput="saveAnswer(${id}, ${i}, this.value)" placeholder="Type your reflection...">${(d.answers && d.answers[i]) || ''}</textarea>
+      </div>
+    `).join('');
+  }
+
+  // GOAL + NOTES
+  document.getElementById('w-goal').value = d.goal || '';
+  document.getElementById('w-notes').value = d.notes || '';
+
+  const btn = document.getElementById('w-save');
+  if (S.completed.includes(id)){
+    btn.textContent = 'Completed';
+    btn.classList.add('done');
+  } else {
+    btn.textContent = id === 5 ? 'Finish course →' : 'Save and continue →';
+    btn.classList.remove('done');
+  }
+}
+
+function startVideo(){
+  const d = wd(S.activeWeek);
+  if (d.videoDone) return;
+  // simulate playback progress over ~6 seconds
+  let p = d.videoPct || 0;
+  const iv = setInterval(() => {
+    p += 5;
+    d.videoPct = p;
+    document.getElementById('w-video-bar').style.width = p + '%';
+    document.getElementById('w-video-pct').textContent = p + '%';
+    saveState();
+    if (p >= 100){
+      clearInterval(iv);
+      d.videoDone = true;
+      saveState();
+      renderWeek(S.activeWeek);
+      toast('Documentary complete — discussion unlocked');
+    }
+  }, 350);
+}
+function markVideoDone(){
+  const d = wd(S.activeWeek);
+  d.videoDone = true; d.videoPct = 100; saveState();
+  renderWeek(S.activeWeek);
+  toast('Marked as watched');
+}
+function saveAnswer(weekId, qIdx, val){
+  const d = wd(weekId);
+  if (!d.answers) d.answers = [];
+  d.answers[qIdx] = val;
+  saveState();
+}
+function saveWeek(){
+  const d = wd(S.activeWeek);
+  d.goal = document.getElementById('w-goal').value;
+  d.notes = document.getElementById('w-notes').value;
+  saveState();
+}
+function completeWeek(){
+  saveWeek();
+  const id = S.activeWeek;
+  if (!S.completed.includes(id)) S.completed.push(id);
+  // unlock next
+  if (id < 5 && !S.unlocked.includes(id+1)) S.unlocked.push(id+1);
+  saveState();
+  toast(id === 5 ? 'Congratulations — course complete! 🎉' : 'Week saved · next week unlocked');
+  if (id < 5){
+    setTimeout(() => { S.activeWeek = id+1; saveState(); go('week') }, 900);
+  } else {
+    setTimeout(() => go('progress'), 900);
+  }
+}
+
+/* ===================== PROGRESS ===================== */
+function renderProgress(){
+  const pct = Math.round((S.completed.length / WEEKS.length) * 100);
+  const circ = 2 * Math.PI * 100;
+  document.getElementById('big-fg').setAttribute('stroke-dashoffset', circ * (1 - pct/100));
+  document.getElementById('big-pct').textContent = pct + '%';
+
+  const grid = document.getElementById('log-grid');
+  grid.innerHTML = WEEKS.map(w => {
+    const d = wd(w.id);
+    const done = S.completed.includes(w.id);
+    return `
+      <div class="log-card">
+        <div class="num">Week ${w.id}</div>
+        <h3>${w.title}</h3>
+        <span class="pill ${done?'done':S.unlocked.includes(w.id)?'now':'locked'}">${done?'Completed':S.unlocked.includes(w.id)?'In progress':'Locked'}</span>
+        <div class="row"><span>Goal</span><b>${d.goal ? 'UGX ' + d.goal : '—'}</b></div>
+        <div class="row"><span>Notes</span><b>${d.notes ? '✓ Saved' : '—'}</b></div>
+        <div class="row"><span>Answers</span><b>${(d.answers||[]).filter(Boolean).length} / ${w.questions.length}</b></div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ===================== UTILS ===================== */
+let toastTimer;
+function toast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+/* ===================== AUTH ===================== */
+const BLOG_CONFIG_KEY = 'senla_blog_config_v1';
+const COURSE_AUTH_KEY  = 'senla_course_auth_v1';
+let courseSupa   = null;
+let courseConfig = {};
+
+function initCourseAuth(){
+  try {
+    const raw = localStorage.getItem(BLOG_CONFIG_KEY);
+    courseConfig = raw ? JSON.parse(raw) : {};
+  } catch(e){ courseConfig = {}; }
+  courseSupa = null;
+  if (courseConfig.supabaseUrl && courseConfig.supabaseAnonKey && window.supabase){
+    try {
+      courseSupa = window.supabase.createClient(courseConfig.supabaseUrl, courseConfig.supabaseAnonKey, {
+        auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:true }
+      });
+    } catch(e){}
+  }
+}
+
+function isAuthorized(email){
+  const list = (courseConfig.authorEmails||[]).map(e=>e.toLowerCase());
+  return !!(email && list.includes(email.toLowerCase()));
+}
+
+function enterCourse(){
+  if (S.completed.length>0 || S.unlocked.length>1 || Object.keys(S.perWeek).length>0){
+    go('home');
+  } else {
+    go('welcome');
+  }
+}
+
+function courseSignIn(){
+  document.getElementById('auth-error').style.display='none';
+  document.getElementById('auth-no-supabase').style.display='none';
+  if (!courseSupa){
+    document.getElementById('auth-no-supabase').style.display='block';
+    return;
+  }
+  courseSupa.auth.signInWithOAuth({
+    provider:'google',
+    options:{ redirectTo: window.location.origin + window.location.pathname }
+  });
+}
+
+function courseSignOut(){
+  if (courseSupa){ try{ courseSupa.auth.signOut(); }catch(e){} }
+  localStorage.removeItem(COURSE_AUTH_KEY);
+  go('auth');
+}
+
+async function bootCourseSession(){
+  initCourseAuth();
+  if (!courseSupa){
+    const saved = localStorage.getItem(COURSE_AUTH_KEY);
+    if (saved){
+      try {
+        const a = JSON.parse(saved);
+        if (a.email && isAuthorized(a.email)){ enterCourse(); return; }
+      } catch(e){}
+    }
+    document.getElementById('auth-no-supabase').style.display='block';
+    return;
+  }
+  const { data } = await courseSupa.auth.getSession();
+  if (data?.session?.user){
+    const email = data.session.user.email||'';
+    if (isAuthorized(email)){
+      localStorage.setItem(COURSE_AUTH_KEY, JSON.stringify({email}));
+      enterCourse(); return;
+    } else {
+      document.getElementById('auth-error').style.display='block';
+      return;
+    }
+  }
+  courseSupa.auth.onAuthStateChange((event,session)=>{
+    if (event==='SIGNED_IN' && session){
+      const email = session.user.email||'';
+      if (isAuthorized(email)){
+        localStorage.setItem(COURSE_AUTH_KEY, JSON.stringify({email}));
+        enterCourse();
+      } else {
+        document.getElementById('auth-error').style.display='block';
+      }
+    }
+  });
+}
+
+/* ===================== INIT ===================== */
+bootCourseSession();
+</script>
+
+</body>
+</html>

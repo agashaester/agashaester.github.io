@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>About — SENLA Research Hub</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy:#002157; --navy-2:#00163d; --navy-3:#0e3a82;
+    --paper:#f6f1e7; --paper-2:#efe8d6;
+    --ink:#0b1326; --mute:#5a5f70; --line:#dfd6c2;
+    --accent:#c75a36; --accent-soft:#f5e6dc; --accent-3:#2c7a4b;
+    --white:#fbfaf5;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;letter-spacing:-.01em;line-height:1.05;margin:0}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+  .lede{font-size:18px;color:#3a3f50;line-height:1.6;max-width:62ch}
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:rgba(0,22,61,.96);backdrop-filter:saturate(140%) blur(10px);padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+  .head{display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;align-items:center;gap:14px;color:#fff}
+  .brand img.logo{height:46px;width:auto;display:block;border-radius:4px;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  nav.main{display:flex;align-items:center;gap:34px}
+  nav.main a{color:rgba(255,255,255,.85);font-size:14px;font-weight:500;position:relative;padding:6px 0}
+  nav.main a:hover{color:#fff}
+  nav.main a.active::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--accent)}
+  .cta{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;border:none;padding:10px 18px;border-radius:999px;font-weight:600;font-size:13.5px;cursor:pointer;letter-spacing:.01em;transition:transform .15s,background .15s}
+  .cta:hover{background:#a8492a;transform:translateY(-1px)}
+  .cta.dark{background:var(--navy)}
+  .cta.dark:hover{background:var(--navy-3)}
+  .cta.ghost{background:transparent;border:1.5px solid rgba(255,255,255,.4);color:#fff}
+
+  /* hero */
+  .about-hero{padding:96px 0 72px;background:linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%)}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center}
+  .about-hero h1{font-size:clamp(48px,6.5vw,88px);margin:18px 0 22px}
+  .about-hero h1 em{font-style:italic;color:var(--accent);font-family:'DM Serif Display'}
+  .about-hero .hero-media{position:relative;border-radius:8px;overflow:hidden;aspect-ratio:5/4;box-shadow:0 30px 60px -20px rgba(8,24,58,.25)}
+  .about-hero .hero-media img{width:100%;height:100%;object-fit:cover}
+  .about-hero .hero-media .caption{position:absolute;left:18px;bottom:18px;background:rgba(0,22,61,.85);color:#fff;font-size:12px;padding:6px 12px;border-radius:99px;letter-spacing:.04em}
+
+  /* section */
+  section.block{padding:96px 0;position:relative}
+  .accent-bar{width:60px;height:3px;background:var(--accent);border-radius:99px;margin:14px 0 28px}
+  h2.section-title{font-size:clamp(32px,4vw,52px)}
+  h2.section-title em{font-style:italic;color:var(--accent);font-family:'DM Serif Display'}
+
+  .copy.columns{column-count:2;column-gap:48px;font-size:16.5px;color:#2a2e3d;line-height:1.7}
+  .copy.columns p{margin:0 0 18px;break-inside:avoid}
+
+  .section-band{background:var(--navy);color:#fff}
+  .section-band h2{color:#fff}
+  .section-band .accent-bar{background:var(--accent)}
+  .card-grid.thirds{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:18px}
+  .card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:28px}
+  .card h3{font-size:22px;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .card h3 .ico{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px}
+  .card p, .card ul{color:rgba(255,255,255,.8);font-size:14.5px;line-height:1.65;margin:0}
+  .card ul{list-style:none;padding:0}
+  .card ul li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+  .card ul li:last-child{border:none}
+  .card ul li::before{content:"→ ";color:var(--accent);font-weight:700;margin-right:6px}
+
+  /* core values */
+  .icon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:18px}
+  .icon-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:36px 24px;text-align:center;transition:transform .2s ease, border-color .2s ease}
+  .icon-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+  .icon-card .glyph{width:56px;height:56px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 16px;font-family:'DM Serif Display'}
+  .icon-card h4{font-family:'DM Serif Display';font-size:22px;margin-bottom:6px}
+  .icon-card p{font-size:13.5px;color:var(--mute);margin:0;line-height:1.55}
+
+  /* team */
+  .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:18px}
+  .member .pp{aspect-ratio:3/4;overflow:hidden;border-radius:6px;margin-bottom:18px;background:var(--paper-2)}
+  .member .pp img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+  .member:hover .pp img{transform:scale(1.05)}
+  .member h3{font-family:'DM Serif Display';font-size:22px;margin-bottom:4px}
+  .member .role{font-size:13px;color:var(--mute);margin-bottom:14px}
+  .member .actions{display:flex;gap:8px;flex-wrap:wrap}
+  .btn.pill{display:inline-flex;align-items:center;padding:7px 14px;border-radius:99px;background:var(--navy);color:#fff;font-size:12px;font-weight:600;letter-spacing:.02em}
+  .btn.pill.ghost{background:transparent;border:1.5px solid var(--navy);color:var(--navy)}
+  .btn.pill:hover{background:var(--navy-3)}
+  .btn.pill.ghost:hover{background:var(--navy);color:#fff}
+
+  /* cta band */
+  .cta-band{background:var(--paper-2);border-top:1px solid var(--line);padding:64px 0}
+  .cta-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .cta-inner h3{font-size:32px}
+  .cta-inner h3 em{font-style:italic;color:var(--accent)}
+
+  /* footer */
+  footer{background:var(--navy-2);color:rgba(255,255,255,.7);padding:90px 0 30px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}
+  footer h5{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#fff;margin:0 0 20px;font-family:'Inter'}
+  footer .fbrand{font-family:'DM Serif Display';font-size:26px;color:#fff;margin-bottom:14px}
+  footer .ftag{font-size:14px;line-height:1.6;max-width:32ch;color:rgba(255,255,255,.7)}
+  footer ul{list-style:none;padding:0;margin:0}
+  footer ul li{margin-bottom:12px}
+  footer ul a{font-size:14px;color:rgba(255,255,255,.7)}
+  footer ul a:hover{color:var(--accent)}
+  footer .contact a{display:block;font-size:14px;color:#fff;margin-bottom:6px}
+  footer .contact span{font-size:14px;color:rgba(255,255,255,.6)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:30px;border-top:1px solid rgba(255,255,255,.1);font-size:13px;color:rgba(255,255,255,.5);flex-wrap:wrap;gap:14px}
+  .socials{display:flex;gap:10px}
+  .socials a{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff}
+  .socials a:hover{background:var(--accent);border-color:var(--accent)}
+
+  @media (max-width:1024px){
+    .hero-grid,.copy.columns,.card-grid.thirds,.icon-grid,.team-grid,.foot-grid{grid-template-columns:1fr;column-count:1;gap:24px}
+    nav.main{display:none}
+    section.block{padding:64px 0}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head">
+    <a class="brand" href="SENLA Homepage.html">
+      <img class="logo" src="images/logo.jpg" alt="SENLA Research Hub Ltd" />
+    </a>
+    <nav class="main">
+      <a href="SENLA Homepage.html">Home</a>
+      <a href="SENLA About.html" class="active">About</a>
+      <a href="SENLA Projects.html">Projects</a>
+      <a href="SENLA Blog.html">Blog</a>
+      <a href="SENLA Course Learner.html">Course</a>
+      <a href="SENLA Contact.html">Contact</a>
+    </nav>
+    <a href="SENLA Contact.html" class="cta">Get in touch →</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="about-hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">About SENLA Research Hub</span>
+      <h1>Research that <em>moves</em> policy and people.</h1>
+      <p class="lede">A non-profit research and training hub dedicated to evidence-based solutions for Africa and other emerging markets — registered in Uganda, working globally.</p>
+    </div>
+    <figure class="hero-media">
+      <img src="images/ani_lec.jpg" alt="SENLA field research and teaching session" />
+      <div class="caption">Field research · Uganda</div>
+    </figure>
+  </div>
+</section>
+
+<!-- BACKGROUND & PURPOSE -->
+<section class="block" style="background:var(--paper)">
+  <div class="wrap">
+    <span class="eyebrow">Background &amp; Purpose</span>
+    <h2 class="section-title">Why SENLA <em>exists.</em></h2>
+    <div class="accent-bar"></div>
+    <div class="copy columns">
+      <p>There is great potential within countries in Africa for developing new knowledge, research, and ideas to address some of the challenges faced by the region. Over 50% of Africa's population is younger than 25 years old. Enrollments and enrollment ratios in tertiary education are increasing, graduate numbers are rising, and scientific research output from the region more than doubled between 2003 and 2012.</p>
+      <p>Yet the massive increase in student enrollment over the past couple of decades has not been accompanied by a proportionate increase in academic and business research. According to Elsevier and The World Bank (2014), Sub-Saharan Africa, with 12% of the world's population, still accounts for less than one percent of global research output.</p>
+      <p>Universities face enormous challenges in promoting research to support development, especially through doctoral education. Research output in Africa relies heavily on visiting faculty, which can limit long-term collaboration with local industry and reduce local impact.</p>
+      <p>Research in Africa can only flourish if there are sufficient African researchers. <strong>SENLA Research Hub exists to advance both business and academic research in Africa.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION / VISION / OBJECTIVES -->
+<section class="block section-band">
+  <div class="wrap">
+    <span class="eyebrow" style="color:#fff;opacity:.85">Mission · Vision · Objectives</span>
+    <h2 class="section-title">What we set out to do.</h2>
+    <div class="accent-bar"></div>
+    <div class="card-grid thirds">
+      <article class="card">
+        <h3><span class="ico">◉</span> Mission</h3>
+        <p>Develop rapid and timely solutions through evidence-based research to address long- and short-term socioeconomic challenges facing Africa.</p>
+      </article>
+      <article class="card">
+        <h3><span class="ico">◎</span> Vision</h3>
+        <p>Serve as a hub of transformational, policy-oriented socioeconomic research think tank for Africa.</p>
+      </article>
+      <article class="card">
+        <h3><span class="ico">✓</span> Objectives</h3>
+        <ul>
+          <li>Conduct market and academic research in Africa.</li>
+          <li>Provide policy support to governments, civil society, private sector, and multilaterals.</li>
+          <li>Analyze public policies, strategies, and regulatory documents.</li>
+          <li>Organize conferences, trainings, and workshops across Africa.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CORE VALUES -->
+<section class="block" style="background:var(--paper)">
+  <div class="wrap">
+    <span class="eyebrow">Core Values</span>
+    <h2 class="section-title">How we <em>work.</em></h2>
+    <div class="accent-bar"></div>
+    <div class="icon-grid">
+      <div class="icon-card">
+        <div class="glyph">Q</div>
+        <h4>Quality Research</h4>
+        <p>Rigorous methods, transparent reporting, and findings designed to hold up under scrutiny.</p>
+      </div>
+      <div class="icon-card">
+        <div class="glyph">i</div>
+        <h4>Innovation</h4>
+        <p>Practical, context-fit approaches built with the communities we serve — not for them.</p>
+      </div>
+      <div class="icon-card">
+        <div class="glyph">P</div>
+        <h4>Professionalism</h4>
+        <p>Ethical conduct, careful stewardship of partnerships, and reliable delivery on commitments.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="block" style="background:var(--paper-2)">
+  <div class="wrap">
+    <span class="eyebrow">Meet the Team</span>
+    <h2 class="section-title">The <em>people</em> behind the work.</h2>
+    <div class="accent-bar"></div>
+
+    <div class="team-grid">
+      <article class="member">
+        <div class="pp"><img src="images/ester.jpg" alt="Ester Agasha" /></div>
+        <h3>Ester Agasha</h3>
+        <p class="role">Chief Executive Officer (CEO)</p>
+        <div class="actions">
+          <a class="btn pill" href="https://esteragasha.com/" target="_blank" rel="noopener">Website</a>
+          <a class="btn pill ghost" href="SENLA Contact.html">Contact</a>
+        </div>
+      </article>
+      <article class="member">
+        <div class="pp"><img src="images/sara.jpg" alt="Dr. Sarah Nabachwa" /></div>
+        <h3>Dr. Sarah Nabachwa</h3>
+        <p class="role">Director of Public Relations</p>
+        <div class="actions">
+          <a class="btn pill" href="https://sarahnabachwa.org/" target="_blank" rel="noopener">Website</a>
+          <a class="btn pill ghost" href="SENLA Contact.html">Contact</a>
+        </div>
+      </article>
+      <article class="member">
+        <div class="pp"><img src="images/lucy.jpg" alt="Dr. Lucy Rono" /></div>
+        <h3>Dr. Lucy Rono</h3>
+        <p class="role">Director of Finance</p>
+        <div class="actions">
+          <a class="btn pill" href="#" target="_blank" rel="noopener">Website</a>
+          <a class="btn pill ghost" href="SENLA Contact.html">Contact</a>
+        </div>
+      </article>
+      <article class="member">
+        <div class="pp"><img src="images/nathalie.jpg" alt="Nathalie Nyanga" /></div>
+        <h3>Nathalie Nyanga</h3>
+        <p class="role">Director of Operations</p>
+        <div class="actions">
+          <a class="btn pill" href="https://www.nathalienyanga.com/" target="_blank" rel="noopener">Website</a>
+          <a class="btn pill ghost" href="SENLA Contact.html">Contact</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band">
+  <div class="wrap cta-inner">
+    <h3>Want to <em>collaborate</em> with SENLA?</h3>
+    <a class="cta dark" href="SENLA Contact.html">Get in touch →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="fbrand">SENLA Research Hub</div>
+        <p class="ftag">A non-profit research organization registered in Uganda. Evidence-based socio-economic policy research and capacity building.</p>
+      </div>
+      <div>
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="SENLA Homepage.html">Home</a></li>
+          <li><a href="SENLA About.html">About</a></li>
+          <li><a href="SENLA Projects.html">Projects</a></li>
+          <li><a href="SENLA Blog.html">Blog</a></li>
+          <li><a href="SENLA Course Learner.html">Course</a></li>
+          <li><a href="SENLA Contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Services</h5>
+        <ul>
+          <li><a href="SENLA Projects.html">Research</a></li>
+          <li><a href="SENLA Projects.html">Consultancy</a></li>
+          <li><a href="SENLA Projects.html">Community engagement</a></li>
+          <li><a href="SENLA Course Learner.html">Capacity building</a></li>
+        </ul>
+      </div>
+      <div class="contact">
+        <h5>Contact</h5>
+        <a href="mailto:info@senlaresearchhub.com">info@senlaresearchhub.com</a>
+        <a href="tel:+256787083553">+256 787 083 553</a>
+        <span>Rwebishuri, Mbarara, Uganda</span>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="y"></span> SENLA Research Hub. All rights reserved.</span>
+      <div class="socials">
+        <a href="#" aria-label="LinkedIn">in</a>
+        <a href="#" aria-label="X">𝕏</a>
+        <a href="#" aria-label="Facebook">f</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+</body>
+</html>

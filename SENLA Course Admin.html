@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>SENLA — Aspirations Course (Admin)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy:#002157;
+    --navy-2:#00163d;
+    --navy-3:#0e3a82;
+    --paper:#f6f1e7;
+    --paper-2:#efe8d6;
+    --ink:#0b1326;
+    --mute:#5a5f70;
+    --line:#dfd6c2;
+    --accent:#c75a36;
+    --accent-soft:#f5e6dc;
+    --white:#fbfaf5;
+    --ok:#2c7a4b;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;letter-spacing:-.01em;line-height:1.1;margin:0}
+  button{font-family:inherit;cursor:pointer}
+
+  .wrap{max-width:1280px;margin:0 auto;padding:0 28px}
+  .eyebrow{font-family:'Inter';font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+
+  /* ============ LOGIN GATE ============ */
+  .gate{
+    min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr;
+    background:var(--paper);
+  }
+  .gate-left{
+    background:var(--navy);color:#fff;padding:48px 56px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    position:relative;overflow:hidden;
+  }
+  .gate-left::before{
+    content:"";position:absolute;right:-150px;bottom:-150px;width:500px;height:500px;
+    background:radial-gradient(circle, rgba(199,90,54,.25) 0%, transparent 60%);
+  }
+  .gate-left .top{position:relative;z-index:2}
+  .gate-left .brand{display:flex;align-items:center;gap:14px;margin-bottom:64px}
+  .gate-left .brand img{height:46px;border-radius:4px}
+  .gate-left h1{
+    font-size:clamp(40px,4.5vw,64px);color:#fff;margin-bottom:24px;line-height:1.05;
+    max-width:14ch;
+  }
+  .gate-left h1 em{color:var(--accent);font-style:italic}
+  .gate-left .lead{color:rgba(255,255,255,.78);font-size:18px;max-width:42ch;margin-bottom:40px;line-height:1.6}
+  .gate-left .features{display:flex;flex-direction:column;gap:18px;position:relative;z-index:2;max-width:42ch}
+  .gate-left .feat{display:flex;gap:14px;align-items:flex-start;padding-top:18px;border-top:1px solid rgba(255,255,255,.12)}
+  .gate-left .feat .ico{
+    width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.08);
+    display:flex;align-items:center;justify-content:center;font-size:16px;flex:0 0 36px;
+    border:1px solid rgba(255,255,255,.15);
+  }
+  .gate-left .feat b{display:block;font-family:'DM Serif Display';font-size:17px;color:#fff;margin-bottom:2px}
+  .gate-left .feat span{font-size:13px;color:rgba(255,255,255,.65)}
+  .gate-left .bottom{position:relative;z-index:2;font-size:12px;color:rgba(255,255,255,.5);letter-spacing:.04em}
+
+  .gate-right{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:48px;position:relative;
+  }
+  .private-banner{
+    position:absolute;top:24px;left:50%;transform:translateX(-50%);
+    background:var(--accent-soft);color:var(--accent);
+    padding:8px 18px;border-radius:99px;font-size:12px;font-weight:600;
+    letter-spacing:.08em;display:flex;align-items:center;gap:8px;
+    border:1px solid #e8c9b8;
+  }
+  .private-banner .dot{
+    width:7px;height:7px;border-radius:50%;background:var(--accent);
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  .login-card{
+    background:#fff;border:1px solid var(--line);border-radius:18px;
+    padding:48px 44px;width:100%;max-width:420px;
+    box-shadow:0 30px 60px -20px rgba(0,33,87,.12);
+  }
+  .login-card .badge{
+    display:inline-block;background:var(--paper);color:var(--navy);
+    padding:5px 12px;border-radius:99px;font-size:11px;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px;
+  }
+  .login-card h2{font-size:32px;margin-bottom:8px}
+  .login-card h2 em{font-style:italic;color:var(--accent)}
+  .login-card .sub{color:var(--mute);font-size:14px;margin-bottom:28px;line-height:1.5}
+  .gbtn{
+    width:100%;display:inline-flex;align-items:center;justify-content:center;gap:12px;
+    border:1.5px solid var(--ink);background:#fff;padding:14px 18px;border-radius:10px;
+    font-family:inherit;font-size:14px;font-weight:600;color:var(--ink);
+    transition:all .15s ease;margin-bottom:16px;
+  }
+  .gbtn:hover{background:#fafaf5;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+  .gbtn .gico{
+    width:18px;height:18px;border-radius:50%;
+    background:conic-gradient(from 0deg, #ea4335 0 25%, #fbbc05 25% 50%, #34a853 50% 75%, #4285f4 75% 100%);
+  }
+  .divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--mute);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600}
+  .divider::before, .divider::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:12px;font-weight:600;color:var(--mute);margin-bottom:6px;letter-spacing:.04em}
+  .field input{
+    width:100%;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;
+    font-family:inherit;font-size:14px;background:#fafaf5;outline:none;
+    transition:all .15s ease;
+  }
+  .field input:focus{border-color:var(--navy);background:#fff}
+  .field input.error{border-color:#c75a36;background:#fdf0e8}
+
+  .login-btn{
+    width:100%;background:var(--navy);color:#fff;border:none;
+    padding:14px 18px;border-radius:10px;font-size:14px;font-weight:600;
+    transition:all .15s ease;
+  }
+  .login-btn:hover{background:var(--navy-3)}
+
+  .login-help{text-align:center;font-size:12px;color:var(--mute);margin-top:18px}
+  .login-help a{color:var(--navy);font-weight:600}
+
+  .error-msg{
+    background:#fdf0e8;border:1px solid #e8c9b8;color:#a8492a;
+    padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;
+    display:none;
+  }
+  .error-msg.show{display:block}
+
+  .hint{
+    margin-top:24px;padding:14px 18px;background:var(--paper);border-radius:10px;
+    font-size:12px;color:var(--mute);line-height:1.6;
+  }
+  .hint code{
+    background:#fff;border:1px solid var(--line);padding:1px 6px;border-radius:4px;
+    font-size:12px;color:var(--ink);font-family:ui-monospace,Menlo,monospace;
+  }
+
+  /* ============ ADMIN SHELL ============ */
+  .admin-shell{display:none;min-height:100vh}
+  .admin-shell.show{display:block}
+
+  .admin-bar{
+    background:var(--navy-2);color:#fff;padding:12px 28px;
+    display:flex;align-items:center;gap:14px;font-size:13px;
+  }
+  .admin-bar .live{
+    display:inline-flex;align-items:center;gap:8px;background:rgba(44,122,75,.2);
+    padding:4px 10px;border-radius:99px;font-size:11px;font-weight:600;
+    letter-spacing:.06em;
+  }
+  .admin-bar .live .d{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(44,122,75,.3)}
+  .admin-bar .right{margin-left:auto;display:flex;gap:14px;align-items:center}
+  .admin-bar a{color:rgba(255,255,255,.7)}
+  .admin-bar a:hover{color:#fff}
+  .admin-bar .avatar{
+    width:30px;height:30px;border-radius:50%;background:var(--accent);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;
+    cursor:pointer;
+  }
+
+  .admin-header{
+    background:#fff;border-bottom:1px solid var(--line);padding:28px 0;
+  }
+  .admin-header .row{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .admin-header h1{font-size:42px;line-height:1}
+  .admin-header h1 em{font-style:italic;color:var(--accent)}
+  .admin-header .sub{font-size:14px;color:var(--mute);margin-top:6px}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:99px;font-weight:600;font-size:13.5px;border:none;transition:all .15s ease}
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.primary:hover{background:#a8492a}
+  .btn.dark{background:var(--navy);color:#fff}
+  .btn.dark:hover{background:var(--navy-3)}
+  .btn.ghost{background:transparent;border:1.5px solid var(--navy);color:var(--navy)}
+  .btn.ghost:hover{background:var(--navy);color:#fff}
+  .btn.sm{padding:6px 12px;font-size:12.5px}
+  .btn.tiny{padding:4px 10px;font-size:11.5px;border-radius:6px}
+
+  .admin-body{padding:36px 0 80px}
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px}
+  .stat-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 22px}
+  .stat-card .n{font-family:'DM Serif Display';font-size:38px;color:var(--navy);line-height:1}
+  .stat-card .n em{color:var(--accent);font-style:italic;font-size:18px;vertical-align:top}
+  .stat-card .l{font-size:12px;color:var(--mute);margin-top:4px;letter-spacing:.02em}
+
+  .weeks{display:grid;grid-template-columns:1fr;gap:14px}
+  .week{
+    background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  }
+  .week-head{
+    display:grid;grid-template-columns:60px 1fr auto auto auto;gap:18px;align-items:center;
+    padding:18px 22px;cursor:pointer;transition:background .15s;
+  }
+  .week-head:hover{background:#fafaf5}
+  .week-num{
+    width:48px;height:48px;border-radius:12px;background:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'DM Serif Display';font-size:22px;color:var(--navy);
+  }
+  .week.published .week-num{background:var(--navy);color:#fff}
+  .week-title{font-family:'DM Serif Display';font-size:22px;line-height:1.2}
+  .week-title small{display:block;font-family:'Inter';font-size:12px;color:var(--mute);margin-top:4px;font-weight:400}
+  .pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;letter-spacing:.04em}
+  .pill.published{background:#e0f1e6;color:var(--ok)}
+  .pill.draft{background:#fff3e8;color:var(--accent)}
+  .pill.empty{background:var(--paper-2);color:var(--mute)}
+  .chevron{font-size:18px;color:var(--mute);transition:transform .2s}
+  .week.open .chevron{transform:rotate(180deg)}
+
+  .week-body{
+    display:none;padding:0 22px 22px;border-top:1px solid var(--line);
+    background:#fafaf5;
+  }
+  .week.open .week-body{display:block}
+
+  .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}
+  .week-body .field{margin-bottom:0}
+  .week-body input, .week-body textarea, .week-body select{
+    width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 12px;
+    font-family:inherit;font-size:13.5px;background:#fff;outline:none;
+    transition:border-color .15s;
+  }
+  .week-body input:focus, .week-body textarea:focus{border-color:var(--navy)}
+  .week-body textarea{min-height:80px;resize:vertical;line-height:1.5}
+
+  .activity-list{margin-top:20px}
+  .activity-row{
+    display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
+    background:#fff;border:1px solid var(--line);border-radius:8px;
+    padding:10px 14px;margin-bottom:8px;
+  }
+  .activity-row .num{
+    width:28px;height:28px;border-radius:50%;background:var(--paper);
+    display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--navy);
+  }
+  .activity-row input{border:none;background:transparent;padding:4px;font-size:14px;outline:none}
+  .activity-row .del{background:transparent;border:none;color:var(--mute);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:4px}
+  .activity-row .del:hover{color:#a8492a;background:#fdf0e8}
+
+  .add-activity{
+    background:transparent;border:1.5px dashed var(--line);color:var(--mute);
+    padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;width:100%;
+    margin-top:8px;
+  }
+  .add-activity:hover{border-color:var(--navy);color:var(--navy)}
+
+  .week-actions{
+    display:flex;gap:10px;justify-content:flex-end;margin-top:24px;
+    padding-top:18px;border-top:1px solid var(--line);
+  }
+
+  .video-zone{
+    border:2px dashed var(--line);border-radius:10px;padding:24px;text-align:center;
+    color:var(--mute);background:#fff;
+  }
+  .video-zone.has-video{padding:0;background:#000;color:#fff;text-align:left;overflow:hidden}
+  .video-zone.has-video .vplace{
+    aspect-ratio:16/9;background:linear-gradient(135deg,#0c1f4a,#1c3d7a);
+    display:flex;align-items:center;justify-content:center;font-size:48px;color:rgba(255,255,255,.4);
+  }
+  .video-zone.has-video .vmeta{padding:10px 14px;display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.7)}
+
+  .section-tabs{display:flex;border-bottom:1px solid var(--line);margin-bottom:24px}
+  .section-tabs button{
+    background:none;border:none;padding:12px 18px;font-size:14px;font-weight:500;color:var(--mute);
+    border-bottom:2px solid transparent;margin-bottom:-1px;
+  }
+  .section-tabs button.on{color:var(--navy);border-bottom-color:var(--accent);font-weight:600}
+
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:28px}
+  .panel h3{font-size:22px;margin-bottom:6px}
+  .panel .ps{font-size:13px;color:var(--mute);margin-bottom:20px}
+
+  .learners-list{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px}
+  .learner{
+    display:grid;grid-template-columns:36px 1fr auto auto auto;gap:14px;align-items:center;
+    padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:#fafaf5;
+  }
+  .learner .av{
+    width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;
+  }
+  .learner b{font-size:14px;font-weight:600;display:block}
+  .learner small{font-size:12px;color:var(--mute)}
+  .progress-mini{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mute)}
+  .progress-mini .bar{width:80px;height:6px;background:#e0d8c5;border-radius:3px;overflow:hidden}
+  .progress-mini .bar i{display:block;height:100%;background:var(--ok)}
+
+  .toast{
+    position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;
+    padding:14px 22px;border-radius:10px;font-size:14px;font-weight:500;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+    transform:translateY(20px);opacity:0;pointer-events:none;
+    transition:all .25s ease;z-index:200;display:flex;align-items:center;gap:10px;
+  }
+  .toast.show{transform:translateY(0);opacity:1}
+  .toast .d{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+
+  @media (max-width:1024px){
+    .gate{grid-template-columns:1fr}
+    .gate-left{display:none}
+    .stats-row{grid-template-columns:1fr 1fr}
+    .field-grid{grid-template-columns:1fr}
+    .week-head{grid-template-columns:48px 1fr auto;gap:12px}
+    .week-head .pill, .week-head .meta{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN GATE ============ -->
+<div class="gate" id="gate">
+
+  <!-- LEFT: brand side -->
+  <div class="gate-left">
+    <div class="top">
+      <div class="brand">
+        <img src="images/logo.jpg" alt="SENLA Research Hub Ltd" />
+      </div>
+      <h1>The <em>Aspirations</em> Curriculum.</h1>
+      <p class="lead">A 5-week curriculum that helps small-business owners visualize success, set targets, and build a flourishing business. Currently in private preview — facilitators only.</p>
+
+      <div class="features">
+        <div class="feat">
+          <div class="ico">🎥</div>
+          <div><b>Inspiration</b><span>Documentary videos of real entrepreneurs</span></div>
+        </div>
+        <div class="feat">
+          <div class="ico">🎯</div>
+          <div><b>Planning</b><span>Weekly sales targets and reflection prompts</span></div>
+        </div>
+        <div class="feat">
+          <div class="ico">🤝</div>
+          <div><b>Peer support</b><span>A circle to share talents and encouragement</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      © SENLA Research Hub Ltd · Mbarara, Uganda
+    </div>
+  </div>
+
+  <!-- RIGHT: login form -->
+  <div class="gate-right">
+    <div class="private-banner">
+      <span class="dot"></span> PRIVATE PREVIEW · ADMIN ACCESS ONLY
+    </div>
+
+    <div class="login-card">
+      <span class="badge">Admin sign-in</span>
+      <h2>Welcome <em>back.</em></h2>
+      <p class="sub">The course is currently being built. Only approved admins can sign in to manage curriculum content. The public learner portal will open later this year.</p>
+
+      <div class="error-msg" id="err">Invalid credentials. Try the demo account.</div>
+
+      <button class="gbtn" onclick="loginGoogle()">
+        <span class="gico"></span> Continue with Google
+      </button>
+
+      <div class="divider">or with email</div>
+
+      <form onsubmit="loginEmail(event)">
+        <div class="field">
+          <label for="email">Admin email</label>
+          <input id="email" type="email" placeholder="admin@senlaresearchhub.com" autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <button type="submit" class="login-btn">Sign in to admin →</button>
+      </form>
+
+      <div class="login-help">
+        Trouble signing in? <a href="mailto:info@senlaresearchhub.com">Contact the team</a>
+      </div>
+
+      <div class="hint">
+        <b>Demo:</b> email <code>admin@senlaresearchhub.com</code> / password <code>aspire2026</code> — or just click <a href="#" onclick="loginGoogle();return false" style="color:var(--navy);font-weight:600">Continue with Google</a>.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ADMIN SHELL ============ -->
+<div class="admin-shell" id="shell">
+
+  <div class="admin-bar">
+    <span class="live"><span class="d"></span> CURRICULUM EDITOR · LIVE</span>
+    <span>Signed in as <b id="bar-email">ester@senlaresearchhub.com</b></span>
+    <div class="right">
+      <a href="#" onclick="previewLearner();return false">Preview as learner →</a>
+      <span class="avatar" id="bar-avatar" onclick="signOut()" title="Sign out">E</span>
+    </div>
+  </div>
+
+  <div class="admin-header">
+    <div class="wrap row">
+      <div>
+        <div class="eyebrow">Curriculum admin</div>
+        <h1>Aspirations <em>Curriculum.</em></h1>
+        <div class="sub">5 weeks · facilitator-led · in development</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn ghost" onclick="exportData()">Export JSON</button>
+        <button class="btn dark" onclick="addWeek()">+ Add week</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap admin-body">
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="n" id="s-weeks">5</div><div class="l">Weeks in curriculum</div></div>
+      <div class="stat-card"><div class="n" id="s-pub">0</div><div class="l">Weeks published</div></div>
+      <div class="stat-card"><div class="n" id="s-vid">3</div><div class="l">Videos uploaded</div></div>
+      <div class="stat-card"><div class="n">12<em>·</em><span style="font-size:20px;color:var(--ink)">enrolled</span></div><div class="l">Pilot learners (facilitator-managed)</div></div>
+    </div>
+
+    <div class="section-tabs">
+      <button class="on" data-section="curriculum">Curriculum</button>
+      <button data-section="learners">Pilot learners</button>
+      <button data-section="settings">Settings</button>
+    </div>
+
+    <!-- CURRICULUM -->
+    <div id="sec-curriculum">
+      <div class="weeks" id="week-list"></div>
+    </div>
+
+    <!-- LEARNERS -->
+    <div id="sec-learners" style="display:none">
+      <div class="panel">
+        <h3>Pilot learners</h3>
+        <p class="ps">Facilitators manually enroll learners during the private preview. Public self-enrollment will open at launch.</p>
+        <div style="display:flex;gap:10px;margin-top:14px">
+          <input type="email" placeholder="learner@email.com" style="flex:1;border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-family:inherit;font-size:14px;outline:none" id="new-learner" />
+          <button class="btn primary sm" onclick="addLearner()">Enroll learner</button>
+        </div>
+        <div class="learners-list" id="learner-list"></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="sec-settings" style="display:none">
+      <div class="panel">
+        <h3>Course settings</h3>
+        <p class="ps">High-level controls for the curriculum.</p>
+
+        <div class="field-grid" style="margin-top:20px">
+          <div class="field">
+            <label>Course title</label>
+            <input type="text" value="Aspirations Curriculum" />
+          </div>
+          <div class="field">
+            <label>Status</label>
+            <select>
+              <option selected>Private preview (admin only)</option>
+              <option>Facilitator preview (allow-listed)</option>
+              <option>Public — open enrollment</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Default language</label>
+            <select><option>English</option><option>Luganda</option><option>Runyankole</option></select>
+          </div>
+          <div class="field">
+            <label>Region</label>
+            <select><option>Uganda</option><option>India</option><option>Other</option></select>
+          </div>
+        </div>
+
+        <h3 style="margin-top:36px;font-size:18px">Admin allow-list</h3>
+        <p class="ps">Only these emails can sign in to manage the curriculum.</p>
+        <div class="learners-list" style="margin-top:14px">
+          <div class="learner">
+            <div class="av">E</div>
+            <div><b>Dr. Ester Agasha</b><small>ester@senlaresearchhub.com</small></div>
+            <span class="pill published" style="background:#e0f1e6;color:var(--ok)">Owner</span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="learner">
+            <div class="av">L</div>
+            <div><b>Dr. Lucy</b><small>lucy@senlaresearchhub.com</small></div>
+            <span class="pill" style="background:var(--paper-2);color:var(--navy)">Admin</span>
+            <span></span>
+            <button class="btn tiny ghost">Remove</button>
+          </div>
+        </div>
+        <button class="add-activity">+ Add admin email</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast"><span class="d"></span><span id="toast-msg">Saved</span></div>
+
+<script>
+/* ===========================================================
+   IN-MEMORY DATA (Firebase Firestore in production)
+   =========================================================== */
+const STORAGE_KEY = 'senla_course_v1';
+const USER_KEY = 'senla_course_user_v1';
+
+const SEED_WEEKS = [
+  {
+    id: 'w1',
+    num: 1,
+    title: 'Inspiration & visualizing success',
+    objective: 'See what is possible',
+    summary: 'Documentaries of real entrepreneurs overcoming obstacles. Learners watch, reflect, and start to imagine their own future business.',
+    story: '"By the time the lamb became a sheep, she had become so strong it was easy for her."',
+    video: 'https://drive.google.com/.../week1.mp4',
+    activities: ['Watch documentary', 'Group reflection (15 min)', 'Write your one-sentence dream'],
+    status: 'published'
+  },
+  {
+    id: 'w2',
+    num: 2,
+    title: 'Setting weekly sales targets',
+    objective: 'Make the dream tangible',
+    summary: 'Break large dreams into tangible weekly sales targets. Learners use a simple worksheet to set a realistic UGX target for next week.',
+    story: 'Aim small, miss small.',
+    video: 'https://drive.google.com/.../week2.mp4',
+    activities: ['Quick numeracy warm-up', 'Set your weekly UGX target', 'Pair-share with a partner'],
+    status: 'published'
+  },
+  {
+    id: 'w3',
+    num: 3,
+    title: 'Habits, decisions & money',
+    objective: 'Understand the day-to-day',
+    summary: 'How daily habits shape financial outcomes. Includes the game-based learning module.',
+    story: '',
+    video: '',
+    activities: ['Play the financial-literacy game', 'Discuss results in the circle'],
+    status: 'draft'
+  },
+  {
+    id: 'w4',
+    num: 4,
+    title: 'Plans into action',
+    objective: 'Move from planning to doing',
+    summary: 'Translate weekly targets into concrete actions and accountability checks.',
+    story: '',
+    video: '',
+    activities: ['List 3 actions for this week'],
+    status: 'draft'
+  },
+  {
+    id: 'w5',
+    num: 5,
+    title: 'Reflection & the next chapter',
+    objective: 'Look back, look forward',
+    summary: 'Reflect on the 5 weeks. Set the next 90-day plan.',
+    story: '',
+    video: '',
+    activities: [],
+    status: 'draft'
+  }
+];
+
+const SEED_LEARNERS = [
+  { id:'l1', name:'Joan Mukasa',     email:'joan@example.com',     progress:60 },
+  { id:'l2', name:'Peter Okello',    email:'peter@example.com',    progress:40 },
+  { id:'l3', name:'Mary Nansubuga',  email:'mary@example.com',     progress:20 },
+  { id:'l4', name:'Sarah Auma',      email:'sarah@example.com',    progress:80 }
+];
+
+function loadDB(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw){ const init = { weeks:[...SEED_WEEKS], learners:[...SEED_LEARNERS] }; saveDB(init); return init }
+  try { return JSON.parse(raw) } catch { return { weeks:[...SEED_WEEKS], learners:[...SEED_LEARNERS] } }
+}
+function saveDB(db){ localStorage.setItem(STORAGE_KEY, JSON.stringify(db)) }
+let DB = loadDB();
+
+/* =========================== AUTH =========================== */
+function getUser(){ const r = localStorage.getItem(USER_KEY); return r ? JSON.parse(r) : null }
+function setUser(u){ u ? localStorage.setItem(USER_KEY, JSON.stringify(u)) : localStorage.removeItem(USER_KEY) }
+
+function loginGoogle(){
+  setUser({ name:'Dr. Ester Agasha', email:'ester@senlaresearchhub.com', initial:'E' });
+  showShell();
+  toast('Signed in via Google');
+}
+function loginEmail(e){
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const pw = document.getElementById('password').value;
+  const ok = (email === 'admin@senlaresearchhub.com' && pw === 'aspire2026') ||
+             (email === 'ester@senlaresearchhub.com' && pw === 'aspire2026');
+  if (!ok){
+    document.getElementById('err').classList.add('show');
+    document.getElementById('email').classList.add('error');
+    document.getElementById('password').classList.add('error');
+    return;
+  }
+  setUser({ name: email.split('@')[0], email, initial: email[0].toUpperCase() });
+  showShell();
+  toast('Signed in');
+}
+function signOut(){ setUser(null); document.getElementById('shell').classList.remove('show'); document.getElementById('gate').style.display='grid'; toast('Signed out') }
+
+function showShell(){
+  const u = getUser(); if (!u) return;
+  document.getElementById('gate').style.display='none';
+  document.getElementById('shell').classList.add('show');
+  document.getElementById('bar-email').textContent = u.email;
+  document.getElementById('bar-avatar').textContent = u.initial;
+  renderWeeks();
+  renderLearners();
+  renderStats();
+}
+
+/* =========================== RENDER =========================== */
+function renderStats(){
+  document.getElementById('s-weeks').textContent = DB.weeks.length;
+  document.getElementById('s-pub').textContent   = DB.weeks.filter(w=>w.status==='published').length;
+  document.getElementById('s-vid').textContent   = DB.weeks.filter(w=>w.video && w.video.length).length;
+}
+
+function renderWeeks(){
+  const list = document.getElementById('week-list');
+  list.innerHTML = DB.weeks.map(w => `
+    <div class="week ${w.status === 'published' ? 'published' : ''}" id="${w.id}">
+      <div class="week-head" onclick="toggleWeek('${w.id}')">
+        <div class="week-num">${w.num}</div>
+        <div class="week-title">${escapeHTML(w.title) || 'Untitled week'}<small>${escapeHTML(w.objective) || 'No objective set'}</small></div>
+        <div class="meta"><span class="pill ${w.status}">${w.status}</span></div>
+        <div class="meta" style="font-size:12px;color:var(--mute)">${w.activities.length} activities</div>
+        <div class="chevron">⌄</div>
+      </div>
+      <div class="week-body">
+        <div class="field-grid">
+          <div class="field">
+            <label>Title</label>
+            <input type="text" value="${escapeHTML(w.title)}" oninput="updateWeek('${w.id}','title',this.value)" />
+          </div>
+          <div class="field">
+            <label>Objective (one line)</label>
+            <input type="text" value="${escapeHTML(w.objective)}" oninput="updateWeek('${w.id}','objective',this.value)" />
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:18px">
+          <label>Summary / description</label>
+          <textarea oninput="updateWeek('${w.id}','summary',this.value)">${escapeHTML(w.summary)}</textarea>
+        </div>
+
+        <div class="field" style="margin-top:18px">
+          <label>Contextual story / quote</label>
+          <textarea oninput="updateWeek('${w.id}','story',this.value)" placeholder="A short story or quote to anchor the week...">${escapeHTML(w.story)}</textarea>
+        </div>
+
+        <div class="field" style="margin-top:18px">
+          <label>Documentary video</label>
+          <div class="video-zone ${w.video ? 'has-video' : ''}">
+            ${w.video ? `
+              <div class="vplace">▶</div>
+              <div class="vmeta"><span>${escapeHTML(w.video)}</span><button class="btn tiny" style="background:rgba(255,255,255,.15);color:#fff" onclick="updateWeek('${w.id}','video','');renderWeeks();toggleWeek('${w.id}')">Replace</button></div>
+            ` : `
+              <div>🎥 Drag &amp; drop video file, or <a href="#" onclick="promptVideo('${w.id}');return false" style="color:var(--navy);font-weight:600">paste a Google Drive / Vimeo URL</a></div>
+              <div style="font-size:11px;margin-top:6px">MP4 recommended · up to 500MB</div>
+            `}
+          </div>
+        </div>
+
+        <div style="margin-top:24px">
+          <label style="display:block;font-size:12px;font-weight:600;color:var(--mute);margin-bottom:8px;letter-spacing:.04em">SESSION ACTIVITIES</label>
+          <div class="activity-list">
+            ${w.activities.map((a, i) => `
+              <div class="activity-row">
+                <div class="num">${i+1}</div>
+                <input type="text" value="${escapeHTML(a)}" oninput="updateActivity('${w.id}',${i},this.value)" />
+                <button class="del" onclick="deleteActivity('${w.id}',${i})" title="Delete">×</button>
+              </div>
+            `).join('')}
+          </div>
+          <button class="add-activity" onclick="addActivity('${w.id}')">+ Add activity</button>
+        </div>
+
+        <div class="week-actions">
+          <button class="btn ghost sm" onclick="deleteWeek('${w.id}')" style="color:#a8492a;border-color:#d8b6a6">Delete week</button>
+          <button class="btn ghost sm" onclick="toggleStatus('${w.id}')">${w.status === 'published' ? 'Move to draft' : 'Publish week'}</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderLearners(){
+  const list = document.getElementById('learner-list');
+  list.innerHTML = DB.learners.map(l => `
+    <div class="learner">
+      <div class="av">${(l.name||'?')[0]}</div>
+      <div><b>${escapeHTML(l.name)}</b><small>${escapeHTML(l.email)}</small></div>
+      <div class="progress-mini"><span>${l.progress}%</span><div class="bar"><i style="width:${l.progress}%"></i></div></div>
+      <span class="pill ${l.progress>0?'published':'draft'}">${l.progress>0?'active':'invited'}</span>
+      <button class="btn tiny ghost" onclick="removeLearner('${l.id}')" style="color:#a8492a;border-color:#d8b6a6">Remove</button>
+    </div>
+  `).join('') || '<div style="text-align:center;color:var(--mute);padding:24px;font-size:13px">No learners enrolled yet.</div>';
+}
+
+/* =========================== ACTIONS =========================== */
+function toggleWeek(id){ document.getElementById(id).classList.toggle('open') }
+
+function updateWeek(id, key, val){
+  const w = DB.weeks.find(x=>x.id===id); if (!w) return;
+  w[key] = val; saveDB(DB); markSaved();
+}
+function updateActivity(id, idx, val){
+  const w = DB.weeks.find(x=>x.id===id); if (!w) return;
+  w.activities[idx] = val; saveDB(DB); markSaved();
+}
+function addActivity(id){
+  const w = DB.weeks.find(x=>x.id===id); if (!w) return;
+  w.activities.push(''); saveDB(DB); renderWeeks(); toggleWeek(id);
+  setTimeout(() => {
+    const els = document.querySelectorAll(`#${id} .activity-row input`);
+    if (els.length) els[els.length-1].focus();
+  }, 60);
+}
+function deleteActivity(id, idx){
+  const w = DB.weeks.find(x=>x.id===id); if (!w) return;
+  w.activities.splice(idx,1); saveDB(DB); renderWeeks(); toggleWeek(id);
+}
+function deleteWeek(id){
+  if (!confirm('Delete this week? This cannot be undone.')) return;
+  DB.weeks = DB.weeks.filter(x=>x.id!==id);
+  DB.weeks.forEach((w,i) => w.num = i+1);
+  saveDB(DB); renderWeeks(); renderStats(); toast('Week deleted');
+}
+function toggleStatus(id){
+  const w = DB.weeks.find(x=>x.id===id); if (!w) return;
+  w.status = w.status === 'published' ? 'draft' : 'published';
+  saveDB(DB); renderWeeks(); renderStats(); toggleWeek(id);
+  toast(w.status === 'published' ? 'Week published' : 'Moved to draft');
+}
+function addWeek(){
+  const n = DB.weeks.length + 1;
+  const id = 'w' + Date.now();
+  DB.weeks.push({ id, num:n, title:'New week', objective:'', summary:'', story:'', video:'', activities:[], status:'draft' });
+  saveDB(DB); renderWeeks(); renderStats(); toggleWeek(id);
+  toast('Week added');
+}
+function promptVideo(id){
+  const url = prompt('Paste video URL (Google Drive, Vimeo, or direct MP4):');
+  if (url){ updateWeek(id,'video',url); renderWeeks(); toggleWeek(id) }
+}
+
+function addLearner(){
+  const input = document.getElementById('new-learner');
+  const email = input.value.trim();
+  if (!email || !email.includes('@')){ toast('Enter a valid email'); return }
+  DB.learners.push({ id:'l'+Date.now(), name:email.split('@')[0], email, progress:0 });
+  saveDB(DB); renderLearners(); input.value=''; toast('Learner enrolled');
+}
+function removeLearner(id){
+  if (!confirm('Remove this learner?')) return;
+  DB.learners = DB.learners.filter(l=>l.id!==id); saveDB(DB); renderLearners();
+  toast('Learner removed');
+}
+
+function exportData(){
+  const blob = new Blob([JSON.stringify(DB,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'aspirations-curriculum.json';
+  a.click(); URL.revokeObjectURL(url); toast('Curriculum exported');
+}
+
+function previewLearner(){ toast('Learner preview opens in a new tab (mock)') }
+
+/* =========================== TABS =========================== */
+document.querySelectorAll('.section-tabs button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.section-tabs button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  const s = b.dataset.section;
+  ['curriculum','learners','settings'].forEach(name => {
+    document.getElementById('sec-'+name).style.display = name === s ? '' : 'none';
+  });
+}));
+
+/* =========================== UTILS =========================== */
+let saveTimer;
+function markSaved(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => renderStats(), 200);
+}
+function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) }
+
+let toastTimer;
+function toast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+/* =========================== INIT =========================== */
+if (getUser()) showShell();
+</script>
+
+</body>
+</html>

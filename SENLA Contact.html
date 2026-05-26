@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Contact — SENLA Research Hub</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy:#002157; --navy-2:#00163d; --navy-3:#0e3a82;
+    --paper:#f6f1e7; --paper-2:#efe8d6;
+    --ink:#0b1326; --mute:#5a5f70; --line:#dfd6c2;
+    --accent:#c75a36; --accent-soft:#f5e6dc; --ok:#2c7a4b;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;letter-spacing:-.01em;line-height:1.05;margin:0}
+  button,input,textarea{font-family:inherit}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+  .lede{font-size:18px;color:#3a3f50;line-height:1.6;max-width:62ch}
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:rgba(0,22,61,.96);backdrop-filter:saturate(140%) blur(10px);padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+  .head{display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;align-items:center;gap:14px;color:#fff}
+  .brand img.logo{height:46px;width:auto;display:block;border-radius:4px;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  nav.main{display:flex;align-items:center;gap:34px}
+  nav.main a{color:rgba(255,255,255,.85);font-size:14px;font-weight:500;position:relative;padding:6px 0}
+  nav.main a:hover{color:#fff}
+  nav.main a.active::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--accent)}
+  .cta{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;border:none;padding:10px 18px;border-radius:999px;font-weight:600;font-size:13.5px;cursor:pointer;letter-spacing:.01em;transition:all .15s}
+  .cta:hover{background:#a8492a;transform:translateY(-1px)}
+  .cta.dark{background:var(--navy)}
+  .cta.dark:hover{background:var(--navy-3)}
+
+  /* hero */
+  .c-hero{padding:88px 0 56px;background:linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%)}
+  .c-hero h1{font-size:clamp(48px,6.5vw,88px);margin:18px 0 22px}
+  .c-hero h1 em{font-style:italic;color:var(--accent);font-family:'DM Serif Display'}
+
+  /* layout */
+  .contact-shell{padding:48px 0 96px}
+  .contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:48px;align-items:start}
+
+  .info-card{background:var(--navy);color:#fff;border-radius:18px;padding:44px 40px;position:relative;overflow:hidden}
+  .info-card::before{content:"";position:absolute;right:-80px;top:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle, rgba(199,90,54,.5) 0%, transparent 70%)}
+  .info-card .eyebrow{color:var(--accent);position:relative}
+  .info-card h2{font-size:42px;margin:14px 0 16px;color:#fff;position:relative}
+  .info-card h2 em{font-style:italic;color:var(--accent)}
+  .info-card p.lead{color:rgba(255,255,255,.78);font-size:15.5px;margin:0 0 36px;position:relative}
+
+  .info-block{position:relative;margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.12)}
+  .info-block:last-of-type{border:none;padding-bottom:0;margin-bottom:0}
+  .info-block .l{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:8px}
+  .info-block .v{font-family:'DM Serif Display';font-size:20px;color:#fff;line-height:1.3}
+  .info-block .v a{color:#fff}
+  .info-block .v a:hover{color:var(--accent)}
+
+  .socials-row{display:flex;gap:10px;margin-top:32px;position:relative}
+  .socials-row a{width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;transition:all .2s}
+  .socials-row a:hover{background:var(--accent);border-color:var(--accent)}
+
+  /* form */
+  .form-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:44px 40px;box-shadow:0 20px 40px -25px rgba(8,24,58,.18)}
+  .form-card h2{font-size:36px;margin-bottom:10px}
+  .form-card h2 em{font-style:italic;color:var(--accent)}
+  .form-card .sub{color:var(--mute);font-size:14.5px;margin-bottom:28px}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .field{margin-bottom:18px}
+  .field label{display:block;font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--ink);margin-bottom:7px}
+  .field input, .field textarea, .field select{
+    width:100%;border:1px solid var(--line);border-radius:10px;padding:13px 14px;
+    font-size:14.5px;background:#fafaf5;outline:none;transition:all .15s;color:var(--ink);
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{border-color:var(--navy);background:#fff;box-shadow:0 0 0 3px rgba(0,33,87,.08)}
+  .field textarea{resize:vertical;min-height:130px;font-family:inherit;line-height:1.55}
+  .submit-row{display:flex;align-items:center;gap:18px;margin-top:6px;flex-wrap:wrap}
+  .submit-row .req{font-size:12.5px;color:var(--mute)}
+  .alert{display:none;align-items:center;gap:10px;background:#e0f1e6;color:var(--ok);border:1px solid #b8dec6;padding:12px 16px;border-radius:10px;font-size:14px;margin-bottom:18px}
+  .alert.show{display:flex}
+  .alert .d{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+
+  /* address strip */
+  .address-strip{background:var(--paper-2);padding:64px 0;border-top:1px solid var(--line)}
+  .a-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+  .a-card{display:flex;gap:18px;align-items:flex-start}
+  .a-card .ico{width:48px;height:48px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display';font-size:20px;flex:0 0 48px}
+  .a-card h4{font-family:'DM Serif Display';font-size:20px;margin-bottom:4px}
+  .a-card p{margin:0;font-size:14px;color:var(--mute);line-height:1.55}
+  .a-card p a{color:var(--navy);font-weight:600}
+
+  /* footer */
+  footer{background:var(--navy-2);color:rgba(255,255,255,.7);padding:90px 0 30px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}
+  footer h5{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#fff;margin:0 0 20px;font-family:'Inter'}
+  footer .fbrand{font-family:'DM Serif Display';font-size:26px;color:#fff;margin-bottom:14px}
+  footer .ftag{font-size:14px;line-height:1.6;max-width:32ch;color:rgba(255,255,255,.7)}
+  footer ul{list-style:none;padding:0;margin:0}
+  footer ul li{margin-bottom:12px}
+  footer ul a{font-size:14px;color:rgba(255,255,255,.7)}
+  footer ul a:hover{color:var(--accent)}
+  footer .contact a{display:block;font-size:14px;color:#fff;margin-bottom:6px}
+  footer .contact span{font-size:14px;color:rgba(255,255,255,.6)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:30px;border-top:1px solid rgba(255,255,255,.1);font-size:13px;color:rgba(255,255,255,.5);flex-wrap:wrap;gap:14px}
+  .socials{display:flex;gap:10px}
+  .socials a{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff}
+  .socials a:hover{background:var(--accent);border-color:var(--accent)}
+
+  @media (max-width:1024px){
+    .contact-grid,.a-grid,.foot-grid{grid-template-columns:1fr;gap:28px}
+    .form-row{grid-template-columns:1fr}
+    nav.main{display:none}
+    .info-card,.form-card{padding:32px 26px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head">
+    <a class="brand" href="SENLA Homepage.html">
+      <img class="logo" src="images/logo.jpg" alt="SENLA Research Hub Ltd" />
+    </a>
+    <nav class="main">
+      <a href="SENLA Homepage.html">Home</a>
+      <a href="SENLA About.html">About</a>
+      <a href="SENLA Projects.html">Projects</a>
+      <a href="SENLA Blog.html">Blog</a>
+      <a href="SENLA Course Learner.html">Course</a>
+      <a href="SENLA Contact.html" class="active">Contact</a>
+    </nav>
+    <a href="mailto:info@senlaresearchhub.com" class="cta">Email us →</a>
+  </div>
+</header>
+
+<section class="c-hero">
+  <div class="wrap">
+    <span class="eyebrow">Get in touch</span>
+    <h1>Let's <em>talk.</em></h1>
+    <p class="lede">Whether you're a funder, a university, a government agency, or a community organization — we'd love to hear from you. Use the form below or reach our team directly.</p>
+  </div>
+</section>
+
+<section class="contact-shell">
+  <div class="wrap">
+    <div class="contact-grid">
+
+      <!-- INFO CARD -->
+      <aside class="info-card">
+        <span class="eyebrow">Contact info</span>
+        <h2>Reach us <em>directly.</em></h2>
+        <p class="lead">For collaboration, research partnerships, press, or speaking engagements — these go straight to our team.</p>
+
+        <div class="info-block">
+          <div class="l">Email</div>
+          <div class="v"><a href="mailto:info@senlaresearchhub.com">info@senlaresearchhub.com</a></div>
+        </div>
+        <div class="info-block">
+          <div class="l">Phone</div>
+          <div class="v"><a href="tel:+256787083553">+256 787 083 553</a></div>
+        </div>
+        <div class="info-block">
+          <div class="l">Office</div>
+          <div class="v">Rwebishuri, Mbarara<br/>Uganda</div>
+        </div>
+
+        <div class="socials-row">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="X">𝕏</a>
+        </div>
+      </aside>
+
+      <!-- FORM -->
+      <div class="form-card">
+        <h2>Send us a <em>message.</em></h2>
+        <p class="sub">Fields marked with * are required. We typically reply within 2 business days.</p>
+
+        <div class="alert" id="success-alert">
+          <span class="d"></span>
+          <span>Thanks — your message has been sent. We'll be in touch soon.</span>
+        </div>
+
+        <form id="contact-form" novalidate>
+          <!-- honeypot -->
+          <div style="position:absolute;left:-9999px" aria-hidden="true">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="name">Your name *</label>
+              <input type="text" id="name" name="name" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="email">Your email *</label>
+              <input type="email" id="email" name="email" required autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="org">Organization</label>
+              <input type="text" id="org" name="org" autocomplete="organization" />
+            </div>
+            <div class="field">
+              <label for="reason">I'm reaching out about</label>
+              <select id="reason" name="reason">
+                <option>Research collaboration</option>
+                <option>Consultancy &amp; advisory</option>
+                <option>Course / facilitator access</option>
+                <option>Press &amp; speaking</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="subject">Subject *</label>
+            <input type="text" id="subject" name="subject" required />
+          </div>
+
+          <div class="field">
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" rows="6" required></textarea>
+          </div>
+
+          <div class="submit-row">
+            <button type="submit" class="cta">Send message →</button>
+            <span class="req">We respect your privacy. No marketing emails.</span>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ADDRESS STRIP -->
+<section class="address-strip">
+  <div class="wrap">
+    <div class="a-grid">
+      <div class="a-card">
+        <div class="ico">@</div>
+        <div>
+          <h4>Email</h4>
+          <p><a href="mailto:info@senlaresearchhub.com">info@senlaresearchhub.com</a><br/>For general enquiries and collaborations.</p>
+        </div>
+      </div>
+      <div class="a-card">
+        <div class="ico">☎</div>
+        <div>
+          <h4>Phone</h4>
+          <p><a href="tel:+256787083553">+256 787 083 553</a><br/>Mon – Fri, 9am – 5pm (EAT).</p>
+        </div>
+      </div>
+      <div class="a-card">
+        <div class="ico">▢</div>
+        <div>
+          <h4>Office</h4>
+          <p>Rwebishuri, Mbarara, Uganda<br/>Visits by appointment.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- footer -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="fbrand">SENLA Research Hub</div>
+        <p class="ftag">A non-profit research organization registered in Uganda. Evidence-based socio-economic policy research and capacity building.</p>
+      </div>
+      <div>
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="SENLA Homepage.html">Home</a></li>
+          <li><a href="SENLA About.html">About</a></li>
+          <li><a href="SENLA Projects.html">Projects</a></li>
+          <li><a href="SENLA Blog.html">Blog</a></li>
+          <li><a href="SENLA Course Learner.html">Course</a></li>
+          <li><a href="SENLA Contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Services</h5>
+        <ul>
+          <li><a href="SENLA Projects.html">Research</a></li>
+          <li><a href="SENLA Projects.html">Consultancy</a></li>
+          <li><a href="SENLA Projects.html">Community engagement</a></li>
+        </ul>
+      </div>
+      <div class="contact">
+        <h5>Contact</h5>
+        <a href="mailto:info@senlaresearchhub.com">info@senlaresearchhub.com</a>
+        <a href="tel:+256787083553">+256 787 083 553</a>
+        <span>Rwebishuri, Mbarara, Uganda</span>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="y"></span> SENLA Research Hub. All rights reserved.</span>
+      <div class="socials">
+        <a href="#" aria-label="LinkedIn">in</a>
+        <a href="#" aria-label="X">𝕏</a>
+        <a href="#" aria-label="Facebook">f</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('y').textContent = new Date().getFullYear();
+  document.getElementById('contact-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    // Honeypot check
+    if (document.getElementById('company').value) return;
+    // Basic mailto fallback (no backend wired)
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const subject = document.getElementById('subject').value;
+    const message = document.getElementById('message').value;
+    const org = document.getElementById('org').value;
+    const reason = document.getElementById('reason').value;
+    const body = `From: ${name} <${email}>%0AOrganization: ${org}%0ATopic: ${reason}%0A%0A${encodeURIComponent(message)}`;
+    document.getElementById('success-alert').classList.add('show');
+    window.location.href = `mailto:info@senlaresearchhub.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+    setTimeout(()=>this.reset(), 200);
+  });
+</script>
+</body>
+</html>

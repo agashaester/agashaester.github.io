@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Projects &amp; Programs — SENLA Research Hub</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy:#002157; --navy-2:#00163d; --navy-3:#0e3a82;
+    --paper:#f6f1e7; --paper-2:#efe8d6;
+    --ink:#0b1326; --mute:#5a5f70; --line:#dfd6c2;
+    --accent:#c75a36; --accent-soft:#f5e6dc; --accent-3:#2c7a4b;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;letter-spacing:-.01em;line-height:1.05;margin:0}
+  button,input{font-family:inherit}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+  .lede{font-size:18px;color:#3a3f50;line-height:1.6;max-width:62ch}
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:rgba(0,22,61,.96);backdrop-filter:saturate(140%) blur(10px);padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+  .head{display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .brand{display:flex;align-items:center;gap:14px;color:#fff}
+  .brand img.logo{height:46px;width:auto;display:block;border-radius:4px;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  nav.main{display:flex;align-items:center;gap:34px}
+  nav.main a{color:rgba(255,255,255,.85);font-size:14px;font-weight:500;position:relative;padding:6px 0}
+  nav.main a:hover{color:#fff}
+  nav.main a.active::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--accent)}
+  .cta{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;border:none;padding:10px 18px;border-radius:999px;font-weight:600;font-size:13.5px;cursor:pointer;letter-spacing:.01em;transition:all .15s}
+  .cta:hover{background:#a8492a;transform:translateY(-1px)}
+  .cta.dark{background:var(--navy);color:#fff}
+  .cta.ghost{background:transparent;border:1.5px solid var(--navy);color:var(--navy)}
+  .cta.ghost:hover{background:var(--navy);color:#fff}
+
+  /* hero */
+  .p-hero{padding:88px 0 56px;background:linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%)}
+  .p-hero h1{font-size:clamp(48px,6.5vw,88px);margin:18px 0 22px}
+  .p-hero h1 em{font-style:italic;color:var(--accent);font-family:'DM Serif Display'}
+
+  /* feature tiles */
+  .feature-row{padding:48px 0}
+  .feats{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+  .feat-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:36px 32px;display:flex;flex-direction:column;align-items:flex-start;gap:14px;position:relative;overflow:hidden;transition:transform .25s ease, box-shadow .25s ease}
+  .feat-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px -22px rgba(8,24,58,.18)}
+  .feat-card.mint{background:linear-gradient(135deg, #f0ede2 0%, var(--accent-soft) 100%)}
+  .feat-card .ico{width:48px;height:48px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display';font-size:22px}
+  .feat-card h3{font-size:28px}
+  .feat-card p{color:var(--mute);font-size:14.5px;margin:0;line-height:1.55}
+
+  /* controls */
+  .proj-controls{padding:36px 0 24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
+  .bar{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .pills{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{border:1px solid var(--line);background:#fff;padding:7px 14px;border-radius:999px;font-size:13px;color:var(--ink);cursor:pointer;font-weight:500;transition:all .15s}
+  .pill:hover{border-color:var(--navy)}
+  .pill.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .search-box{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;padding:7px 14px;border-radius:999px}
+  .search-box input{border:none;outline:none;background:transparent;font-size:13.5px;width:200px}
+
+  /* grid */
+  .proj-grid{padding:48px 0 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+  .proj-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:all .25s ease;color:inherit}
+  .proj-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px -22px rgba(8,24,58,.18);border-color:var(--accent)}
+  .proj-card .media{aspect-ratio:16/10;background:var(--paper-2);overflow:hidden;margin:0}
+  .proj-card .media img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+  .proj-card:hover .media img{transform:scale(1.06)}
+  .proj-card .body{padding:22px 24px 26px;display:flex;flex-direction:column;flex:1}
+  .proj-card .meta{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .proj-card .meta .cat{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .proj-card .meta time{font-size:12px;color:var(--mute)}
+  .proj-card h3{font-size:22px;line-height:1.2;margin-bottom:10px;color:var(--ink)}
+  .proj-card p{font-size:14px;color:var(--mute);margin:0 0 14px;flex:1;line-height:1.55}
+  .proj-card .by{font-size:12px;color:var(--mute);letter-spacing:.02em;padding-top:14px;border-top:1px solid var(--line)}
+  .proj-card .by b{color:var(--ink);font-weight:600}
+  .empty{padding:80px 28px;text-align:center;border:1px dashed var(--line);border-radius:14px;background:#fff;grid-column:1/-1;color:var(--mute)}
+
+  /* partners cta */
+  .partners-band{padding:96px 0;background:var(--navy);color:#fff;text-align:center}
+  .partners-band .badge{display:inline-block;padding:6px 16px;border-radius:999px;border:1px solid var(--accent);color:var(--accent);font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;margin-bottom:20px}
+  .partners-band h2{font-size:clamp(36px,4.5vw,60px);max-width:800px;margin:0 auto 18px;color:#fff}
+  .partners-band h2 em{font-style:italic;color:var(--accent);font-family:'DM Serif Display'}
+  .partners-band p{color:rgba(255,255,255,.78);max-width:60ch;margin:0 auto 28px}
+
+  /* footer */
+  footer{background:var(--navy-2);color:rgba(255,255,255,.7);padding:90px 0 30px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}
+  footer h5{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#fff;margin:0 0 20px;font-family:'Inter'}
+  footer .fbrand{font-family:'DM Serif Display';font-size:26px;color:#fff;margin-bottom:14px}
+  footer .ftag{font-size:14px;line-height:1.6;max-width:32ch;color:rgba(255,255,255,.7)}
+  footer ul{list-style:none;padding:0;margin:0}
+  footer ul li{margin-bottom:12px}
+  footer ul a{font-size:14px;color:rgba(255,255,255,.7)}
+  footer ul a:hover{color:var(--accent)}
+  footer .contact a{display:block;font-size:14px;color:#fff;margin-bottom:6px}
+  footer .contact span{font-size:14px;color:rgba(255,255,255,.6)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:30px;border-top:1px solid rgba(255,255,255,.1);font-size:13px;color:rgba(255,255,255,.5);flex-wrap:wrap;gap:14px}
+  .socials{display:flex;gap:10px}
+  .socials a{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff}
+
+  @media (max-width:1024px){
+    .feats,.proj-grid,.foot-grid{grid-template-columns:1fr;gap:24px}
+    .proj-grid{grid-template-columns:1fr 1fr}
+    nav.main{display:none}
+  }
+  @media (max-width:640px){
+    .proj-grid{grid-template-columns:1fr}
+    .search-box input{width:140px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head">
+    <a class="brand" href="SENLA Homepage.html">
+      <img class="logo" src="images/logo.jpg" alt="SENLA Research Hub Ltd" />
+    </a>
+    <nav class="main">
+      <a href="SENLA Homepage.html">Home</a>
+      <a href="SENLA About.html">About</a>
+      <a href="SENLA Blog.html">Blog</a>
+      <a href="SENLA Course Learner.html">Course</a>
+      <a href="SENLA Contact.html">Contact</a>
+    </nav>
+    <a href="SENLA Contact.html" class="cta">Get in touch →</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="p-hero">
+  <div class="wrap">
+    <span class="eyebrow">Our work</span>
+    <h1>Projects &amp; <em>Programs.</em></h1>
+    <p class="lede">Field labs, member research, courses, publications and briefs — evidence in action across Africa.</p>
+  </div>
+</section>
+
+<!-- FEATURE TILES -->
+<section class="feature-row">
+  <div class="wrap">
+    <div class="feats">
+      <div class="feat-card">
+        <div class="ico">F</div>
+        <h3>Field Labs</h3>
+        <p>Hands-on sprints with local partners to test ideas and generate actionable insight in days, not months.</p>
+      </div>
+      <div class="feat-card mint">
+        <div class="ico">B</div>
+        <h3>Bootcamps</h3>
+        <p>Learning pathways in "street-smart" entrepreneurship — short courses, toolkits, and open resources.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FILTERS -->
+<section class="proj-controls">
+  <div class="wrap bar">
+    <div class="pills" id="filters" role="tablist" aria-label="Filter projects">
+      <button class="pill active" data-cat="">All</button>
+      <button class="pill" data-cat="Organization Project">Org Projects</button>
+      <button class="pill" data-cat="Member Research">Member Research</button>
+      <button class="pill" data-cat="Field Lab">Field Labs</button>
+      <button class="pill" data-cat="Policy Brief">Policy Briefs</button>
+      <button class="pill" data-cat="Courses">Courses</button>
+    </div>
+    <div class="search-box">
+      🔍 <input id="q" type="search" placeholder="Search projects…" aria-label="Search projects"/>
+    </div>
+  </div>
+</section>
+
+<!-- GRID -->
+<main class="wrap">
+  <div id="grid" class="proj-grid" aria-live="polite"></div>
+</main>
+
+<!-- PARTNERS CTA -->
+<section class="partners-band">
+  <div class="wrap">
+    <span class="badge">Join us in our mission</span>
+    <h2>Building the next chapter of African research <em>together.</em></h2>
+    <p>Our work is driven by a passionate community of researchers, partners, and communities — committed to providing accessible, immersive learning experiences across the continent.</p>
+    <a class="cta" href="SENLA Contact.html">Learn how to contribute →</a>
+  </div>
+</section>
+
+<!-- footer -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="fbrand">SENLA Research Hub</div>
+        <p class="ftag">A non-profit research organization registered in Uganda. Evidence-based socio-economic policy research and capacity building.</p>
+      </div>
+      <div>
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="SENLA Homepage.html">Home</a></li>
+          <li><a href="SENLA About.html">About</a></li>
+          <li><a href="SENLA Blog.html">Blog</a></li>
+          <li><a href="SENLA Course Learner.html">Course</a></li>
+          <li><a href="SENLA Contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Services</h5>
+        <ul>
+          <li><a href="SENLA Projects.html">Research</a></li>
+          <li><a href="SENLA Projects.html">Consultancy</a></li>
+          <li><a href="SENLA Projects.html">Community engagement</a></li>
+        </ul>
+      </div>
+      <div class="contact">
+        <h5>Contact</h5>
+        <a href="mailto:info@senlaresearchhub.com">info@senlaresearchhub.com</a>
+        <a href="tel:+256787083553">+256 787 083 553</a>
+        <span>Rwebishuri, Mbarara, Uganda</span>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="y"></span> SENLA Research Hub. All rights reserved.</span>
+      <div class="socials">
+        <a href="#" aria-label="LinkedIn">in</a>
+        <a href="#" aria-label="X">𝕏</a>
+        <a href="#" aria-label="Facebook">f</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Project data — pulled from agashaester.github.io projects.data.json,
+// remapped to SENLA's image assets in /images.
+const PROJECTS = [
+  {
+    id: "finlit-aspirations",
+    title: "Financial Literacy & Aspirations: Experimental Evidence from Eastern Uganda",
+    category: "Organization Project",
+    date: "2024-06-30",
+    image: "images/field1.jpg",
+    members: ["Ester Agasha"],
+    tags: ["Finance", "Women", "RCT", "Behavior Change"],
+    summary: "Mobile-based financial education and an aspirations documentary aimed at boosting women's money skills and future planning. Early evidence shows meaningful gains in basic financial knowledge and empowerment."
+  },
+  {
+    id: "dietary-patterns-geo",
+    title: "Green Riches, Golden Assets: Uganda's Dietary Patterns",
+    category: "Member Research",
+    date: "2024-03-18",
+    image: "images/forest.jpg",
+    members: ["Ester Agasha", "Nathalie Nyanga"],
+    tags: ["Geospatial", "Nutrition", "NDVI", "Assets"],
+    summary: "Geospatial greenery (NDVI), household assets, and dietary diversity — how environment and socio-economics intersect in shaping what people eat in Uganda."
+  },
+  {
+    id: "entrepreneurship-education-uganda",
+    title: "Entrepreneurship Education in Uganda",
+    category: "Organization Project",
+    date: "2024-04-10",
+    image: "images/sarabootcamp.jpg",
+    members: ["Sarah Nabachwa"],
+    tags: ["Entrepreneurship", "Education", "SMEs"],
+    summary: "Co-designed, modular training and mentorship that fits around trading hours and real SME constraints. Hundreds have received practical training through workshops and follow-up clinics."
+  },
+  {
+    id: "bootcamps-street-smart-btcs",
+    title: "Bootcamps — Street-Smart Entrepreneurship & Case Writing",
+    category: "Courses",
+    date: "2025-05-20",
+    image: "images/senla_teach.jpg",
+    members: ["Sarah Nabachwa"],
+    tags: ["Bootcamp", "BTCS", "Entrepreneurship", "MUST"],
+    summary: "Short, intensive bootcamps that help entrepreneurs improve their businesses and help faculty produce classroom-ready Business Teaching Case Studies (BTCS)."
+  },
+  {
+    id: "aspirations-curriculum",
+    title: "The Aspirations Curriculum — Five-Week Pilot",
+    category: "Courses",
+    date: "2024-09-12",
+    image: "images/conf2.jpg",
+    members: ["Ester Agasha", "The SENLA team"],
+    tags: ["Curriculum", "Aspirations", "Facilitator-led"],
+    summary: "A five-week, facilitator-led curriculum that helps small-business owners visualize success, set targets, and build a flourishing business. Built on research with 4,000+ learners across Uganda and India."
+  },
+  {
+    id: "field-lab-rwebishuri",
+    title: "Rwebishuri Field Lab — Game-Based Financial Education",
+    category: "Field Lab",
+    date: "2024-08-05",
+    image: "images/sara_field.jpg",
+    members: ["The SENLA team"],
+    tags: ["Field Lab", "Uganda", "Mobile"],
+    summary: "Community sessions paired with a mobile game and an aspirations film — co-designed and tested with women's groups in Rwebishuri, Mbarara."
+  }
+];
+
+const grid = document.getElementById('grid');
+const q = document.getElementById('q');
+const tabs = document.getElementById('filters');
+let cat = '';
+
+const esc = s => (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m]));
+const byDate = (a,b) => new Date(b.date) - new Date(a.date);
+
+function matches(p){
+  const qq = (q.value||'').toLowerCase().trim();
+  if (cat && p.category !== cat) return false;
+  if (!qq) return true;
+  const hay = [p.title, p.summary, (p.members||[]).join(' '), (p.tags||[]).join(' ')].join(' ').toLowerCase();
+  return hay.includes(qq);
+}
+function card(p){
+  const date = new Date(p.date).toLocaleDateString(undefined,{year:'numeric',month:'short'});
+  return `
+    <a class="proj-card" href="SENLA Contact.html" aria-label="${esc(p.title)}">
+      <figure class="media"><img src="${esc(p.image)}" alt=""/></figure>
+      <div class="body">
+        <div class="meta">
+          <span class="cat">${esc(p.category)}</span>
+          <time datetime="${esc(p.date)}">${date}</time>
+        </div>
+        <h3>${esc(p.title)}</h3>
+        <p>${esc(p.summary)}</p>
+        <div class="by">By <b>${esc((p.members||[]).join(', '))}</b></div>
+      </div>
+    </a>`;
+}
+function render(){
+  const items = PROJECTS.slice().sort(byDate).filter(matches);
+  grid.innerHTML = items.map(card).join('') || `<div class="empty">No projects match your search.</div>`;
+}
+
+q.addEventListener('input', render);
+tabs.addEventListener('click', e=>{
+  if(!e.target.matches('.pill')) return;
+  tabs.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  cat = e.target.dataset.cat || '';
+  render();
+});
+
+render();
+document.getElementById('y').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

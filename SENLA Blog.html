@@ -1,0 +1,1375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Blog — SENLA Research Hub</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<!-- Supabase JS (loaded as a global) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+  :root{
+    --navy:#002157; --navy-2:#00163d; --navy-3:#0e3a82;
+    --paper:#f6f1e7; --paper-2:#efe8d6;
+    --ink:#0b1326; --mute:#5a5f70; --line:#dfd6c2;
+    --accent:#c75a36; --accent-soft:#f5e6dc; --white:#fbfaf5; --ok:#2c7a4b;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{font-family:'DM Serif Display',serif;font-weight:400;letter-spacing:-.01em;line-height:1.1;margin:0}
+  button{font-family:inherit}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+
+  /* ====== HEADER ====== */
+  header.site{background:var(--navy);color:#fff;border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:0;z-index:40}
+  .head{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;gap:24px;max-width:1280px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{height:42px;border-radius:4px}
+  nav.main{display:flex;gap:30px;align-items:center}
+  nav.main a{color:rgba(255,255,255,.85);font-size:14px;font-weight:500;padding:4px 0;position:relative}
+  nav.main a.active{color:#fff}
+  nav.main a.active::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:var(--accent)}
+  .right{display:flex;align-items:center;gap:14px;position:relative}
+  .avatar{
+    width:38px;height:38px;border-radius:50%;background:#fff;color:var(--navy);
+    display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display';font-size:18px;
+    border:1.5px solid rgba(255,255,255,.25);cursor:pointer;
+  }
+  .avatar.signed-out{background:transparent;color:#fff;width:auto;height:auto;padding:8px 16px;border-radius:999px;font-family:'Inter';font-size:13.5px;font-weight:600;border:1.5px solid rgba(255,255,255,.4)}
+  .avatar.signed-out:hover{background:rgba(255,255,255,.08)}
+  .role-pill{background:var(--accent);color:#fff;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:99px;font-weight:600}
+
+  /* ====== CTA & BTN ====== */
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;font-weight:600;font-size:13.5px;cursor:pointer;border:none;transition:all .15s ease}
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.primary:hover{background:#a8492a}
+  .btn.dark{background:var(--navy);color:#fff}
+  .btn.dark:hover{background:var(--navy-3)}
+  .btn.ghost{background:transparent;border:1.5px solid var(--navy);color:var(--navy)}
+  .btn.ghost:hover{background:var(--navy);color:#fff}
+  .btn.sm{padding:6px 12px;font-size:12.5px}
+  .btn.tiny{padding:4px 10px;font-size:11.5px;border-radius:6px}
+  .btn.danger{background:transparent;color:#a8492a;border:1px solid #d8b6a6}
+  .btn.danger:hover{background:#fdf0e8}
+
+  /* ====== ROUTE SHELL ====== */
+  .route{display:none}
+  .route.active{display:block}
+
+  /* ====== INDEX ====== */
+  .blog-hero{padding:64px 0 40px;background:var(--paper)}
+  .blog-hero h1{font-size:clamp(48px,6vw,84px);margin-bottom:12px}
+  .blog-hero h1 em{font-style:italic;color:var(--accent)}
+  .blog-hero p{font-size:18px;color:#3a3f50;max-width:60ch;margin:0}
+
+  .filters{padding:24px 0;display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .chip{border:1px solid var(--line);background:#fff;padding:7px 14px;border-radius:999px;font-size:13px;color:var(--ink);cursor:pointer;font-weight:500;transition:all .15s ease}
+  .chip:hover{border-color:var(--navy)}
+  .chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .search{margin-left:auto;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;padding:7px 14px;border-radius:999px}
+  .search input{border:none;outline:none;background:transparent;font-family:inherit;font-size:13.5px;width:200px}
+
+  .post-grid{padding:48px 0 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+  .post-card{display:flex;flex-direction:column;cursor:pointer;background:transparent;border:none;text-align:left;padding:0;color:inherit}
+  .post-card .pimg{aspect-ratio:4/3;overflow:hidden;border-radius:6px;margin-bottom:18px;background:var(--paper-2)}
+  .post-card .pimg img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+  .post-card:hover .pimg img{transform:scale(1.04)}
+  .pcat{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:10px}
+  .post-card h3{font-family:'DM Serif Display';font-size:24px;line-height:1.2;margin-bottom:10px;color:var(--ink)}
+  .post-card:hover h3{color:var(--navy)}
+  .post-card p{font-size:14.5px;color:var(--mute);margin:0 0 14px;flex:1}
+  .pby{font-size:12px;color:var(--mute)}
+  .pby b{color:var(--ink);font-weight:600}
+  .pby::before{content:"";display:inline-block;width:22px;height:1px;background:var(--mute);vertical-align:middle;margin-right:10px}
+
+  .empty-state{text-align:center;padding:80px 28px;border:1px dashed var(--line);border-radius:14px;background:#fff;grid-column:1/-1}
+  .empty-state h3{font-size:28px;margin-bottom:8px}
+  .empty-state p{color:var(--mute);margin:0 auto 18px;max-width:42ch}
+
+  /* status banner */
+  .status-banner{
+    background:linear-gradient(90deg, var(--accent-soft) 0%, #fdf5ec 100%);
+    border-bottom:1px solid var(--line);padding:10px 28px;
+    display:flex;align-items:center;justify-content:center;gap:14px;font-size:13px;color:var(--ink);
+  }
+  .status-banner.ok{background:linear-gradient(90deg, #e6f5ec 0%, #f1faf3 100%);color:var(--ok)}
+  .status-banner .d{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+  .status-banner.ok .d{background:var(--ok)}
+  .status-banner a{color:var(--navy);font-weight:600;text-decoration:underline}
+
+  /* ====== READER ====== */
+  .reader{padding:48px 0 100px;background:#fff}
+  .reader .meta{margin-bottom:18px}
+  .reader h1{font-size:clamp(36px,5vw,64px);margin-bottom:18px;max-width:22ch}
+  .reader .lead{font-size:21px;color:#3a3f50;max-width:62ch;line-height:1.55;margin-bottom:36px}
+  .reader .cover{aspect-ratio:16/9;border-radius:8px;overflow:hidden;margin-bottom:48px;background:var(--paper-2)}
+  .reader .cover img{width:100%;height:100%;object-fit:cover}
+  .reader article{max-width:680px;margin:0 auto;font-size:18px;line-height:1.75;color:#1d2030}
+  .reader article p{margin:0 0 24px}
+  .reader article h2{font-family:'DM Serif Display';font-size:34px;margin:48px 0 18px;line-height:1.2}
+  .reader article blockquote{border-left:3px solid var(--accent);padding:8px 0 8px 22px;margin:32px 0;font-family:'DM Serif Display';font-style:italic;font-size:22px;color:#2a2e3d}
+  .reader .by{display:flex;align-items:center;gap:14px;margin-bottom:48px}
+  .reader .by .a{width:44px;height:44px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display';font-size:18px;overflow:hidden}
+  .reader .by .a img{width:100%;height:100%;object-fit:cover}
+  .reader .by .when{font-size:13px;color:var(--mute);margin-left:auto}
+  .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--navy);font-size:14px;font-weight:600;margin-bottom:24px;cursor:pointer}
+  .back-link:hover{color:var(--accent)}
+
+  /* ====== ADMIN ====== */
+  .admin-bar{background:var(--navy-2);color:#fff;padding:10px 28px;display:flex;align-items:center;gap:14px;font-size:13px}
+  .admin-bar .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(44,122,75,.25)}
+  .admin-bar .right{margin-left:auto;display:flex;gap:14px;align-items:center}
+  .admin-bar a{color:rgba(255,255,255,.7);font-size:12.5px;cursor:pointer}
+  .admin-bar a:hover{color:#fff}
+
+  .admin{padding:48px 0 80px}
+  .admin-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;gap:24px;flex-wrap:wrap}
+  .admin-head h1{font-size:48px}
+  .admin-head h1 em{font-style:italic;color:var(--accent)}
+  .admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+  .stat .n{font-family:'DM Serif Display';font-size:36px;color:var(--navy);line-height:1}
+  .stat .l{font-size:12px;color:var(--mute);margin-top:4px;letter-spacing:.04em}
+
+  .admin-tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin-bottom:24px}
+  .admin-tabs button{background:none;border:none;padding:12px 18px;font-size:14px;font-weight:500;color:var(--mute);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+  .admin-tabs button.on{color:var(--navy);border-bottom-color:var(--accent);font-weight:600}
+
+  .post-row{display:grid;grid-template-columns:80px 1fr 120px 140px 120px 130px;gap:18px;align-items:center;padding:14px 14px;border:1px solid var(--line);background:#fff;border-radius:10px;margin-bottom:10px}
+  .post-row .thumb{width:80px;height:60px;background:var(--paper-2);border-radius:6px;overflow:hidden}
+  .post-row .thumb img{width:100%;height:100%;object-fit:cover}
+  .post-row .title{font-family:'DM Serif Display';font-size:18px;line-height:1.2;color:var(--ink)}
+  .post-row .title small{display:block;font-family:'Inter';font-size:12px;color:var(--mute);margin-top:4px;font-weight:400}
+  .post-row .pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;letter-spacing:.04em;text-align:center}
+  .pill.published{background:#e0f1e6;color:var(--ok)}
+  .pill.draft{background:#fff3e8;color:var(--accent)}
+  .post-row .by{font-size:13px;color:var(--mute)}
+  .post-row .when{font-size:13px;color:var(--mute)}
+  .post-row .actions{display:flex;gap:6px;justify-content:flex-end}
+
+  /* ====== COMPOSER ====== */
+  .composer{display:grid;grid-template-columns:1fr 320px;gap:32px;padding:32px 0 80px}
+  .composer .editor{background:#fff;border:1px solid var(--line);border-radius:14px;padding:36px 40px;min-height:600px}
+  .composer .sidebar{display:flex;flex-direction:column;gap:18px;position:sticky;top:80px;height:fit-content}
+  .composer .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}
+  .composer .panel h4{font-family:'Inter';font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mute);font-weight:600;margin:0 0 14px}
+  .composer .field{margin-bottom:14px}
+  .composer .field label{display:block;font-size:12px;font-weight:600;color:var(--mute);margin-bottom:6px}
+  .composer .field input,.composer .field select,.composer .field textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-family:inherit;font-size:13.5px;background:#fafaf5;outline:none}
+  .composer .field input:focus,.composer .field select:focus{border-color:var(--navy);background:#fff}
+  .tag-input{display:flex;gap:6px;flex-wrap:wrap;align-items:center;border:1px solid var(--line);border-radius:8px;padding:6px;background:#fafaf5}
+  .tag{background:var(--paper-2);border-radius:99px;padding:3px 10px;font-size:11.5px;display:inline-flex;align-items:center;gap:6px}
+  .tag .x{cursor:pointer;opacity:.6;font-weight:700}
+  .tag-input input{border:none;background:transparent;outline:none;font-size:13px;min-width:80px;padding:4px}
+
+  .title-input{width:100%;border:none;outline:none;font-family:'DM Serif Display';font-size:42px;line-height:1.1;background:transparent;color:var(--ink);padding:0;margin-bottom:18px}
+  .title-input::placeholder{color:#c4bfb1}
+  .sub-input{width:100%;border:none;outline:none;font-family:'Inter';font-size:18px;line-height:1.5;color:#3a3f50;background:transparent;padding:0;margin-bottom:32px;resize:none;font-weight:300}
+  .sub-input::placeholder{color:#aaa49a}
+
+  .toolbar{display:flex;gap:2px;padding:4px;background:var(--paper);border:1px solid var(--line);border-radius:8px;margin-bottom:18px;width:fit-content}
+  .toolbar button{background:transparent;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;font-size:13px;color:var(--ink);min-width:30px;font-weight:500}
+  .toolbar button:hover{background:#fff}
+  .toolbar .sep{width:1px;background:var(--line);margin:4px 4px}
+
+  .editor-body{min-height:300px;outline:none;font-size:17px;line-height:1.7;color:#1d2030}
+  .editor-body p{margin:0 0 18px}
+  .editor-body h2{font-family:'DM Serif Display';font-size:30px;margin:32px 0 14px;line-height:1.2}
+  .editor-body blockquote{border-left:3px solid var(--accent);padding:6px 0 6px 18px;margin:24px 0;font-family:'DM Serif Display';font-style:italic;font-size:20px;color:#2a2e3d}
+  .editor-body[contenteditable]:empty::before{content:"Start writing your post... use the toolbar above for formatting.";color:#aaa49a}
+  .editor-body img{max-width:100%;border-radius:6px;margin:12px 0}
+
+  .cover-upload{border:2px dashed var(--line);border-radius:10px;padding:18px;text-align:center;color:var(--mute);font-size:13px;cursor:pointer;background:#fafaf5}
+  .cover-upload:hover{border-color:var(--navy);color:var(--navy)}
+  .cover-upload.has-image{padding:0;border:none;overflow:hidden}
+  .cover-upload.has-image img{width:100%;height:140px;object-fit:cover;display:block}
+  .cover-upload .change{display:block;padding:8px;background:var(--paper);font-size:12px;color:var(--navy);font-weight:600}
+
+  .seo-preview{background:#fafaf5;border:1px solid var(--line);border-radius:8px;padding:12px;font-family:Arial,sans-serif}
+  .seo-preview .url{color:#5f6368;font-size:11px;margin-bottom:2px}
+  .seo-preview .ti{color:#1a0dab;font-size:14px;line-height:1.3;margin-bottom:2px}
+  .seo-preview .de{color:#4d5156;font-size:12px;line-height:1.4}
+
+  .status-bar{display:flex;align-items:center;gap:14px;padding:14px 18px;background:#fff;border:1px solid var(--line);border-radius:10px;margin-bottom:24px;font-size:13px}
+  .status-bar .saving{color:var(--mute);display:inline-flex;align-items:center;gap:6px}
+  .status-bar .saving .d{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+  .status-bar .actions{margin-left:auto;display:flex;gap:10px}
+
+  /* ====== LOGIN ====== */
+  .login-wrap{min-height:calc(100vh - 74px);display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);padding:40px 20px}
+  .login-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:48px 44px;width:100%;max-width:440px;box-shadow:0 30px 60px -20px rgba(0,33,87,.12);text-align:center}
+  .login-card .mark{width:64px;height:64px;border-radius:12px;background:var(--navy);margin:0 auto 24px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'DM Serif Display';font-size:32px}
+  .login-card h2{font-size:32px;margin-bottom:6px}
+  .login-card .sub{color:var(--mute);font-size:14px;margin-bottom:32px}
+  .gbtn{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:12px;border:1.5px solid var(--ink);background:#fff;padding:13px 18px;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;color:var(--ink);transition:all .15s ease}
+  .gbtn:hover{background:#fafaf5;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+  .gbtn .gico{width:18px;height:18px;flex:0 0 18px}
+  .gbtn .gico svg{width:100%;height:100%;display:block}
+  .login-card .divider{display:flex;align-items:center;gap:10px;margin:24px 0;color:var(--mute);font-size:11px}
+  .login-card .divider::before,.login-card .divider::after{content:"";flex:1;height:1px;background:var(--line)}
+  .login-card .note{font-size:12px;color:var(--mute);margin-top:20px;line-height:1.5}
+  .login-card .note a{color:var(--navy);font-weight:600;cursor:pointer}
+
+  .setup-warn{background:#fff3e8;border:1px solid #f6d4be;color:#a8492a;font-size:12.5px;padding:12px 14px;border-radius:8px;margin-bottom:20px;text-align:left;line-height:1.5}
+  .setup-warn b{color:#7d2e10}
+
+  /* ====== SETUP PANEL ====== */
+  .setup-overlay{position:fixed;inset:0;background:rgba(0,11,30,.65);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:120;padding:20px}
+  .setup-overlay.show{display:flex}
+  .setup-card{background:#fff;border-radius:18px;max-width:680px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.3)}
+  .setup-head{padding:28px 32px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:14px}
+  .setup-head h2{font-size:28px}
+  .setup-head h2 em{font-style:italic;color:var(--accent)}
+  .setup-head .x{background:transparent;border:none;font-size:22px;cursor:pointer;color:var(--mute)}
+  .setup-body{padding:24px 32px 32px;font-size:14px;line-height:1.6}
+  .setup-body h4{font-family:'Inter';font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);font-weight:600;margin:18px 0 10px}
+  .setup-body p{margin:0 0 14px;color:#2a2e3d}
+  .setup-body code{background:var(--paper);padding:2px 6px;border-radius:4px;font-size:12.5px;color:#a8492a}
+  .setup-body pre{background:var(--navy-2);color:#e8edf5;font-family:'Menlo','Monaco',monospace;font-size:12px;padding:16px 18px;border-radius:10px;overflow:auto;line-height:1.55;margin:0 0 14px}
+  .setup-body ol{padding-left:20px;color:#2a2e3d}
+  .setup-body ol li{margin-bottom:8px}
+  .setup-row{display:grid;grid-template-columns:1fr;gap:12px}
+  .setup-row .field{margin:0}
+  .setup-row label{display:block;font-size:12px;font-weight:600;color:var(--ink);margin-bottom:6px}
+  .setup-row input{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:'Menlo','Monaco',monospace;font-size:12.5px;background:#fafaf5;outline:none}
+  .setup-row input:focus{border-color:var(--navy);background:#fff}
+  .setup-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap}
+  .setup-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:600;letter-spacing:.04em}
+  .setup-pill.ok{background:#e0f1e6;color:var(--ok)}
+  .setup-pill.warn{background:#fff3e8;color:var(--accent)}
+  .setup-pill .d{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+  /* ====== TOAST ====== */
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:14px 22px;border-radius:10px;font-size:14px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.2);transform:translateY(20px);opacity:0;pointer-events:none;transition:all .25s ease;z-index:200;display:flex;align-items:center;gap:10px}
+  .toast.show{transform:translateY(0);opacity:1}
+  .toast .d{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+
+  /* ====== Modal ====== */
+  .modal-bg{position:fixed;inset:0;background:rgba(0,11,30,.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .modal-bg.show{display:flex}
+  .modal{background:#fff;border-radius:16px;padding:32px 36px;max-width:480px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.2)}
+  .modal h3{font-size:24px;margin-bottom:10px}
+  .modal p{color:var(--mute);margin:0 0 24px}
+  .modal .actions{display:flex;gap:10px;justify-content:flex-end}
+
+  /* user menu */
+  #user-menu{display:none;position:absolute;right:0;top:54px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px;min-width:220px;box-shadow:0 10px 30px rgba(0,0,0,.1);color:var(--ink);z-index:50}
+  #user-menu.show{display:block}
+  #user-menu .uh{padding:8px 12px;border-bottom:1px solid var(--line);margin-bottom:4px}
+  #user-menu .uh b{font-size:13px;display:block}
+  #user-menu .uh small{font-size:11px;color:var(--mute)}
+  #user-menu a{display:block;padding:8px 12px;font-size:13px;border-radius:6px;cursor:pointer}
+  #user-menu a:hover{background:var(--paper)}
+  #user-menu a.danger{color:#a8492a}
+
+  /* responsive */
+  @media (max-width:1024px){
+    .post-grid{grid-template-columns:1fr 1fr}
+    .composer{grid-template-columns:1fr}
+    .composer .sidebar{position:static}
+    .admin-stats{grid-template-columns:1fr 1fr}
+    .post-row{grid-template-columns:60px 1fr;gap:12px}
+    .post-row .pill,.post-row .by,.post-row .when,.post-row .actions{grid-column:2}
+    nav.main{display:none}
+  }
+  @media (max-width:640px){
+    .post-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site">
+  <div class="head">
+    <a class="brand" href="SENLA Homepage.html">
+      <img src="images/logo.jpg" alt="SENLA Research Hub Ltd" />
+    </a>
+    <nav class="main">
+      <a href="SENLA Homepage.html">Home</a>
+      <a href="SENLA About.html">About</a>
+      <a href="SENLA Blog.html" class="active" onclick="go('index');return false">Blog</a>
+      <a href="SENLA Course Learner.html">Course</a>
+      <a href="SENLA Contact.html">Contact</a>
+    </nav>
+    <div class="right" id="user-area">
+      <!-- filled by JS based on session -->
+    </div>
+  </div>
+</header>
+
+<!-- ============ STATUS BANNER (Supabase config indicator) ============ -->
+<div class="status-banner" id="status-banner" style="display:none">
+  <span class="d"></span>
+  <span id="status-msg">Posts are stored locally in this browser.</span>
+  <a onclick="openSetup()">Connect Supabase →</a>
+</div>
+
+<!-- ============ ROUTE: BLOG INDEX ============ -->
+<section class="route active" id="r-index">
+  <div class="blog-hero">
+    <div class="wrap">
+      <div class="eyebrow" style="margin-bottom:14px">The notebook</div>
+      <h1>Notes from <em>the field.</em></h1>
+      <p>Research updates, field journals, and reflections from the SENLA team. Posts are stored in Supabase and written by approved authors signed in with Google.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="filters">
+      <button class="chip active" data-cat="all">All</button>
+      <button class="chip" data-cat="Research">Research</button>
+      <button class="chip" data-cat="Field notes">Field notes</button>
+      <button class="chip" data-cat="Update">Updates</button>
+      <button class="chip" data-cat="Opinion">Opinion</button>
+      <div class="search">
+        🔍 <input type="text" id="search" placeholder="Search posts..." />
+      </div>
+    </div>
+
+    <div class="post-grid" id="post-grid"></div>
+  </div>
+</section>
+
+<!-- ============ ROUTE: ARTICLE ============ -->
+<section class="route" id="r-article">
+  <div class="wrap reader">
+    <span class="back-link" onclick="go('index')">← All posts</span>
+    <div class="meta"><span class="pcat" id="ar-cat">Research</span></div>
+    <h1 id="ar-title">Article title</h1>
+    <p class="lead" id="ar-lead">Article subtitle / lead paragraph appears here.</p>
+    <div class="by">
+      <div class="a" id="ar-avatar">E</div>
+      <div>
+        <b id="ar-author">Author name</b>
+        <div style="font-size:12px;color:var(--mute);margin-top:2px"><span id="ar-read">5 min read</span></div>
+      </div>
+      <div class="when" id="ar-date">May 24, 2026</div>
+    </div>
+    <div class="cover" id="ar-cover"></div>
+    <article id="ar-body"></article>
+  </div>
+</section>
+
+<!-- ============ ROUTE: LOGIN ============ -->
+<section class="route" id="r-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="mark">S</div>
+      <h2>Sign in to SENLA</h2>
+      <div class="sub">Sign in with Google to write, save, or comment on posts.</div>
+
+      <div class="setup-warn" id="login-setup-warn" style="display:none">
+        <b>Google sign-in needs Supabase.</b><br/>
+        Connect your Supabase project first so Google sign-in works and your posts persist.
+        <div style="margin-top:8px"><a onclick="openSetup()" style="cursor:pointer">Open setup →</a></div>
+      </div>
+
+      <button class="gbtn" id="google-signin-btn" onclick="signInWithGoogle()">
+        <span class="gico">
+          <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8c1.8-4.4 6-7.5 11.1-7.5 3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.4-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.2c-.4.4 6.7-4.9 6.7-14.8 0-1.2-.1-2.4-.4-3.5z"/></svg>
+        </span>
+        Continue with Google
+      </button>
+
+      <div class="divider">OR DEMO MODE</div>
+
+      <div style="display:flex;gap:8px">
+        <button class="btn ghost sm" style="flex:1" onclick="signInDemo('author')">Demo as Author</button>
+        <button class="btn ghost sm" style="flex:1" onclick="signInDemo('reader')">Demo as Reader</button>
+      </div>
+
+      <div class="note">
+        Authors can write, edit, and publish posts. Readers can browse and comment.<br/>
+        Add author emails to the allow-list in <a onclick="openSetup()">Setup</a>.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROUTE: ADMIN DASHBOARD ============ -->
+<section class="route" id="r-admin">
+  <div class="admin-bar">
+    <span class="dot"></span>
+    <span><b>Author workspace</b> · signed in as <span id="admin-email">—</span></span>
+    <div class="right">
+      <a onclick="openSetup()">Setup ⚙</a>
+      <a onclick="go('index')">View public blog →</a>
+    </div>
+  </div>
+
+  <div class="wrap admin">
+    <div class="admin-head">
+      <div>
+        <div class="eyebrow">Workspace</div>
+        <h1>Your <em>posts.</em></h1>
+      </div>
+      <button class="btn primary" onclick="newPost()">+ New post</button>
+    </div>
+
+    <div class="admin-stats">
+      <div class="stat"><div class="n" id="stat-pub">0</div><div class="l">Published</div></div>
+      <div class="stat"><div class="n" id="stat-draft">0</div><div class="l">Drafts</div></div>
+      <div class="stat"><div class="n" id="stat-storage">Local</div><div class="l">Storage</div></div>
+      <div class="stat"><div class="n" id="stat-total">0</div><div class="l">All posts</div></div>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="on" data-filter="all">All</button>
+      <button data-filter="published">Published</button>
+      <button data-filter="draft">Drafts</button>
+    </div>
+
+    <div id="admin-list"></div>
+  </div>
+</section>
+
+<!-- ============ ROUTE: COMPOSER ============ -->
+<section class="route" id="r-compose">
+  <div class="admin-bar">
+    <span class="dot"></span>
+    <span><b>Editing post</b> · <span id="storage-mode-label">Saving locally</span></span>
+    <div class="right">
+      <a onclick="go('admin')">← Back to workspace</a>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="composer">
+      <div class="editor">
+        <div class="status-bar">
+          <span class="saving"><span class="d"></span> <span id="save-status">Ready</span></span>
+          <div class="actions">
+            <button class="btn ghost sm" onclick="previewPost()">Preview</button>
+            <button class="btn dark sm" onclick="savePost('draft')">Save draft</button>
+            <button class="btn primary sm" onclick="savePost('published')">Publish</button>
+          </div>
+        </div>
+
+        <input type="text" class="title-input" id="c-title" placeholder="Your post title goes here..." />
+        <textarea class="sub-input" id="c-lead" rows="2" placeholder="A short subtitle or lead paragraph (optional)..."></textarea>
+
+        <div class="toolbar" id="toolbar">
+          <button data-cmd="bold" title="Bold"><b>B</b></button>
+          <button data-cmd="italic" title="Italic"><i>I</i></button>
+          <button data-cmd="underline" title="Underline"><u>U</u></button>
+          <div class="sep"></div>
+          <button data-cmd="formatBlock" data-val="h2" title="Heading">H</button>
+          <button data-cmd="formatBlock" data-val="blockquote" title="Quote">"</button>
+          <button data-cmd="formatBlock" data-val="p" title="Paragraph">¶</button>
+          <div class="sep"></div>
+          <button data-cmd="insertUnorderedList" title="Bullet list">•</button>
+          <button data-cmd="insertOrderedList" title="Numbered list">1.</button>
+          <div class="sep"></div>
+          <button data-cmd="createLink" title="Link">🔗</button>
+          <button data-cmd="insertImage" title="Image">🖼</button>
+        </div>
+
+        <div class="editor-body" id="c-body" contenteditable="true"></div>
+      </div>
+
+      <aside class="sidebar">
+        <div class="panel">
+          <h4>Cover image</h4>
+          <div class="cover-upload" id="cover-zone" onclick="document.getElementById('cover-file').click()">
+            <div id="cover-empty">📷<br/><span style="font-weight:600;display:block;margin-top:6px">Click to upload cover</span><span style="font-size:11px">JPG/PNG, ~1600×900</span></div>
+            <img id="cover-preview" style="display:none" />
+            <span class="change" id="cover-change" style="display:none">Change cover</span>
+          </div>
+          <input type="file" id="cover-file" accept="image/*" style="display:none" />
+          <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+            <button class="btn tiny ghost" onclick="presetCover('images/field3.jpg')">Field 1</button>
+            <button class="btn tiny ghost" onclick="presetCover('images/sara_field.jpg')">Field 2</button>
+            <button class="btn tiny ghost" onclick="presetCover('images/conf2.jpg')">Conf</button>
+            <button class="btn tiny ghost" onclick="presetCover('images/natpresent.jpg')">Talk</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h4>Category</h4>
+          <div class="field">
+            <select id="c-cat">
+              <option>Research</option>
+              <option>Field notes</option>
+              <option>Update</option>
+              <option>Opinion</option>
+            </select>
+          </div>
+          <h4>Tags</h4>
+          <div class="tag-input" id="tag-input">
+            <input type="text" id="tag-new" placeholder="add tag + Enter" />
+          </div>
+        </div>
+
+        <div class="panel">
+          <h4>SEO preview (Google)</h4>
+          <div class="seo-preview">
+            <div class="url">senlaresearchhub.com › blog › <span id="seo-slug">your-post</span></div>
+            <div class="ti" id="seo-title">Your post title</div>
+            <div class="de" id="seo-desc">A short subtitle that summarizes the post...</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h4>Danger zone</h4>
+          <button class="btn danger sm" style="width:100%" onclick="deletePost()">Delete this post</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUPABASE SETUP MODAL ============ -->
+<div class="setup-overlay" id="setup-overlay">
+  <div class="setup-card">
+    <div class="setup-head">
+      <h2>Connect <em>Supabase &amp; Google.</em></h2>
+      <button class="x" onclick="closeSetup()">✕</button>
+    </div>
+    <div class="setup-body">
+      <p>Paste your Supabase project's <b>URL</b> and <b>anon (public) key</b> below. Posts will be saved to your Supabase database — so they're not lost if you clear the browser — and Google sign-in will work through Supabase Auth.</p>
+
+      <div style="display:flex;gap:8px;align-items:center;margin:0 0 18px">
+        Status: <span class="setup-pill" id="setup-pill-status"><span class="d"></span><span id="setup-pill-label">Not connected</span></span>
+      </div>
+
+      <div class="setup-row">
+        <div class="field">
+          <label for="sb-url">Supabase URL</label>
+          <input type="text" id="sb-url" placeholder="https://YOUR-PROJECT.supabase.co" />
+        </div>
+        <div class="field">
+          <label for="sb-key">Supabase anon key</label>
+          <input type="text" id="sb-key" placeholder="eyJhbGciOi..." />
+        </div>
+        <div class="field">
+          <label for="sb-authors">Author allow-list (comma-separated emails)</label>
+          <input type="text" id="sb-authors" placeholder="ester@senlaresearchhub.com, sarah@..." style="font-family:'Inter';font-size:13px" />
+        </div>
+      </div>
+
+      <div class="setup-actions">
+        <button class="btn ghost sm" onclick="clearConfig()">Disconnect</button>
+        <button class="btn primary sm" onclick="saveConfig()">Save &amp; connect</button>
+      </div>
+
+      <h4 style="margin-top:32px">One-time Supabase setup</h4>
+      <ol>
+        <li>Create a free project at <code>supabase.com</code>.</li>
+        <li>In <b>SQL Editor</b>, paste &amp; run the table schema below.</li>
+        <li>In <b>Authentication → Providers</b>, enable <b>Google</b> and add your Google OAuth client ID + secret (from <code>console.cloud.google.com</code>). Set the authorized redirect URI to the one Supabase shows you.</li>
+        <li>In <b>Settings → API</b>, copy your <b>Project URL</b> and <b>anon public</b> key, and paste them above.</li>
+      </ol>
+
+      <h4>SQL schema</h4>
+      <pre>create table if not exists posts (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  lead text,
+  body text,
+  cover text,
+  category text,
+  tags jsonb default '[]'::jsonb,
+  author text,
+  author_email text,
+  author_avatar text,
+  status text default 'draft',
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+alter table posts enable row level security;
+
+-- Anyone can read published posts
+create policy "read published" on posts
+  for select using (status = 'published');
+
+-- Authenticated users can read their own drafts
+create policy "read own" on posts
+  for select using (auth.jwt() ->> 'email' = author_email);
+
+-- Authenticated users can insert their own posts
+create policy "insert own" on posts
+  for insert with check (auth.jwt() ->> 'email' = author_email);
+
+-- Authenticated users can update / delete their own posts
+create policy "update own" on posts
+  for update using (auth.jwt() ->> 'email' = author_email);
+create policy "delete own" on posts
+  for delete using (auth.jwt() ->> 'email' = author_email);</pre>
+
+      <p style="font-size:12px;color:var(--mute);margin-top:14px">Your URL and anon key are stored only in your browser (<code>localStorage</code>). The anon key is safe to expose publicly — Row Level Security (above) controls what each user can do.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOAST + MODAL ============ -->
+<div class="toast" id="toast"><span class="d"></span><span id="toast-msg">Saved</span></div>
+
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h3 id="m-title">Confirm</h3>
+    <p id="m-body">Are you sure?</p>
+    <div class="actions">
+      <button class="btn ghost sm" onclick="closeModal(false)">Cancel</button>
+      <button class="btn primary sm" id="m-ok" onclick="closeModal(true)">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =================================================================
+   CONFIG (editable via Setup modal — persisted in localStorage)
+   ================================================================= */
+const CONFIG_KEY = 'senla_blog_config_v1';
+const LOCAL_DB_KEY = 'senla_blog_v2';
+const USER_KEY = 'senla_user_v2';
+
+const DEFAULTS = /*EDITMODE-BEGIN*/{
+  "supabaseUrl": "",
+  "supabaseAnonKey": "",
+  "authorEmails": ["ester@senlaresearchhub.com"]
+}/*EDITMODE-END*/;
+
+function loadConfig(){
+  try {
+    const raw = localStorage.getItem(CONFIG_KEY);
+    if (raw) return { ...DEFAULTS, ...JSON.parse(raw) };
+  } catch(e){}
+  return { ...DEFAULTS };
+}
+function saveConfigToStore(c){ localStorage.setItem(CONFIG_KEY, JSON.stringify(c)) }
+let CFG = loadConfig();
+
+let supa = null;
+function initSupabase(){
+  supa = null;
+  if (CFG.supabaseUrl && CFG.supabaseAnonKey && window.supabase){
+    try {
+      supa = window.supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey, {
+        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+      });
+    } catch(e){ console.warn('Supabase init failed:', e) }
+  }
+  updateStatusBanner();
+  return supa;
+}
+
+function updateStatusBanner(){
+  const b = document.getElementById('status-banner');
+  const m = document.getElementById('status-msg');
+  const stat = document.getElementById('stat-storage');
+  const lbl = document.getElementById('storage-mode-label');
+  if (supa){
+    b.classList.add('ok');
+    b.style.display = 'flex';
+    m.textContent = `Connected to Supabase · ${new URL(CFG.supabaseUrl).host}`;
+    if (stat) stat.textContent = 'Supabase';
+    if (lbl) lbl.textContent = 'Saving to Supabase';
+  } else {
+    b.classList.remove('ok');
+    b.style.display = 'flex';
+    m.textContent = 'Posts are stored locally in this browser (will be lost if you clear it).';
+    if (stat) stat.textContent = 'Local';
+    if (lbl) lbl.textContent = 'Saving locally';
+  }
+}
+
+/* =================================================================
+   SETUP MODAL
+   ================================================================= */
+function openSetup(){
+  document.getElementById('sb-url').value = CFG.supabaseUrl || '';
+  document.getElementById('sb-key').value = CFG.supabaseAnonKey || '';
+  document.getElementById('sb-authors').value = (CFG.authorEmails || []).join(', ');
+  updateSetupPill();
+  document.getElementById('setup-overlay').classList.add('show');
+}
+function closeSetup(){ document.getElementById('setup-overlay').classList.remove('show') }
+function updateSetupPill(){
+  const pill = document.getElementById('setup-pill-status');
+  const lbl = document.getElementById('setup-pill-label');
+  if (supa){
+    pill.classList.remove('warn'); pill.classList.add('ok');
+    lbl.textContent = 'Connected';
+  } else {
+    pill.classList.remove('ok'); pill.classList.add('warn');
+    lbl.textContent = 'Not connected';
+  }
+}
+function saveConfig(){
+  const url = document.getElementById('sb-url').value.trim();
+  const key = document.getElementById('sb-key').value.trim();
+  const authors = document.getElementById('sb-authors').value
+    .split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+  CFG = { supabaseUrl: url, supabaseAnonKey: key, authorEmails: authors };
+  saveConfigToStore(CFG);
+  initSupabase();
+  updateSetupPill();
+  toast(supa ? 'Connected to Supabase 🎉' : 'Saved (running locally)');
+  bootSession();
+}
+function clearConfig(){
+  CFG = { supabaseUrl:'', supabaseAnonKey:'', authorEmails: CFG.authorEmails || [] };
+  saveConfigToStore(CFG);
+  initSupabase();
+  document.getElementById('sb-url').value = '';
+  document.getElementById('sb-key').value = '';
+  updateSetupPill();
+  toast('Disconnected. Using local storage.');
+}
+
+/* =================================================================
+   AUTH — Supabase Google OAuth, with a localStorage demo fallback
+   ================================================================= */
+function getUser(){
+  const raw = localStorage.getItem(USER_KEY);
+  return raw ? JSON.parse(raw) : null;
+}
+function setUser(u){ if(u) localStorage.setItem(USER_KEY, JSON.stringify(u)); else localStorage.removeItem(USER_KEY) }
+function isAuthor(email){
+  const list = (CFG.authorEmails||[]).map(e => e.toLowerCase());
+  return !email ? false : list.includes(email.toLowerCase());
+}
+
+async function signInWithGoogle(){
+  if (!supa){
+    document.getElementById('login-setup-warn').style.display = 'block';
+    toast('Connect Supabase first');
+    return;
+  }
+  const { error } = await supa.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + window.location.pathname }
+  });
+  if (error){ toast('Sign-in failed: ' + error.message) }
+}
+
+function signInDemo(role){
+  setUser({
+    name: role === 'author' ? 'Dr. Ester Agasha' : 'Joan Mukasa',
+    email: role === 'author' ? (CFG.authorEmails[0] || 'ester@senlaresearchhub.com') : 'reader@example.com',
+    role,
+    initial: role === 'author' ? 'E' : 'J',
+    avatar: null,
+    demo: true
+  });
+  renderUserArea();
+  go(role === 'author' ? 'admin' : 'index');
+  toast(role === 'author' ? 'Signed in as Author (demo)' : 'Signed in as Reader (demo)');
+}
+
+async function signOut(){
+  if (supa) { try { await supa.auth.signOut() } catch(e){} }
+  setUser(null); renderUserArea(); go('index'); toast('Signed out');
+}
+
+async function bootSession(){
+  if (supa){
+    const { data } = await supa.auth.getSession();
+    if (data && data.session && data.session.user){
+      const u = data.session.user;
+      const meta = u.user_metadata || {};
+      const email = u.email || '';
+      const author = isAuthor(email);
+      setUser({
+        name: meta.full_name || meta.name || email,
+        email, role: author ? 'author' : 'reader',
+        initial: (meta.full_name || email)[0].toUpperCase(),
+        avatar: meta.avatar_url || meta.picture || null,
+        demo: false
+      });
+    }
+    // Listen for auth changes (e.g. after OAuth redirect)
+    supa.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session){
+        const u = session.user;
+        const meta = u.user_metadata || {};
+        const email = u.email || '';
+        const author = isAuthor(email);
+        setUser({
+          name: meta.full_name || meta.name || email,
+          email, role: author ? 'author' : 'reader',
+          initial: (meta.full_name || email)[0].toUpperCase(),
+          avatar: meta.avatar_url || meta.picture || null,
+          demo: false
+        });
+        renderUserArea();
+        toast(author ? `Welcome, ${meta.full_name || email} (Author)` : `Signed in as ${meta.full_name || email}`);
+        if (author) go('admin');
+      } else if (event === 'SIGNED_OUT'){
+        setUser(null); renderUserArea();
+      }
+    });
+  }
+  renderUserArea();
+  await refreshPosts();
+}
+
+function renderUserArea(){
+  const u = getUser();
+  const el = document.getElementById('user-area');
+  if (!u){
+    el.innerHTML = `<button class="avatar signed-out" onclick="go('login')">Sign in →</button>`;
+    return;
+  }
+  const avatarHtml = u.avatar
+    ? `<img src="${u.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover"/>`
+    : u.initial;
+  el.innerHTML = `
+    ${u.role === 'author' ? '<span class="role-pill">Author</span>' : ''}
+    <div class="avatar" title="${u.email}" onclick="toggleMenu()" style="overflow:hidden">${avatarHtml}</div>
+    <div id="user-menu">
+      <div class="uh"><b>${u.name}</b><small>${u.email}${u.demo?' · demo':''}</small></div>
+      ${u.role === 'author' ? '<a onclick="closeMenu();go(\'admin\')">Author workspace</a>' : ''}
+      <a onclick="closeMenu();openSetup()">Settings ⚙</a>
+      <a class="danger" onclick="closeMenu();signOut()">Sign out</a>
+    </div>
+  `;
+}
+function toggleMenu(){ document.getElementById('user-menu').classList.toggle('show') }
+function closeMenu(){ const m=document.getElementById('user-menu'); if(m) m.classList.remove('show') }
+
+/* =================================================================
+   POSTS — Supabase OR local fallback
+   ================================================================= */
+const SEED_POSTS = [
+  {
+    id: 'finlit-aspirations',
+    title: 'Financial Literacy & Aspirations: Experimental Evidence from Eastern Uganda',
+    lead: 'Mobile-based financial education and an aspirations documentary aimed at boosting women\'s money skills and future planning.',
+    body: `<p>This project focused on improving women's financial literacy and aspirations through mobile games and an aspirations video. Early evidence indicates meaningful gains in basic financial knowledge and empowerment.</p>
+<h2>Background &amp; Objectives</h2>
+<p>Women in low-connectivity contexts face limited access to actionable, engaging financial education. The project objective is to provide <strong>short, practical learning</strong> that fits community schedules and strengthens agency through <strong>aspiration-building stories</strong>.</p>
+<h2>Intervention Design</h2>
+<ul><li>Lightweight Android game with short scenarios (budgeting, savings discipline, coping with shocks).</li><li>Aspirations short film featuring local entrepreneurs and goal-setting routines.</li><li>Micro-quizzes for before/after comparisons and discussion prompts.</li></ul>
+<h2>Implementation</h2>
+<p>Delivered via existing women's groups with community champions. Sessions run 60–90 minutes, combining group viewing, gameplay, and reflection. Paper back-ups ensure inclusivity for participants without phones.</p>
+<h2>Early Learning</h2>
+<ul><li>High engagement with story-driven content; participants referenced film characters during discussions.</li><li>Micro-quiz results show improved understanding of basic budgeting and savings goals.</li><li>Requests for refresher sessions and spouse/partner inclusion.</li></ul>
+<h2>Next Steps</h2>
+<p>Refine modules (household budgeting, savings groups, micro-enterprise planning), expand to new districts, and explore light-touch follow-ups by SMS/WhatsApp where available.</p>`,
+    cover: 'images/field2.jpg',
+    category: 'Research',
+    tags: ['Finance','Women','RCT','Behavior Change'],
+    author: 'Ester Agasha',
+    author_email: 'ester@senlaresearchhub.com',
+    author_avatar: null,
+    status: 'published',
+    created_at: '2024-06-30T10:00:00Z'
+  },
+  {
+    id: 'dietary-patterns-geo',
+    title: 'Green Riches, Golden Assets: Uganda\'s Dietary Patterns',
+    lead: 'Geospatial greenery (NDVI), household assets, and dietary diversity — how environment and socio-economics intersect.',
+    body: `<p>Using geospatial tools, this project examined the relationship between environmental greenness, household assets, and diet diversity in Uganda. Results highlight the conditioning role of socio-economic status and market access.</p>
+<h2>Concept &amp; Questions</h2>
+<p>We ask whether greener environments predict more diverse diets and how this relationship is shaped by wealth, access to markets, and seasonality.</p>
+<h2>Data &amp; Measures</h2>
+<ul><li><strong>Environment:</strong> NDVI and land-cover rasters; administrative boundaries for aggregation.</li><li><strong>Assets:</strong> Household inventory-based indices.</li><li><strong>Diet diversity:</strong> Food groups consumed over a reference period.</li></ul>
+<h2>Findings</h2>
+<ul><li>Greenness correlates with diet diversity, but effects attenuate for lower-asset households.</li><li>Market proximity and seasonality mediate the environment–diet link.</li><li>Policy implication: combine livelihoods, market linkage, and behavior change — not greenery alone.</li></ul>
+<h2>Limitations &amp; Next Steps</h2>
+<p>Spatial resolution and household geolocation uncertainty may bias estimates. Next steps include adding market price time-series and diet cost indices.</p>`,
+    cover: 'images/forest.jpg',
+    category: 'Research',
+    tags: ['Geospatial','Nutrition','NDVI','Assets'],
+    author: 'Ester Agasha & Nathalie Nyanga',
+    author_email: 'ester@senlaresearchhub.com',
+    author_avatar: null,
+    status: 'published',
+    created_at: '2024-03-18T10:00:00Z'
+  },
+  {
+    id: 'entrepreneurship-education-uganda',
+    title: 'Entrepreneurship Education in Uganda',
+    lead: 'Co-designed, modular training and mentorship that fits around trading hours and real SME constraints.',
+    body: `<p>A collaboration between academia and local businesses to develop tailored educational content for entrepreneurs. Hundreds have received practical training and mentorship through workshops and follow-up clinics.</p>
+<h2>Why This Program</h2>
+<p>Many entrepreneurs lack compact, context-fit training that translates into day-to-day operational changes. We designed modules that fit trading hours and emphasize <strong>immediate practice</strong>.</p>
+<h2>Program Components</h2>
+<ul><li>Interactive, 60–90 minute modules with local caselets.</li><li>Mentorship circles and peer accountability.</li><li>Templates for cashflow, costing, and customer tracking.</li></ul>
+<h2>Key Highlights</h2>
+<ul><li>Short, modular lessons: pricing, cashflow, customer retention.</li><li>Mentorship circles pairing founders with experienced operators.</li><li>Simple templates: cashflow sheet, pricing calculator, customer log.</li></ul>
+<h2>Learning &amp; Adaptation</h2>
+<p>Participants report better costing and record-keeping, with demand for refresher clinics. Future cohorts will include inventory and supplier management.</p>`,
+    cover: 'images/sarabootcamp.jpg',
+    category: 'Research',
+    tags: ['Entrepreneurship','Education','SMEs'],
+    author: 'Sarah Nabachwa',
+    author_email: 'sarah@senlaresearchhub.com',
+    author_avatar: null,
+    status: 'published',
+    created_at: '2024-04-10T10:00:00Z'
+  },
+  {
+    id: 'bootcamps-street-smart-btcs',
+    title: 'Bootcamps — Street-Smart Entrepreneurship & Case Writing',
+    lead: 'Short, intensive bootcamps that help entrepreneurs improve their businesses and help faculty produce classroom-ready Business Teaching Case Studies.',
+    body: `<p>Two complementary bootcamp tracks — Entrepreneur Bootcamp and Case-Writing Sprint — deliver tangible outputs fast: cashbooks, pricing sheets, sales scripts, and draft teaching cases. The design is local, ethical, and low-bandwidth, with simple follow-up clinics for sustained outcomes.</p>
+<h2>What is a Bootcamp?</h2>
+<p>A short, intensive, hands-on program that compresses learning and production into a few days. Participants leave with tangible outputs they can use immediately.</p>
+<h2>Design Principles</h2>
+<ul><li><strong>Local &amp; practical:</strong> use real businesses and plain language.</li><li><strong>Evidence-based:</strong> simple worksheets and data logs to support decisions.</li><li><strong>Low-bandwidth:</strong> works offline with paper/Excel backups.</li><li><strong>Ethical &amp; fair:</strong> informed consent, anonymisation options, and share-back value.</li></ul>
+<h2>3-Day Entrepreneur Bootcamp</h2>
+<ol><li>Map customers/channels; set up a cashbook.</li><li>Pricing &amp; unit economics; customer discovery scripts; simple sales plan.</li><li>Operations &amp; HR basics; micro-pitch; 30-day targets.</li></ol>
+<h2>5-Day Case-Writing Sprint (Faculty/Researchers)</h2>
+<ol><li>Case method basics, consent &amp; ethics; outline a case.</li><li>Field protocols and interviews/observation.</li><li>Analysis: profitability, efficiency, diversification, HR, survival strategies.</li><li>Draft case + instructor note; peer review.</li><li>Micro-teaching/pilot and revision plan.</li></ol>
+<h2>Expected Outputs</h2>
+<ul><li>6–10 draft teaching cases with instructor notes.</li><li>Cashbooks, pricing sheets, and sales scripts for participating businesses.</li><li>A short evidence brief on street-smart models for partners and policy.</li><li>A sustained community of practice for continued peer feedback.</li></ul>`,
+    cover: 'images/senla_teach.jpg',
+    category: 'Update',
+    tags: ['Bootcamp','BTCS','Entrepreneurship','MUST'],
+    author: 'Sarah Nabachwa',
+    author_email: 'sarah@senlaresearchhub.com',
+    author_avatar: null,
+    status: 'published',
+    created_at: '2025-05-20T10:00:00Z'
+  }
+];
+
+function loadLocalDB(){
+  const raw = localStorage.getItem(LOCAL_DB_KEY);
+  if (!raw){ saveLocalDB(SEED_POSTS); return [...SEED_POSTS] }
+  try { return JSON.parse(raw) } catch { return [...SEED_POSTS] }
+}
+function saveLocalDB(p){ localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(p)) }
+
+let POSTS = [];
+
+async function refreshPosts(){
+  if (supa){
+    const u = getUser();
+    let query = supa.from('posts').select('*').order('created_at', { ascending: false });
+    // If signed in, also fetch own drafts (RLS handles security)
+    const { data, error } = await query;
+    if (error){
+      console.warn('Supabase fetch error:', error);
+      // Fall back to local
+      POSTS = loadLocalDB();
+    } else {
+      POSTS = (data || []).map(normalizeFromDB);
+    }
+  } else {
+    POSTS = loadLocalDB();
+  }
+  if (document.getElementById('r-index').classList.contains('active')) renderIndex();
+  if (document.getElementById('r-admin').classList.contains('active')) renderAdmin();
+}
+
+function normalizeFromDB(row){
+  return {
+    id: row.id,
+    title: row.title || '',
+    lead: row.lead || '',
+    body: row.body || '',
+    cover: row.cover || '',
+    category: row.category || 'Research',
+    tags: Array.isArray(row.tags) ? row.tags : (row.tags ? Object.values(row.tags) : []),
+    author: row.author || '',
+    author_email: row.author_email || '',
+    author_avatar: row.author_avatar || null,
+    status: row.status || 'draft',
+    created_at: row.created_at || new Date().toISOString()
+  };
+}
+
+async function upsertPost(post){
+  if (supa){
+    const u = getUser();
+    const row = {
+      title: post.title, lead: post.lead, body: post.body, cover: post.cover,
+      category: post.category, tags: post.tags, author: post.author,
+      author_email: post.author_email, author_avatar: post.author_avatar,
+      status: post.status, updated_at: new Date().toISOString()
+    };
+    if (post.id && !post._isNew){
+      const { error } = await supa.from('posts').update(row).eq('id', post.id);
+      if (error){ toast('Save failed: '+error.message); return false }
+    } else {
+      const { data, error } = await supa.from('posts').insert(row).select().single();
+      if (error){ toast('Save failed: '+error.message); return false }
+      post.id = data.id;
+    }
+    return true;
+  } else {
+    if (post._isNew){
+      const id = 'p' + Date.now();
+      POSTS.unshift({ ...post, id, _isNew: false });
+    } else {
+      const i = POSTS.findIndex(x => x.id === post.id);
+      if (i >= 0) POSTS[i] = { ...POSTS[i], ...post };
+    }
+    saveLocalDB(POSTS);
+    return true;
+  }
+}
+
+async function removePost(id){
+  if (supa){
+    const { error } = await supa.from('posts').delete().eq('id', id);
+    if (error){ toast('Delete failed: '+error.message); return false }
+  } else {
+    POSTS = POSTS.filter(x => x.id !== id);
+    saveLocalDB(POSTS);
+  }
+  return true;
+}
+
+/* =================================================================
+   ROUTING
+   ================================================================= */
+async function go(name, ctx){
+  document.querySelectorAll('.route').forEach(r => r.classList.remove('active'));
+  document.getElementById('r-' + name).classList.add('active');
+  window.scrollTo({top:0});
+  closeMenu();
+  // toggle login warning
+  if (name === 'login'){
+    document.getElementById('login-setup-warn').style.display = supa ? 'none' : 'block';
+  }
+  if (name === 'index') { await refreshPosts(); renderIndex(); }
+  if (name === 'admin') { await refreshPosts(); renderAdmin(); }
+  if (name === 'compose') openComposer(ctx);
+  if (name === 'article') renderArticle(ctx);
+}
+
+/* =================================================================
+   INDEX
+   ================================================================= */
+let currentFilter = 'all';
+function renderIndex(){
+  const grid = document.getElementById('post-grid');
+  const search = document.getElementById('search').value.trim().toLowerCase();
+  const visible = POSTS.filter(p =>
+    p.status === 'published' &&
+    (currentFilter === 'all' || p.category === currentFilter) &&
+    (!search || (p.title+p.lead+(p.tags||[]).join(' ')).toLowerCase().includes(search))
+  );
+
+  if (!visible.length){
+    grid.innerHTML = `
+      <div class="empty-state">
+        <h3>No posts yet</h3>
+        <p>${currentFilter === 'all' ? 'Posts will appear here once authors publish them.' : 'No posts in this category yet.'}</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = visible.map(p => `
+    <article class="post-card" onclick="go('article','${p.id}')">
+      <div class="pimg">${p.cover ? `<img src="${p.cover}" alt="" />` : ''}</div>
+      <div class="pcat">${p.category}</div>
+      <h3>${escapeHtml(p.title)}</h3>
+      <p>${escapeHtml(p.lead||'')}</p>
+      <div class="pby"><b>${escapeHtml(p.author||'')}</b> · ${estimateRead(stripHtml(p.body))} · ${formatDate(p.created_at)}</div>
+    </article>
+  `).join('');
+}
+document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+  document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+  c.classList.add('active');
+  currentFilter = c.dataset.cat;
+  renderIndex();
+}));
+document.getElementById('search').addEventListener('input', renderIndex);
+
+/* =================================================================
+   ARTICLE
+   ================================================================= */
+function renderArticle(id){
+  const p = POSTS.find(x => x.id === id);
+  if (!p) return go('index');
+  document.getElementById('ar-cat').textContent = p.category;
+  document.getElementById('ar-title').textContent = p.title;
+  document.getElementById('ar-lead').textContent = p.lead;
+  document.getElementById('ar-author').textContent = p.author;
+  const av = document.getElementById('ar-avatar');
+  av.innerHTML = p.author_avatar ? `<img src="${p.author_avatar}"/>` : (p.author||'?')[0].toUpperCase();
+  document.getElementById('ar-read').textContent = estimateRead(stripHtml(p.body));
+  document.getElementById('ar-date').textContent = formatDate(p.created_at);
+  document.getElementById('ar-cover').innerHTML = p.cover ? `<img src="${p.cover}" alt="" />` : '';
+  document.getElementById('ar-body').innerHTML = p.body;
+}
+
+/* =================================================================
+   ADMIN
+   ================================================================= */
+let adminFilter = 'all';
+async function renderAdmin(){
+  const u = getUser();
+  if (!u || u.role !== 'author'){ go('login'); return }
+  document.getElementById('admin-email').textContent = u.email;
+
+  const mine = POSTS.filter(p => !u.email || p.author_email === u.email || u.demo);
+  document.getElementById('stat-pub').textContent = mine.filter(p=>p.status==='published').length;
+  document.getElementById('stat-draft').textContent = mine.filter(p=>p.status==='draft').length;
+  document.getElementById('stat-total').textContent = mine.length;
+
+  const list = document.getElementById('admin-list');
+  const filtered = adminFilter === 'all' ? mine : mine.filter(p => p.status === adminFilter);
+
+  if (!filtered.length){
+    list.innerHTML = `<div class="empty-state"><h3>Nothing here yet</h3><p>${adminFilter==='all'?'Click "+ New post" to write your first one.':'No '+adminFilter+' posts.'}</p></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(p => `
+    <div class="post-row">
+      <div class="thumb">${p.cover ? `<img src="${p.cover}" />` : ''}</div>
+      <div>
+        <div class="title">${escapeHtml(p.title)}</div>
+        <small>${escapeHtml(p.lead || 'No description')}</small>
+      </div>
+      <span class="pill ${p.status}">${p.status}</span>
+      <span class="by">${escapeHtml(p.author||'')}</span>
+      <span class="when">${formatDate(p.created_at)}</span>
+      <div class="actions">
+        <button class="btn tiny ghost" onclick="go('compose','${p.id}')">Edit</button>
+        <button class="btn tiny danger" onclick="confirmDelete('${p.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+document.querySelectorAll('.admin-tabs button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.admin-tabs button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  adminFilter = b.dataset.filter;
+  renderAdmin();
+}));
+
+function confirmDelete(id){
+  const p = POSTS.find(x => x.id === id);
+  if (!p) return;
+  openModal({
+    title:'Delete post?',
+    body:`"${p.title}" will be permanently removed.`,
+    okLabel:'Delete',
+    onOk: async () => {
+      const ok = await removePost(id);
+      if (ok){ await refreshPosts(); renderAdmin(); toast('Post deleted') }
+    }
+  });
+}
+
+/* =================================================================
+   COMPOSER
+   ================================================================= */
+let editingId = null;
+let composeTags = [];
+let coverData = null;
+
+function newPost(){ go('compose', null) }
+
+function openComposer(id){
+  const u = getUser();
+  if (!u || u.role !== 'author'){ go('login'); return }
+  editingId = id;
+  if (id){
+    const p = POSTS.find(x => x.id === id);
+    if (!p){ toast('Post not found'); go('admin'); return }
+    document.getElementById('c-title').value = p.title;
+    document.getElementById('c-lead').value = p.lead;
+    document.getElementById('c-body').innerHTML = p.body;
+    document.getElementById('c-cat').value = p.category;
+    composeTags = [...(p.tags||[])];
+    coverData = p.cover;
+  } else {
+    document.getElementById('c-title').value = '';
+    document.getElementById('c-lead').value = '';
+    document.getElementById('c-body').innerHTML = '';
+    document.getElementById('c-cat').value = 'Research';
+    composeTags = [];
+    coverData = null;
+  }
+  renderTags();
+  renderCover();
+  updateSEO();
+  document.getElementById('save-status').textContent = id ? 'Editing — changes save when you click Save' : 'New post — ready to write';
+}
+
+function renderTags(){
+  const input = document.getElementById('tag-input');
+  const newInput = document.getElementById('tag-new');
+  [...input.querySelectorAll('.tag')].forEach(t => t.remove());
+  composeTags.forEach(t => {
+    const span = document.createElement('span');
+    span.className = 'tag';
+    span.innerHTML = `${escapeHtml(t)}<span class="x" onclick="removeTag('${escapeHtml(t)}')">×</span>`;
+    input.insertBefore(span, newInput);
+  });
+}
+function removeTag(t){ composeTags = composeTags.filter(x => x !== t); renderTags() }
+document.getElementById('tag-new').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.value.trim()){
+    e.preventDefault();
+    composeTags.push(e.target.value.trim());
+    e.target.value = '';
+    renderTags();
+  }
+});
+
+function renderCover(){
+  const empty = document.getElementById('cover-empty');
+  const img = document.getElementById('cover-preview');
+  const change = document.getElementById('cover-change');
+  const zone = document.getElementById('cover-zone');
+  if (coverData){
+    img.src = coverData;
+    img.style.display='block';
+    empty.style.display='none';
+    change.style.display='block';
+    zone.classList.add('has-image');
+  } else {
+    img.style.display='none';
+    empty.style.display='block';
+    change.style.display='none';
+    zone.classList.remove('has-image');
+  }
+}
+function presetCover(url){ coverData = url; renderCover() }
+
+document.getElementById('cover-file').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => { coverData = reader.result; renderCover() };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById('toolbar').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  const cmd = btn.dataset.cmd;
+  let val = btn.dataset.val || null;
+  if (cmd === 'createLink'){ val = prompt('URL?'); if (!val) return }
+  if (cmd === 'insertImage'){ val = prompt('Image URL?'); if (!val) return }
+  document.execCommand(cmd, false, val);
+});
+
+['c-title','c-lead','c-body','c-cat'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateSEO);
+});
+
+function updateSEO(){
+  const t = document.getElementById('c-title').value || 'Your post title';
+  const d = document.getElementById('c-lead').value || 'A short subtitle that summarizes the post...';
+  document.getElementById('seo-title').textContent = t;
+  document.getElementById('seo-desc').textContent = d;
+  document.getElementById('seo-slug').textContent = slugify(t) || 'your-post';
+}
+function slugify(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40) }
+
+async function savePost(status){
+  if (!document.getElementById('c-title').value.trim()){ toast('Add a title first'); return }
+  const u = getUser();
+  document.getElementById('save-status').textContent = 'Saving…';
+  const post = {
+    id: editingId,
+    _isNew: !editingId,
+    title: document.getElementById('c-title').value.trim(),
+    lead: document.getElementById('c-lead').value.trim(),
+    body: document.getElementById('c-body').innerHTML,
+    cover: coverData,
+    category: document.getElementById('c-cat').value,
+    tags: [...composeTags],
+    author: u.name, author_email: u.email, author_avatar: u.avatar,
+    status,
+    created_at: new Date().toISOString()
+  };
+  const ok = await upsertPost(post);
+  if (ok){
+    document.getElementById('save-status').textContent = 'Saved';
+    toast(status === 'published' ? 'Post published 🎉' : 'Draft saved');
+    await refreshPosts();
+    go('admin');
+  }
+}
+
+function previewPost(){
+  // Save as draft (silent) first if new, so reader has an id
+  // For simplicity, just open article view with a transient render from current fields
+  const u = getUser();
+  const transient = {
+    id: editingId || 'preview',
+    title: document.getElementById('c-title').value || 'Untitled',
+    lead: document.getElementById('c-lead').value,
+    body: document.getElementById('c-body').innerHTML,
+    cover: coverData, category: document.getElementById('c-cat').value,
+    tags: composeTags, author: u.name, author_email: u.email,
+    author_avatar: u.avatar, status:'preview', created_at: new Date().toISOString()
+  };
+  // Insert into in-memory POSTS so renderArticle can find it
+  const i = POSTS.findIndex(p => p.id === transient.id);
+  if (i >= 0) POSTS[i] = transient; else POSTS.unshift(transient);
+  go('article', transient.id);
+}
+
+function deletePost(){
+  if (!editingId){ go('admin'); return }
+  confirmDelete(editingId);
+}
+
+/* =================================================================
+   helpers
+   ================================================================= */
+function formatDate(iso){
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US',{ month:'short', day:'numeric', year:'numeric' });
+}
+function estimateRead(text){
+  const words = (text||'').trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 200)) + ' min read';
+}
+function stripHtml(html){
+  const d = document.createElement('div'); d.innerHTML = html||''; return d.textContent || '';
+}
+function escapeHtml(s){
+  return (s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m]));
+}
+
+let toastTimer;
+function toast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+let modalOk = null;
+function openModal({title, body, okLabel='OK', onOk}){
+  document.getElementById('m-title').textContent = title;
+  document.getElementById('m-body').textContent = body;
+  document.getElementById('m-ok').textContent = okLabel;
+  modalOk = onOk;
+  document.getElementById('modal-bg').classList.add('show');
+}
+function closeModal(confirmed){
+  if (confirmed && modalOk){ const fn = modalOk; modalOk = null; fn() } else { modalOk = null }
+  document.getElementById('modal-bg').classList.remove('show');
+}
+document.getElementById('modal-bg').addEventListener('click', e => {
+  if (e.target.id === 'modal-bg'){ modalOk = null; closeModal(false) }
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('#user-area')) closeMenu();
+});
+
+/* =================================================================
+   INIT
+   ================================================================= */
+initSupabase();
+bootSession();
+</script>
+
+</body>
+</html>

@@ -974,13 +974,17 @@ function renderUserArea(){
     ? `<img src="${u.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover"/>`
     : u.initial;
   el.innerHTML = `
-    ${u.role === 'author' ? '<span class="role-pill">Author</span>' : ''}
-    <div class="avatar" title="${u.email}" onclick="toggleMenu()" style="overflow:hidden">${avatarHtml}</div>
-    <div id="user-menu">
-      <div class="uh"><b>${u.name}</b><small>${u.email}${u.demo?' · demo':''}</small></div>
-      ${u.role === 'author' ? '<a onclick="closeMenu();go(\'admin\')">Author workspace</a>' : ''}
-      <a onclick="closeMenu();openSetup()">Settings ⚙</a>
-      <a class="danger" onclick="closeMenu();signOut()">Sign out</a>
+    <div style="display:flex;align-items:center;gap:10px;position:relative">
+      <div class="avatar" title="${u.email}" onclick="toggleMenu()" style="overflow:hidden;cursor:pointer">${avatarHtml}</div>
+      <div style="display:flex;flex-direction:column;line-height:1.2;cursor:pointer" onclick="toggleMenu()">
+        <span style="color:#fff;font-size:13px;font-weight:600;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${u.name.split(' ')[0]}</span>
+        <span style="color:rgba(255,255,255,.6);font-size:11px">${u.role === 'author' ? 'Author ▾' : 'Reader ▾'}</span>
+      </div>
+      <div id="user-menu">
+        <div class="uh"><b>${u.name}</b><small>${u.email}</small></div>
+        ${u.role === 'author' ? '<a onclick="closeMenu();go(\'admin\')">✏️ Author workspace</a>' : ''}
+        <a onclick="closeMenu();signOut()" class="danger">Sign out</a>
+      </div>
     </div>
   `;
 }

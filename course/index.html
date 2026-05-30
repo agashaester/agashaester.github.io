@@ -133,6 +133,13 @@
   .ov-stat .sn sup{font-size:28px;color:var(--accent);font-style:italic}
   .ov-stat .sl{font-size:13px;color:var(--mute);letter-spacing:.04em;line-height:1.45}
 
+  /* Photo strip */
+  .ov-photo-strip{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;grid-template-rows:220px;gap:6px;overflow:hidden}
+  .ov-photo-strip .ps-main{grid-row:1;grid-column:1}
+  .ov-photo-strip img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+  .ov-photo-strip div:hover img{transform:scale(1.04)}
+  @media(max-width:700px){.ov-photo-strip{grid-template-columns:1fr 1fr;grid-template-rows:160px 160px}.ov-photo-strip div:nth-child(n+4){display:none}}
+
   /* Pillars */
   .ov-pillars-section{background:#fff;padding:80px 0}
   .ov-section-head{display:grid;grid-template-columns:1fr 1.5fr;gap:60px;margin-bottom:56px;align-items:end}
@@ -573,7 +580,7 @@
   <!-- HERO -->
   <div class="ov-hero">
     <div class="ov-hero-media">
-      <img src="/images/sarabootcamp.jpg" alt="Entrepreneur Bootcamp" />
+      <img src="/images/fp01.jpeg" alt="Entrepreneur Bootcamp" />
     </div>
     <div class="ov-hero-inner wrap">
       <div class="ov-hero-grid">
@@ -615,6 +622,14 @@
     </div>
   </div>
 
+  <!-- PHOTO STRIP -->
+  <div class="ov-photo-strip">
+    <div class="ps-main"><img src="/images/fp06.jpeg" alt="Bootcamp session" loading="lazy"></div>
+    <div><img src="/images/fp07.jpeg" alt="Field work" loading="lazy"></div>
+    <div><img src="/images/fp08.jpeg" alt="Community" loading="lazy"></div>
+    <div><img src="/images/fp12.jpeg" alt="Participants" loading="lazy"></div>
+  </div>
+
   <!-- PILLARS -->
   <div class="ov-pillars-section">
     <div class="wrap">
@@ -629,7 +644,7 @@
       </div>
       <div class="ov-pillars-grid">
         <div class="ov-pillar">
-          <div class="ph"><img src="/images/senla_teach.jpg" alt="Inspiration" /></div>
+          <div class="ph"><img src="/images/fp02.jpeg" alt="Inspiration" /></div>
           <div class="body">
             <div class="ico">🎥</div>
             <h3>Inspiration</h3>
@@ -637,7 +652,7 @@
           </div>
         </div>
         <div class="ov-pillar">
-          <div class="ph"><img src="/images/field3.jpg" alt="Goal Setting" /></div>
+          <div class="ph"><img src="/images/fp03.jpeg" alt="Goal Setting" /></div>
           <div class="body">
             <div class="ico">🎯</div>
             <h3>Planning &amp; Goals</h3>
@@ -645,7 +660,7 @@
           </div>
         </div>
         <div class="ov-pillar">
-          <div class="ph"><img src="/images/conf2.jpg" alt="Peer Support" /></div>
+          <div class="ph"><img src="/images/fp04.jpeg" alt="Peer Support" /></div>
           <div class="body">
             <div class="ico">🤝</div>
             <h3>Peer Support</h3>
@@ -722,7 +737,7 @@
           </div>
         </div>
         <div class="ov-who-img">
-          <img src="/images/sara_field.jpg" alt="Participants" />
+          <img src="/images/fp05.jpeg" alt="Participants" />
         </div>
       </div>
     </div>

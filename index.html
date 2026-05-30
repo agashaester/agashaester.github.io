@@ -184,6 +184,14 @@
   .quote{margin-top:36px;border-left:3px solid var(--accent);padding:8px 0 8px 22px;font-family:'DM Serif Display';font-style:italic;font-size:22px;color:#2a2e3d;line-height:1.4}
   .quote .who{display:block;margin-top:14px;font-family:'Inter';font-style:normal;font-size:13px;color:var(--mute);letter-spacing:.04em}
 
+  /* ===== Video modal ===== */
+  .vmodal{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);align-items:center;justify-content:center;padding:20px}
+  .vmodal.open{display:flex}
+  .vmodal-inner{position:relative;width:100%;max-width:min(1100px,95vw)}
+  .vmodal-inner video{width:100%;max-height:90vh;border-radius:10px;display:block;background:#000}
+  .vmodal-close{position:absolute;top:-44px;right:0;background:transparent;border:none;color:#fff;font-size:28px;cursor:pointer;line-height:1;opacity:.8}
+  .vmodal-close:hover{opacity:1}
+
   /* ===== Funders ===== */
   .funders{background:var(--paper);padding:80px 0;border-top:1px solid var(--line)}
   .funders-head{margin-bottom:48px}
@@ -475,7 +483,7 @@
         </blockquote>
 
         <div style="margin-top:36px;display:flex;gap:14px;flex-wrap:wrap">
-          <a class="cta dark" href="#">Watch the film ▷</a>
+          <a class="cta dark" href="#" onclick="event.preventDefault();openVModal()">Watch the film ▷</a>
           <a class="cta ghost" style="color:var(--navy);border-color:var(--navy)" href="/about/">About SENLA →</a>
         </div>
       </div>
@@ -485,7 +493,7 @@
           <source src="/video/SENLA%20Research%20Hub%20Ltd%20copy.mp4" type="video/mp4">
           <img src="/images/natpresent.jpg" alt="Our story" />
         </video>
-        <div class="pbtn">▶</div>
+        <div class="pbtn" onclick="openVModal()">▶</div>
         <div class="overlay">
           <div>
             <div class="vlabel">A short film</div>
@@ -667,6 +675,16 @@
   </div>
 </footer>
 
+<!-- VIDEO MODAL -->
+<div class="vmodal" id="vmodal" onclick="closeVModal(event)">
+  <div class="vmodal-inner">
+    <button class="vmodal-close" onclick="closeVModal()">✕</button>
+    <video id="vmodal-video" controls playsinline>
+      <source src="/video/SENLA%20Research%20Hub%20Ltd%20copy.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+
 <script>
   /* ---- sticky header ---- */
   const h = document.getElementById('header');
@@ -729,6 +747,25 @@
   }
 
   renderPosts();
+
+  /* ---- video modal ---- */
+  function openVModal(){
+    const m = document.getElementById('vmodal');
+    const v = document.getElementById('vmodal-video');
+    m.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    v.currentTime = 0;
+    v.play();
+  }
+  function closeVModal(e){
+    if (e && e.target !== document.getElementById('vmodal') && !e.target.classList.contains('vmodal-close')) return;
+    const m = document.getElementById('vmodal');
+    const v = document.getElementById('vmodal-video');
+    m.classList.remove('open');
+    document.body.style.overflow = '';
+    v.pause();
+  }
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeVModal({target:document.getElementById('vmodal')}); });
 </script>
 
 </body>

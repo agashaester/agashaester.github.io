@@ -1431,7 +1431,7 @@ async function refreshPosts(){
     } else {
       const normalized = (data || []).map(row => {
         const norm = normalizeFromDB(row);
-        const seed = SEED_POSTS.find(s => s.id === row.id);
+        const seed = SEED_POSTS.find(s => s.title === row.title);
         if (seed && seed.cover) norm.cover = seed.cover;
         return norm;
       });

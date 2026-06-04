@@ -1382,6 +1382,13 @@ function loadTypeTemplate(){
   toast('Template loaded for "' + cat + '"');
 }
 
+function applySeedCovers(posts){
+  return posts.map(p => {
+    const seed = SEED_POSTS.find(s => s.title === p.title);
+    return seed ? { ...p, cover: seed.cover } : p;
+  });
+}
+
 function loadLocalDB(){
   const raw = localStorage.getItem(LOCAL_DB_KEY);
   if (!raw){ saveLocalDB(SEED_POSTS); return [...SEED_POSTS]; }
@@ -1392,6 +1399,7 @@ function loadLocalDB(){
       ...p,
       cover: p.cover ? p.cover.replace(/^(?!\/|https?:\/\/)/, '/') : p.cover
     }));
+    posts = applySeedCovers(posts);
     if (!posts.some(p => p.status === 'published')){
       const existingIds = new Set(posts.map(p => p.id));
       const merged = [...SEED_POSTS, ...posts.filter(p => !existingIds.has(p.id))];
@@ -1429,12 +1437,7 @@ async function refreshPosts(){
     if (error){
       POSTS = loadLocalDB();
     } else {
-      const normalized = (data || []).map(row => {
-        const norm = normalizeFromDB(row);
-        const seed = SEED_POSTS.find(s => s.title === row.title);
-        if (seed && seed.cover) norm.cover = seed.cover;
-        return norm;
-      });
+      const normalized = applySeedCovers((data || []).map(normalizeFromDB));
       const hasPublished = normalized.some(p => p.status === 'published');
       // If Supabase has no published posts yet, show seed articles so blog is never blank
       POSTS = hasPublished ? normalized : [...SEED_POSTS, ...normalized.filter(p => p.status !== 'published')];

@@ -1413,6 +1413,15 @@ function saveLocalDB(p){ localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(p)) }
 
 let POSTS = loadLocalDB();
 
+async function syncSeedCovers(){
+  if (!supa) return;
+  try {
+    for (const post of SEED_POSTS) {
+      await supa.from('posts').update({ cover: post.cover }).eq('title', post.title);
+    }
+  } catch(e){}
+}
+
 async function seedSupabaseIfEmpty(){
   try {
     const rows = SEED_POSTS.map(p => ({
@@ -1443,6 +1452,7 @@ async function refreshPosts(){
       POSTS = hasPublished ? normalized : [...SEED_POSTS, ...normalized.filter(p => p.status !== 'published')];
       // Try to seed Supabase if completely empty
       if (!data || data.length === 0) seedSupabaseIfEmpty();
+      syncSeedCovers();
     }
   } else {
     POSTS = loadLocalDB();

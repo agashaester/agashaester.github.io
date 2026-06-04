@@ -1429,7 +1429,12 @@ async function refreshPosts(){
     if (error){
       POSTS = loadLocalDB();
     } else {
-      const normalized = (data || []).map(normalizeFromDB);
+      const normalized = (data || []).map(row => {
+        const norm = normalizeFromDB(row);
+        const seed = SEED_POSTS.find(s => s.id === row.id);
+        if (seed && seed.cover) norm.cover = seed.cover;
+        return norm;
+      });
       const hasPublished = normalized.some(p => p.status === 'published');
       // If Supabase has no published posts yet, show seed articles so blog is never blank
       POSTS = hasPublished ? normalized : [...SEED_POSTS, ...normalized.filter(p => p.status !== 'published')];

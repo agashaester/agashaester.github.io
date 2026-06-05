@@ -1462,7 +1462,6 @@ async function syncLegacyPostsToSupabase(){
       tags: p.tags || [],
       author_email: p.author_email || '',
       author_avatar: p.author_avatar || null,
-      published_at: p.created_at ? p.created_at.slice(0,10) : null,
       status: p.status,
       created_at: p.created_at,
       updated_at: new Date().toISOString()

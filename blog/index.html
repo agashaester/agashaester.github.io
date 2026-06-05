@@ -670,6 +670,12 @@
       <div class="stat"><div class="n" id="stat-total">0</div><div class="l">All posts</div></div>
     </div>
 
+    <div style="padding:20px;background:#f8f4ec;border-radius:10px;margin-bottom:24px">
+      <b style="display:block;margin-bottom:8px">Legacy article sync</b>
+      <p style="font-size:13px;color:var(--mute);margin:0 0 12px">Push the 4 legacy seed articles (Financial Literacy, Dietary Patterns, Entrepreneurship Education, Bootcamps) to your Supabase database for permanent storage.</p>
+      <button class="btn ghost sm" onclick="syncLegacyPostsToSupabase()" style="font-size:12px">↗ Sync legacy articles to Supabase</button>
+    </div>
+
     <div class="admin-tabs">
       <button class="on" data-filter="all">All</button>
       <button data-filter="published">Published</button>
@@ -1439,6 +1445,41 @@ async function seedSupabaseIfEmpty(){
     }));
     await supa.from('posts').upsert(rows, { onConflict: 'id', ignoreDuplicates: true });
   } catch(e){}
+}
+
+async function syncLegacyPostsToSupabase(){
+  if (!supa){ toast('Supabase not connected'); return; }
+  try {
+    const rows = SEED_POSTS.map(p => ({
+      id: p.id,
+      slug: p.slug,
+      title: p.title,
+      category: p.category,
+      author: p.author,
+      cover: p.cover,
+      lead: p.lead || '',
+      body: p.body || '',
+      tags: p.tags || [],
+      author_email: p.author_email || '',
+      author_avatar: p.author_avatar || null,
+      published_at: p.created_at ? p.created_at.slice(0,10) : null,
+      status: p.status,
+      created_at: p.created_at,
+      updated_at: new Date().toISOString()
+    }));
+    const btn = event?.target;
+    if(btn) btn.textContent = 'Syncing...';
+    const { error } = await supa.from('posts').upsert(rows);
+    if(btn) btn.textContent = '↗ Sync legacy articles to Supabase';
+    if (error){ toast('Sync failed: ' + error.message); }
+    else { 
+      toast('✓ Synced 4 legacy articles to Supabase'); 
+      await refreshPosts(); 
+      renderAdmin();
+    }
+  } catch(e){ 
+    toast('Sync error: ' + e.message);
+  }
 }
 
 async function refreshPosts(){

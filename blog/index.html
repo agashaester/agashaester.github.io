@@ -1394,10 +1394,11 @@ function loadLocalDB(){
   if (!raw){ saveLocalDB(SEED_POSTS); return [...SEED_POSTS]; }
   try {
     let posts = JSON.parse(raw);
-    // Fix any old relative image paths to absolute
+    // Fix any old relative image paths to absolute and normalize status values
     posts = posts.map(p => ({
       ...p,
-      cover: p.cover ? p.cover.replace(/^(?!\/|https?:\/\/)/, '/') : p.cover
+      cover: p.cover ? p.cover.replace(/^(?!\/|https?:\/\/)/, '/') : p.cover,
+      status: p.status ? String(p.status).trim().toLowerCase() : (p.published_at ? 'published' : 'draft')
     }));
     posts = applySeedCovers(posts);
     if (!posts.some(p => p.status === 'published')){
@@ -1462,6 +1463,8 @@ async function refreshPosts(){
 }
 
 function normalizeFromDB(row){
+  const status = row.status ? String(row.status).trim().toLowerCase() : '';
+  const normalizedStatus = status || (row.published_at ? 'published' : 'draft');
   return {
     id: row.id,
     title: row.title || '',
@@ -1473,8 +1476,8 @@ function normalizeFromDB(row){
     author: row.author || '',
     author_email: row.author_email || '',
     author_avatar: row.author_avatar || null,
-    status: row.status || 'draft',
-    created_at: row.created_at || new Date().toISOString()
+    status: normalizedStatus,
+    created_at: row.created_at || row.published_at || new Date().toISOString()
   };
 }
 

@@ -168,21 +168,21 @@
   .stat .num sup{font-size:32px;color:var(--accent);font-style:italic;font-family:'DM Serif Display'}
   .stat .lbl{font-size:13px;color:var(--mute);letter-spacing:.04em;line-height:1.4}
 
-  /* ===== Story / video ===== */
+  /* ===== Story ===== */
   .story{background:var(--paper-2);overflow:hidden}
-  .story-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:80px;align-items:center}
+  .story-grid{display:grid;grid-template-columns:1fr;max-width:720px}
   .story h2{font-size:clamp(36px,4vw,56px);margin-bottom:24px}
   .story h2 em{font-style:italic;color:var(--accent);font-family:'DM Serif Display'}
-  .story .video-card{position:relative;border-radius:8px;overflow:hidden;aspect-ratio:4/5;box-shadow:0 30px 60px -20px rgba(8,24,58,.4)}
-  .story .video-card img{width:100%;height:100%;object-fit:cover}
-  .story .video-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,24,58,0) 40%,rgba(8,24,58,.7));display:flex;align-items:flex-end;justify-content:space-between;padding:28px;color:#fff}
-  .story .video-card .pbtn{width:84px;height:84px;border-radius:50%;background:rgba(255,255,255,.95);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:30px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);cursor:pointer;transition:transform .2s ease;box-shadow:0 10px 30px rgba(0,0,0,.3)}
-  .story .video-card .pbtn:hover{transform:translate(-50%,-50%) scale(1.08)}
-  .story .vlabel{font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.85}
-  .story .vtitle{font-family:'DM Serif Display';font-size:20px;line-height:1.15}
-  .story .vduration{font-size:13px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:4px 10px;border-radius:20px}
   .quote{margin-top:36px;border-left:3px solid var(--accent);padding:8px 0 8px 22px;font-family:'DM Serif Display';font-style:italic;font-size:22px;color:#2a2e3d;line-height:1.4}
   .quote .who{display:block;margin-top:14px;font-family:'Inter';font-style:normal;font-size:13px;color:var(--mute);letter-spacing:.04em}
+  .story-card{background:var(--navy);border-radius:8px;padding:48px 44px;color:#fff;display:flex;flex-direction:column;gap:24px;position:relative;overflow:hidden;min-height:420px}
+  .sc-mark{font-family:'DM Serif Display';font-size:130px;line-height:1;color:var(--accent);opacity:.35;position:absolute;top:-16px;left:28px;pointer-events:none}
+  .sc-text{font-family:'DM Serif Display';font-size:clamp(17px,1.8vw,22px);line-height:1.55;color:#fff;margin-top:44px}
+  .sc-divider{width:40px;height:2px;background:var(--accent)}
+  .sc-sub{font-size:15px;line-height:1.75;color:rgba(255,255,255,.72)}
+  .sc-meta{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.15)}
+  .sc-tag{font-size:11px;letter-spacing:.15em;text-transform:uppercase;background:var(--accent);color:#fff;padding:4px 12px;border-radius:20px}
+  .sc-loc{font-size:13px;color:rgba(255,255,255,.55)}
 
   /* ===== Video modal ===== */
   .vmodal{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);align-items:center;justify-content:center;padding:20px}
@@ -433,20 +433,27 @@
   </div>
 </section>
 
-<!-- =================== IMPACT STATS =================== -->
-<section class="block impact" id="impact" style="padding-bottom:60px">
+<!-- =================== STORY + IMPACT =================== -->
+<section class="block story" id="story">
   <div class="wrap">
-    <div class="section-head">
+    <div class="story-grid">
       <div>
-        <div class="eyebrow">Our impact</div>
-        <h2>Small numbers, <em>real</em> change.</h2>
-      </div>
-      <div class="right">
-        <p class="lede">A snapshot of what evidence-based work looks like when it touches the people it's designed for. We measure what matters and report what we find — honestly.</p>
+        <div class="eyebrow">Our story &amp; impact</div>
+        <h2>From <em>Uganda,</em><br/>with evidence.</h2>
+        <p class="lede">We have worked across field sites, conferences, classrooms, and community meetings, from Uganda to Oxford, Nairobi to Norway. We measure what matters and report what we find honestly.</p>
+
+        <blockquote class="quote">
+          "Our work is rooted in community. We listen first, design carefully, and let the evidence lead."
+          <span class="who">— Dr. Ester Agasha, Founder</span>
+        </blockquote>
+
+        <div style="margin-top:36px;display:flex;gap:14px;flex-wrap:wrap">
+          <a class="cta ghost" style="color:var(--navy);border-color:var(--navy)" href="/about/">About SENLA →</a>
+        </div>
       </div>
     </div>
   </div>
-  <div class="wrap">
+  <div class="wrap" style="margin-top:56px">
     <div class="stats-grid">
       <div class="stat">
         <div class="num">2</div>
@@ -468,44 +475,6 @@
   </div>
 </section>
 
-<!-- =================== STORY / VIDEO =================== -->
-<section class="block story" id="story">
-  <div class="wrap">
-    <div class="story-grid">
-      <div>
-        <div class="eyebrow">Our story · in 52 seconds</div>
-        <h2>From <em>Mbarara,</em><br/>with evidence.</h2>
-        <p class="lede">A short film cut from photos taken across our field work, conferences, classrooms, and community meetings — from Uganda to Oxford, Nairobi to Norway. It's how we work, in one minute.</p>
-
-        <blockquote class="quote">
-          "Our work is rooted in community. We listen first, design carefully, and let the evidence lead."
-          <span class="who">— Dr. Ester Agasha, Founder</span>
-        </blockquote>
-
-        <div style="margin-top:36px;display:flex;gap:14px;flex-wrap:wrap">
-          <a class="cta dark" href="#" onclick="event.preventDefault();openVModal()">Watch the film ▷</a>
-          <a class="cta ghost" style="color:var(--navy);border-color:var(--navy)" href="/about/">About SENLA →</a>
-        </div>
-      </div>
-
-      <div class="video-card">
-        <video autoplay muted loop playsinline poster="/images/natpresent.jpg" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0">
-          <source src="/video/landingpage.mp4" type="video/mp4">
-          <img src="/images/natpresent.jpg" alt="Our story" />
-        </video>
-        <div class="pbtn" onclick="window.open('/video/landingpage.mp4','_blank')">▶</div>
-        <div class="overlay">
-          <div>
-            <div class="vlabel">A short film</div>
-            <div class="vtitle">Research with Impact</div>
-          </div>
-          <div class="vduration">0:52</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- =================== FUNDERS =================== -->
 <section class="funders" id="funders">
   <div class="wrap">
@@ -514,23 +483,30 @@
       <h2>Supported by <em>leading</em> research funders.</h2>
     </div>
     <div class="funder-grid">
-      <div class="funder-card">
-        <div class="f-label">Pilot program</div>
-        <div class="funder-names">
-          <div class="funder-name">CEGA</div>
-        </div>
-        <p>Our ongoing pilot — the Entrepreneur Bootcamps and financial literacy curriculum — is funded by the Center for Effective Global Action (CEGA).</p>
-      </div>
-      <div class="funder-card">
-        <div class="f-label">Upscaling</div>
-        <div class="funder-names">
-          <div class="funder-name">CEGA</div>
-          <div class="funder-sep">+</div>
-          <div class="funder-name">Agency Fund</div>
-        </div>
-        <p>Scale-up and expanded field trials across Uganda and partner countries are jointly supported by CEGA — Center for Effective Global Action — and the Agency Fund.</p>
-      </div>
+
+  <div class="funder-card">
+    <div class="f-label">Completed Pilot Study (2024)</div>
+    <div class="funder-names">
+      <div class="funder-name">CEGA</div>
     </div>
+    <p>
+      Our Financial Literacy & Aspirations pilot in Eastern Uganda was funded by the Center for Effective Global Action (CEGA). The study tested a mobile financial literacy game and aspirations-based media intervention designed to strengthen financial knowledge, goal setting, and economic empowerment among women entrepreneurs.
+    </p>
+  </div>
+
+  <div class="funder-card">
+    <div class="f-label">Current Scale-Up Study</div>
+    <div class="funder-names">
+      <div class="funder-name">CEGA</div>
+      <div class="funder-sep">+</div>
+      <div class="funder-name">Agency Fund</div>
+    </div>
+    <p>
+      Building on the success of the pilot, SENLA is currently implementing an expanded study across Uganda. This larger-scale research is jointly supported by CEGA and the Agency Fund and evaluates how gamified financial literacy, aspirations media, and AI enabled coaching can improve business outcomes and financial decision-making for women entrepreneurs.
+    </p>
+  </div>
+
+</div>
   </div>
 </section>
 
@@ -673,7 +649,7 @@
       </div>
     </div>
   </div>
-</footer>
+</footer> 
 
 <!-- VIDEO MODAL -->
 <div class="vmodal" id="vmodal" onclick="closeVModal(event)">

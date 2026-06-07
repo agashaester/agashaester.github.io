@@ -918,19 +918,28 @@ alter table posts enable row level security;
 create policy "read published" on posts
   for select using (status = 'published');
 
--- Authenticated users can read their own drafts
+-- Authenticated users can read their own drafts; admin can read all
 create policy "read own" on posts
-  for select using (auth.jwt() ->> 'email' = author_email);
+  for select using (
+    auth.jwt() ->> 'email' = author_email
+    or auth.jwt() ->> 'email' = 'info@senlaresearchhub.com'
+  );
 
 -- Authenticated users can insert their own posts
 create policy "insert own" on posts
   for insert with check (auth.jwt() ->> 'email' = author_email);
 
--- Authenticated users can update / delete their own posts
+-- Authenticated users can update/delete their own posts; admin can update/delete any
 create policy "update own" on posts
-  for update using (auth.jwt() ->> 'email' = author_email);
+  for update using (
+    auth.jwt() ->> 'email' = author_email
+    or auth.jwt() ->> 'email' = 'info@senlaresearchhub.com'
+  );
 create policy "delete own" on posts
-  for delete using (auth.jwt() ->> 'email' = author_email);</pre>
+  for delete using (
+    auth.jwt() ->> 'email' = author_email
+    or auth.jwt() ->> 'email' = 'info@senlaresearchhub.com'
+  );</pre>
 
       <p style="font-size:12px;color:var(--mute);margin-top:14px">Your URL and anon key are stored only in your browser (<code>localStorage</code>). The anon key is safe to expose publicly — Row Level Security (above) controls what each user can do.</p>
     </div>
@@ -1065,9 +1074,14 @@ function getUser(){
   return raw ? JSON.parse(raw) : null;
 }
 function setUser(u){ if(u) localStorage.setItem(USER_KEY, JSON.stringify(u)); else localStorage.removeItem(USER_KEY) }
+const ADMIN_EMAIL = 'info@senlaresearchhub.com';
+function isAdmin(email){ return !!email && email.toLowerCase() === ADMIN_EMAIL; }
+
 function isAuthor(email){
+  if (!email) return false;
+  if (isAdmin(email)) return true;
   const list = (CFG.authorEmails||[]).map(e => e.toLowerCase());
-  return !email ? false : list.includes(email.toLowerCase());
+  return list.includes(email.toLowerCase());
 }
 
 async function signInWithGoogle(){
@@ -1701,7 +1715,7 @@ async function renderAdmin(){
   if (!u || u.role !== 'author'){ go('login'); return }
   document.getElementById('admin-email').textContent = u.email;
 
-  const mine = POSTS.filter(p => !u.email || p.author_email === u.email || u.demo);
+  const mine = isAdmin(u.email) ? POSTS : POSTS.filter(p => !u.email || p.author_email === u.email || u.demo);
   document.getElementById('stat-pub').textContent = mine.filter(p=>p.status==='published').length;
   document.getElementById('stat-draft').textContent = mine.filter(p=>p.status==='draft').length;
   document.getElementById('stat-total').textContent = mine.length;

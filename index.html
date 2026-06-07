@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>SENLA Research Hub — Research with Impact</title>
+<title>SENLA Research Hub Ltd</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="SENLA Research Hub Ltd is a Uganda-based research and training organization delivering evidence-based solutions for Africa and emerging markets." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -170,9 +171,13 @@
 
   /* ===== Story ===== */
   .story{background:var(--paper-2);overflow:hidden}
-  .story-grid{display:grid;grid-template-columns:1fr;max-width:720px}
+  .story-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.9fr);gap:72px;align-items:center}
   .story h2{font-size:clamp(36px,4vw,56px);margin-bottom:24px}
   .story h2 em{font-style:italic;color:var(--accent);font-family:'DM Serif Display'}
+  .story-photo{position:relative;min-height:520px;border-radius:14px;overflow:hidden;box-shadow:0 30px 60px -24px rgba(8,24,58,.35)}
+  .story-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .story-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,22,61,.72) 100%)}
+  .story-photo figcaption{position:absolute;left:24px;right:24px;bottom:22px;z-index:1;color:#fff;font-size:12px;letter-spacing:.04em}
   .quote{margin-top:36px;border-left:3px solid var(--accent);padding:8px 0 8px 22px;font-family:'DM Serif Display';font-style:italic;font-size:22px;color:#2a2e3d;line-height:1.4}
   .quote .who{display:block;margin-top:14px;font-family:'Inter';font-style:normal;font-size:13px;color:var(--mute);letter-spacing:.04em}
   .story-card{background:var(--navy);border-radius:8px;padding:48px 44px;color:#fff;display:flex;flex-direction:column;gap:24px;position:relative;overflow:hidden;min-height:420px}
@@ -296,9 +301,11 @@
     .course-features{grid-template-columns:1fr}
     .hero-meta{border-left:none;padding-left:0;border-top:1px solid rgba(255,255,255,.2);padding-top:24px}
     .foot-grid{grid-template-columns:1fr 1fr;gap:40px}
+    .story-photo{min-height:420px}
   }
   @media (max-width:640px){
     .wrap{padding:0 18px}
+    .brand img.logo{height:72px}
     .hero h1{font-size:clamp(38px,10vw,60px)}
     .hero p.lede{font-size:16px}
     .hero{padding-bottom:80px}
@@ -315,6 +322,7 @@
     .funder-name{font-size:20px;padding:8px 16px}
     .course-card{padding:28px 22px}
     .course-card .modlist .t{display:none}
+    .story-photo{min-height:320px}
   }
 </style>
 </head>
@@ -451,6 +459,10 @@
           <a class="cta ghost" style="color:var(--navy);border-color:var(--navy)" href="/about/">About SENLA →</a>
         </div>
       </div>
+      <figure class="story-photo">
+        <img src="/images/fp14.jpeg" alt="SENLA researcher facilitating a community field session in Uganda" loading="lazy" />
+        <figcaption>Evidence in action · Community field session, Uganda</figcaption>
+      </figure>
     </div>
   </div>
   <div class="wrap" style="margin-top:56px">

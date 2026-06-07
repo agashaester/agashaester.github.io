@@ -31,7 +31,7 @@
   header.site{background:var(--navy);color:#fff;border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:0;z-index:40}
   .head{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;gap:24px;max-width:1280px;margin:0 auto}
   .brand{display:flex;align-items:center;gap:12px}
-  .brand img{height:80px;border-radius:4px}
+  .brand img{height:90px;width:auto;border-radius:4px}
   nav.main{display:flex;gap:30px;align-items:center}
   nav.main a{color:rgba(255,255,255,.85);font-size:14px;font-weight:500;padding:4px 0;position:relative}
   nav.main a.active{color:#fff}
@@ -295,10 +295,12 @@
   .sub-input{width:100%;border:none;outline:none;font-family:'Inter';font-size:18px;line-height:1.5;color:#3a3f50;background:transparent;padding:0;margin-bottom:32px;resize:none;font-weight:300}
   .sub-input::placeholder{color:#aaa49a}
 
-  .toolbar{display:flex;gap:2px;padding:4px;background:var(--paper);border:1px solid var(--line);border-radius:8px;margin-bottom:18px;width:fit-content}
+  .toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:4px;padding:6px;background:var(--paper);border:1px solid var(--line);border-radius:8px;margin-bottom:18px;width:100%}
   .toolbar button{background:transparent;border:none;padding:6px 10px;border-radius:5px;cursor:pointer;font-size:13px;color:var(--ink);min-width:30px;font-weight:500}
   .toolbar button:hover{background:#fff}
   .toolbar .sep{width:1px;background:var(--line);margin:4px 4px}
+  .toolbar select{min-height:32px;border:1px solid var(--line);border-radius:5px;background:#fff;color:var(--ink);padding:4px 28px 4px 8px;font-family:'Inter',sans-serif;font-size:12px;cursor:pointer}
+  .toolbar select:focus{outline:2px solid rgba(0,33,87,.18);outline-offset:1px}
 
   .editor-body{min-height:300px;outline:none;font-size:17px;line-height:1.7;color:#1d2030}
   .editor-body p{margin:0 0 18px}
@@ -489,6 +491,7 @@
     .composer .field input,.composer .field select,.composer .field textarea{font-size:15px}
     /* header */
     .head{padding:10px 16px}
+    .brand img{height:72px}
     #user-area button{padding:7px 12px;font-size:12px}
   }
 
@@ -712,6 +715,22 @@
         <textarea class="sub-input" id="c-lead" rows="2" placeholder="A short subtitle or lead paragraph (optional)..."></textarea>
 
         <div class="toolbar" id="toolbar">
+          <select id="tb-font" aria-label="Font family" title="Font family">
+            <option value="">Font</option>
+            <option value="Inter">Inter</option>
+            <option value="DM Serif Display">DM Serif</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Arial">Arial</option>
+          </select>
+          <select id="tb-size" aria-label="Font size" title="Font size">
+            <option value="">Size</option>
+            <option value="2">Small</option>
+            <option value="3">Normal</option>
+            <option value="4">Large</option>
+            <option value="5">Extra large</option>
+            <option value="6">Display</option>
+          </select>
+          <div class="sep"></div>
           <button data-cmd="bold" title="Bold"><b>B</b></button>
           <button data-cmd="italic" title="Italic"><i>I</i></button>
           <button data-cmd="underline" title="Underline"><u>U</u></button>
@@ -722,6 +741,11 @@
           <div class="sep"></div>
           <button data-cmd="insertUnorderedList" title="Bullet list">•</button>
           <button data-cmd="insertOrderedList" title="Numbered list">1.</button>
+          <div class="sep"></div>
+          <button data-cmd="justifyLeft" title="Align left">Left</button>
+          <button data-cmd="justifyCenter" title="Align center">Center</button>
+          <button data-cmd="justifyRight" title="Align right">Right</button>
+          <button data-cmd="justifyFull" title="Justify text">Justify</button>
           <div class="sep"></div>
           <button data-cmd="createLink" title="Link">🔗</button>
           <button id="tb-img" onclick="triggerInlineImage()" title="Insert image from your computer">🖼 Image</button>
@@ -1815,6 +1839,44 @@ document.getElementById('cover-file').addEventListener('change', e => {
 });
 
 let savedRange = null;
+let editorSelection = null;
+
+function rememberEditorSelection(){
+  const sel = window.getSelection();
+  const body = document.getElementById('c-body');
+  if (!sel || !sel.rangeCount || !body.contains(sel.anchorNode)) return;
+  editorSelection = sel.getRangeAt(0).cloneRange();
+}
+
+function restoreEditorSelection(){
+  if (!editorSelection) return;
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(editorSelection);
+}
+
+document.getElementById('c-body').addEventListener('keyup', rememberEditorSelection);
+document.getElementById('c-body').addEventListener('mouseup', rememberEditorSelection);
+document.getElementById('toolbar').addEventListener('mousedown', rememberEditorSelection);
+
+document.getElementById('tb-font').addEventListener('change', e => {
+  if (!e.target.value) return;
+  restoreEditorSelection();
+  document.getElementById('c-body').focus();
+  document.execCommand('fontName', false, e.target.value);
+  rememberEditorSelection();
+  e.target.value = '';
+});
+
+document.getElementById('tb-size').addEventListener('change', e => {
+  if (!e.target.value) return;
+  restoreEditorSelection();
+  document.getElementById('c-body').focus();
+  document.execCommand('fontSize', false, e.target.value);
+  rememberEditorSelection();
+  e.target.value = '';
+});
+
 document.getElementById('toolbar').addEventListener('click', e => {
   const btn = e.target.closest('button');
   if (!btn || btn.id === 'tb-img') return;
@@ -1822,12 +1884,44 @@ document.getElementById('toolbar').addEventListener('click', e => {
   let val = btn.dataset.val || null;
   if (cmd === 'createLink'){ val = prompt('URL?'); if (!val) return }
   if (cmd === 'insertVideo'){
+    restoreEditorSelection();
     const sel = window.getSelection();
     if (sel.rangeCount) savedRange = sel.getRangeAt(0).cloneRange();
     openVideoModal();
     return;
   }
+  restoreEditorSelection();
+  document.getElementById('c-body').focus();
   document.execCommand(cmd, false, val);
+  rememberEditorSelection();
+});
+
+/* ---- Clean paste (handles ChatGPT Canvas, Google Docs, etc.) ---- */
+document.getElementById('c-body').addEventListener('paste', e => {
+  e.preventDefault();
+  const html = e.clipboardData.getData('text/html');
+  const text = e.clipboardData.getData('text/plain');
+  if (!html) {
+    document.execCommand('insertText', false, text);
+    return;
+  }
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  /* remove script/style/meta nodes */
+  tmp.querySelectorAll('script,style,meta,link,head').forEach(n => n.remove());
+  /* strip all class, style, id, data-* attributes but keep href/src/alt */
+  tmp.querySelectorAll('*').forEach(el => {
+    [...el.attributes].forEach(attr => {
+      if (!['href','src','alt','target','colspan','rowspan'].includes(attr.name)) el.removeAttribute(attr.name);
+    });
+    /* unwrap span/div wrappers that carry no semantic value */
+    if ((el.tagName === 'SPAN' || el.tagName === 'DIV') && el.children.length === 0) {
+      el.outerHTML = el.innerHTML;
+    }
+  });
+  /* collapse sequential empty paragraphs */
+  const clean = tmp.innerHTML.replace(/(<p>\s*<\/p>){2,}/gi, '<p></p>');
+  document.execCommand('insertHTML', false, clean);
 });
 
 /* ---- Inline image upload ---- */
